@@ -1,0 +1,77 @@
+<header class="wrap top">
+  <div class="bento">
+    <div class="s7"><div class="k mono xs faint" style="letter-spacing:.14em">UI / UX HANDBOOK · V0.7</div><h1>平时干净。<br>需要时才出现。</h1><p class="top-p">一页看完全部规范和样张。顶部切换配色、语言和设备；样张都能操作。把鼠标移到屏幕最左边，会滑出目录。所有数据和业务都是虚构的。</p></div>
+    <div class="vol blinds boot s5"><i class="tick a"></i><i class="tick b"></i><i class="tick c"></i><i class="tick d"></i>
+      <div><small>SCHEMES</small><b data-count="4">0</b></div><div><small>RADII</small><b data-count="5">0</b></div><div><small>DEPTHS</small><b data-count="6">0</b></div><div><small>SECTIONS</small><b data-count="14">0</b></div></div>
+  </div>
+</header>
+
+<section class="wrap sec" id="terms">
+  <div class="sec-h"><div><div class="k">01 / TERMS</div><h2>术语</h2></div><p>之后讨论只用这些词。一个词只指一件事。</p></div>
+  <div class="bento">
+    <div class="s4 grid" style="align-content:start"><div class="card"><span class="lab">功能的结构</span><div id="terms-a"></div></div><div class="card"><span class="lab">组件之间怎么让位</span><div id="terms-c"></div></div></div>
+    <div class="card s4" style="display:flex;flex-direction:column"><span class="lab">组件的状态 · 以对话组件为例</span><div id="terms-b"></div><div class="states"><i style="opacity:.72;width:60%"></i><i class="h" style="width:60%"></i><i class="f" style="width:80%"><u></u></i><i style="opacity:.3;width:60%"></i><i style="opacity:0;width:60%;height:4px"></i></div></div>
+    <div class="card s4"><span class="lab">视觉 · 底 → 破例</span><div id="terms-d"></div></div>
+  </div>
+</section>
+
+<section class="wrap sec" id="schemes">
+  <div class="sec-h"><div><div class="k">02 / SCHEMES</div><h2>主题</h2></div><p>三对明暗，结构完全相同，只换变量。点一张卡片就能切换，整页跟着变。</p></div>
+  <div class="th-row" id="scheme-cards"></div>
+  <div class="bento" style="margin-top:10px">
+    <div class="card s5"><b class="sm">换主题只改一个文件</b><p class="xs mute" style="margin-top:2px">主题是 src/themes.json 里的一条数据。构建时自动生成样式和切换器，组件代码一行不用动。不做"黑底钴蓝"：暗色要酷，商务蓝不符合。新项目先选一对，界面的明暗开关在这一对之内切换。</p></div>
+    <div class="card s7"><span class="lab">新增一个主题，要写的就是这些</span><div class="code" style="margin:0">{ <b>"id"</b>: "ember", <b>"pair"</b>: "paper", <b>"mode"</b>: "dark", <b>"name"</b>: { "zh": "余烬", "en": "Ember" },
+  <b>"tokens"</b>: { "ground": "#0e0d0c", "ink": "#f1ece4", "signal": "#f1ece4", "c1": "#e8833a", … } }</div></div>
+  </div>
+  <div class="sub">三种破例 <small>底永远是中性灰阶，只有这三种东西能有颜色或质感</small></div>
+  <div class="bento">
+    <div class="card s5"><div class="b">信号</div><p class="sm mute" style="margin:2px 0 8px">小块、实色。表示"当前是这个"。每个区域一处。</p><div class="row"><div class="seg" data-seg><button class="on">Script</button><button>Storyboard</button><button>Footage</button></div><span class="tag on">@Color Script</span></div></div>
+    <div class="vol s4" style="min-height:120px;display:flex;flex-direction:column;justify-content:space-between"><div class="between"><span class="b">体积</span><span class="xs" style="opacity:.8">每屏最多一张</span></div><div><div class="big">$32,023</div><div class="xs" style="opacity:.8;margin-top:4px">大块柔光。这一屏的主角，全部由 CSS 绘制。</div></div></div>
+    <div class="card s3" style="display:flex;gap:10px;align-items:center"><svg class="dial-svg" data-dial viewBox="0 0 220 220" style="width:84px;flex:none"></svg><div><div class="b">图案</div><p class="sm mute" style="margin-top:4px">灰色点阵是结构，只有表示数据的点才带颜色。</p></div></div>
+  </div>
+</section>
+
+<section class="wrap sec" id="shape">
+  <div class="sec-h"><div><div class="k">03 / SHAPE · EDGE · DEPTH</div><h2>圆角、边框、层级</h2></div><p>每一档都写明用在哪。不在表里的值不能用。</p></div>
+  <div class="bento">
+    <div class="s7"><span class="lab">圆角五档</span><div class="grid g5" id="radii"></div></div>
+    <div class="s5"><span class="lab">切换器的立体做法 · 一块面板被挖开，露出更低的一层</span><div class="card" style="display:flex;justify-content:center;padding:0 0 18px;background:var(--app);border-radius:var(--r-panel);overflow:hidden;height:calc(100% - 26px)"><div class="notch" data-seg><svg viewBox="0 0 207 42" preserveAspectRatio="none" aria-hidden="true"><defs><filter id="rim" x="-40%" y="-40%" width="180%" height="180%" color-interpolation-filters="sRGB"><feComponentTransfer in="SourceAlpha"><feFuncA type="table" tableValues="1 0"/></feComponentTransfer><feGaussianBlur stdDeviation="4"/><feOffset dy="-5" result="o"/><feFlood flood-color="#000"/><feComposite in2="o" operator="in"/><feComposite in2="SourceAlpha" operator="in"/><feMerge><feMergeNode in="SourceGraphic"/><feMergeNode/></feMerge></filter></defs><path filter="url(#rim)" d="M0,0 C7,0 14,7 14,14 L14,26 A16,16 0 0,0 30,42 L177,42 A16,16 0 0,0 193,26 L193,14 C193,7 200,0 207,0 Z"/></svg><button class="on">Explore</button><button>Create</button></div></div></div>
+  </div>
+  <div class="sub">边框 <small>默认没有。分组靠底色和间距，只有下面四种情况才画线</small></div>
+  <div class="grid g4">
+    <div class="card"><span class="lab">① 键盘焦点</span><button class="btn sec2 sm" style="outline:2px solid var(--signal);outline-offset:2px">已聚焦的按钮</button></div>
+    <div class="card"><span class="lab">② 正在输入、出错</span><div class="row" style="flex-wrap:nowrap"><input class="input" style="box-shadow:inset 0 0 0 1.5px var(--signal);padding:5px 9px" value="正在输入"><input class="input err" style="padding:5px 9px" value="格式不对"></div></div>
+    <div class="card"><span class="lab">③ 拖放目标</span><div style="border:1.5px dashed var(--ink3);border-radius:10px;padding:5px;text-align:center;font-size:12px" class="mute">把文件放到这里</div></div>
+    <div class="card"><span class="lab">④ 同色区域之间的细线</span><div class="sm"><div class="between"><span class="mute">Camera</span><b>35mm</b></div><div style="border-top:1px solid var(--line);margin-top:3px;padding-top:3px" class="between"><span class="mute">Grade</span><b>Cool</b></div></div></div>
+  </div>
+  <div class="sub">六层高度 <small>高度只表示状态或层级，不是装饰</small></div>
+  <div class="bento" id="depths">
+    <div class="card s2"><div class="b">平面</div><div class="xs mute">只有底色差</div></div>
+    <div class="card lift s2" style="box-shadow:var(--e3)"><div class="b">抬起</div><div class="xs mute">悬停上移 2px</div></div>
+    <div class="float s2" style="padding:12px 14px"><div class="b">浮层</div><div class="xs mute">菜单、面板</div></div>
+    <div class="recess s2" style="padding:12px 14px;border-radius:var(--r-card)"><div class="b">凹槽</div><div class="xs mute">切换器底座</div></div>
+    <div class="card s2" style="display:flex;align-items:center;justify-content:center"><div class="raised" style="padding:7px 16px;font-weight:600;font-size:12.5px">凸起</div></div>
+    <div class="vol s2" style="border-radius:var(--r-card)"><div class="b">体积</div><div class="xs" style="opacity:.8">每屏一张</div></div>
+  </div>
+  <div class="sub">字号与疏密 <small>大字负责被看到，小字贴紧成组</small></div>
+  <div class="bento">
+    <div class="card s3" style="display:flex;flex-direction:column;justify-content:space-between"><div class="huge">128</div><div class="xs mute">46 / 30 数字，字距收紧</div></div>
+    <div class="card s5"><div style="font-size:18px;font-weight:600">18 小标题</div><div style="font-size:13px;margin-top:2px">13 正文，用于阅读和操作</div><div style="font-size:12px" class="mute">12 辅助说明</div><div class="label" style="margin-top:2px">标签和单位</div><div class="mono" style="font-size:11px;margin-top:2px">mono 11 日志与代码</div></div>
+    <div class="card s4"><div class="xs mute" style="margin-bottom:6px">间距四档：4 / 8 贴紧成组 · 10 卡片之间 · 44 分区之间</div><div class="row" style="align-items:flex-end;gap:10px"><i style="width:4px;height:30px;background:var(--signal);display:block"></i><i style="width:8px;height:30px;background:var(--signal);display:block"></i><i style="width:10px;height:30px;background:var(--signal);display:block"></i><i style="width:44px;height:30px;background:var(--signal);display:block"></i></div></div>
+  </div>
+</section>
+
+<section class="wrap sec" id="controls">
+  <div class="sec-h"><div><div class="k">04 / CONTROLS</div><h2>控件</h2></div><p>按钮、输入、选择、反馈。全部能点。</p></div>
+  <div class="bento" id="ctrl">
+    <div class="card s5"><div class="lab">按钮</div><div class="row"><button class="btn" data-toast="主操作：一块区域只放一个">主操作</button><button class="btn sec2">次操作</button><button class="btn ghost">文字</button><button class="btn danger">删除</button><button class="btn" disabled>禁用</button></div></div>
+    <div class="card s4"><div class="lab">分段切换</div><div class="seg" data-seg><button class="on">LOG</button><button>COPY</button><button>TOP</button><button>TREND</button></div><div style="margin-top:10px" class="seg" data-seg><button class="on">日</button><button>周</button><button>月</button></div></div>
+    <div class="card s3"><div class="lab">输入框</div><input class="input" placeholder="项目名称"><div class="row" style="margin-top:8px;flex-wrap:nowrap"><input class="input err" value="abc" style="flex:1"><span class="xs" style="color:var(--bad)">要填数字</span></div></div>
+    <div class="card s3"><div class="lab">开关与勾选</div><div class="between sm" style="padding:4px 0"><span>自动更新</span><button class="switch" role="switch" aria-checked="true" data-tg></button></div><div class="between sm" style="padding:4px 0"><span>夜间备份</span><button class="switch" role="switch" aria-checked="false" data-tg></button></div><div class="row sm" style="margin-top:6px"><button class="check" role="checkbox" aria-checked="true" data-tg></button>已读<button class="check" role="checkbox" aria-checked="false" data-tg style="margin-left:8px"></button>未读</div></div>
+    <div class="card s4"><div class="lab">滑块</div><div class="sm between"><span>Field of view</span><b class="num-t" id="fov">35°</b></div><input class="slider" type="range" min="10" max="90" value="35" oninput="document.getElementById('fov').textContent=this.value+'°'" style="margin-top:10px"><div class="row" style="margin-top:14px"><button class="btn sec2 sm" id="st-">−</button><b class="num-t" id="stv">2</b><button class="btn sec2 sm" id="st+">＋</button><span class="xs mute">步进器</span></div></div>
+    <div class="card s5"><div class="lab">标签与状态</div><div class="row"><span class="tag on">当前</span><span class="tag">默认</span><span class="tag"><i class="dotc" style="background:var(--good)"></i>Live</span><span class="tag"><i class="dotc" style="background:var(--bad)"></i>失败</span><span class="tag"><i class="dotc" style="background:var(--c3)"></i>等待</span></div><div class="row" style="margin-top:12px"><span class="tip btn sec2 sm" data-tip="提示：短句，悬停 .15s 后出现">悬停提示</span><button class="btn sec2 sm" data-toast="已保存。通知从上方滑入，不挤正文">通知</button><button class="btn sec2 sm" data-confirm>确认框</button></div></div>
+    <div class="card s3"><div class="lab">菜单 · 点开，选完或点外面就收起</div><div class="menu-host"><button class="btn sec2" id="mTrig">Main cut ▾</button><div class="menu pop" id="mPop"><div class="on">Main cut <span>✓</span></div><div>Director's cut</div><div>Trailer C</div><hr><div>＋ 新建时间线</div></div></div></div>
+    <div class="card s5"><div class="lab">进度</div><div class="sm between"><span>备份 137 / 214</span><span class="mute">64%</span></div><div style="height:6px;border-radius:6px;background:var(--sunk);margin:8px 0 16px;overflow:hidden"><i style="display:block;height:100%;width:64%;background:var(--signal);border-radius:6px"></i></div><div class="xs mute" style="margin-bottom:8px">加载占位</div><div class="skel" style="height:12px;width:70%"></div><div class="skel" style="height:12px;width:92%;margin-top:7px"></div><div class="skel" style="height:12px;width:50%;margin-top:7px"></div></div>
+    <div class="card s4" style="text-align:center;display:flex;flex-direction:column;justify-content:center;align-items:center"><div class="xs mute">空状态</div><div class="b" style="margin-top:2px">这一天没有任务</div><p class="xs mute" style="margin:4px 0 10px">说明原因，并给一个下一步。</p><button class="btn sm">＋ 新建任务</button></div>
+  </div>
+</section>
