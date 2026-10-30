@@ -1,51 +1,98 @@
 <section class="wrap sec" id="workspace">
-  <div class="sec-h"><div><div class="k">05 / WORKSPACE · 复刻 STORY FORGE</div><h2>工作台</h2></div><p>完整交互都在这里。切换 Explore / Create；鼠标移到胶片、对话框上；点进对话框，再点历史记录；点剧本里的文字；把胶片切到音轨后点一段片段。</p></div>
-  <div class="sf" id="sf" data-scope="sf" data-dim="none" data-lock>
-    <div class="sf-title"><span class="dotw"></span><span class="dotw"></span><span class="dotw"></span><span class="xs faint b" style="margin-left:6px;letter-spacing:.06em">STATIC</span>
-      <div class="notch sf-notch" id="sfMode"><svg viewBox="0 0 207 42" preserveAspectRatio="none" aria-hidden="true"><path filter="url(#rim)" d="M0,0 C7,0 14,7 14,14 L14,26 A16,16 0 0,0 30,42 L177,42 A16,16 0 0,0 193,26 L193,14 C193,7 200,0 207,0 Z"/></svg><button data-m="explore">Explore</button><button class="on" data-m="create">Create</button></div>
+  <div class="sec-h"><div><div class="k">05 / WORKSPACE · 复刻 STORY FORGE</div><h2>工作台</h2></div><p>Story Forge 的完整工作台。Explore 里拖动和缩放画布，用左侧按钮筛选素材；Create 里切换剧本、分镜、素材三层和五级缩放，点剧本元素打开右侧面板，切换时间线和音视频轨道，点对话框写提示并发送。</p></div>
+  <div class="sf mode-explore" id="sf" data-scope="sf" data-lock>
+    <div class="titlebar" data-cmp data-nofocus data-passive><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><div class="proj">STATIC</div><div class="bctl"><svg class="bctl-bg" viewBox="0 0 207 42" preserveAspectRatio="none" aria-hidden="true"><defs><filter id="sf-bctlRim" x="-40%" y="-40%" width="180%" height="180%" color-interpolation-filters="sRGB"><feComponentTransfer in="SourceAlpha"><feFuncA type="table" tableValues="1 0"/></feComponentTransfer><feGaussianBlur stdDeviation="4"/><feOffset dx="0" dy="-5" result="o"/><feFlood/><feComposite in2="o" operator="in"/><feComposite in2="SourceAlpha" operator="in"/><feMerge><feMergeNode in="SourceGraphic"/><feMergeNode/></feMerge></filter></defs><path class="bctl-path" filter="url(#sf-bctlRim)" d="M0,0 C7,0 14,7 14,14 L14,26 A16,16 0 0,0 30,42 L177,42 A16,16 0 0,0 193,26 L193,14 C193,7 200,0 207,0 Z"/></svg><button type="button" class="on" data-sf-call="bMode" data-mode="explore">Explore</button><button type="button" data-sf-call="bMode" data-mode="create">Create</button></div></div>
+
+    <!-- ===== EXPLORE · full-bleed infinite canvas, sits beneath all chrome ===== -->
+    <div class="explore" id="sf-explore">
+    <div class="cv-tools" role="group" aria-label="画布视图"><button data-sf-call="cvZoomOut" aria-label="缩小画布">−</button><button data-sf-call="cvFit">适合画布</button><button data-sf-call="cvZoomIn" aria-label="放大画布">+</button></div>
+      <div class="cv-vp" id="sf-cvVp"><div class="cv-inner" id="sf-cvInner" data-scope="sf-canvas"><!-- items injected --></div></div>
     </div>
-    <div class="sf-explore" id="sfExplore"><div class="cv-vp" id="cvVp"><div class="cv-in" id="cvIn"></div></div>
-      <div class="cv-zone"><div class="cv-rail" id="cvRail"><button class="on" data-f="all" data-t="全部">◆</button><button data-f="char" data-t="角色">◉</button><button data-f="mood" data-t="情绪">◐</button><button data-f="note" data-t="笔记">▤</button></div></div>
-      <div class="xs faint cv-hint">拖动空白处平移 · 滚轮缩放 · 拖动卡片 · 单击放大 · 双击预览 · 左边缘滑出筛选</div>
-    </div>
-    <div class="sf-stage">
-      <div class="sf-browser" id="sfBrowser"><div class="sf-mid">
-        <div class="sf-read"><div class="sf-view" id="sfView">
-          <div class="xs faint" style="letter-spacing:.16em">SCENE 04 · INT. APARTMENT — NIGHT</div>
-          <p style="margin:14px 0" class="selel" data-k="light">The window is the only <b>light</b>. A CRT hums on the floor; its glow reaches the far wall and stops.</p>
-          <div class="cue selel" data-k="mara">MARA</div><div class="dlg mute">(not looking up)</div><div class="dlg selel" data-k="line">You kept the tape.</div>
-          <p style="margin:14px 0" class="selel" data-k="tape">She lifts the <b>tape</b> from the deck. Dust slides off its label in one piece.</p>
-          <div class="cue selel" data-k="jun">JUN</div><div class="dlg selel" data-k="line2">I kept all of them.</div>
-          <p style="margin:14px 0" class="selel" data-k="push">Slow push-in. The street outside goes quiet before the music returns.</p>
-          <p style="margin:14px 0" class="mute">Silence holds. Somewhere below, a shutter rolls down and the hum of the set becomes the only clock in the room.</p>
-          <p style="margin:14px 0" class="mute">Mara sets the tape on the sill. Neither of them moves to play it.</p>
-        </div><div class="fade t"></div><div class="fade b"></div></div>
-        <aside class="sf-cp" id="sfCp"><div class="cp-in"><div class="between"><b id="cpT">Shot 09</b><button class="btn ghost ico sm" id="cpX" aria-label="关闭">✕</button></div>
-          <div class="cp-sec"><h5>角色参考</h5><div class="grid g2 keep" style="gap:8px"><div class="pic a" style="aspect-ratio:4/3"></div><div class="pic c" style="aspect-ratio:4/3"></div></div></div>
-          <div class="cp-sec"><h5>生成提示</h5><div class="xs">35mm, low key, CRT glow on the far wall, <b>slow push-in</b>, dust in the beam.</div></div>
-          <div class="cp-sec"><h5>参数</h5><div class="cp-row"><span>镜头</span><b>35mm</b></div><div class="cp-row"><span>运动</span><b>Push-in</b></div><div class="cp-row"><span>时长</span><b>4.2s</b></div></div>
-        </div></aside>
-      </div></div>
-      <div class="sf-tl" id="sfTl" data-cmp data-nofocus>
-        <div class="tl-head"><span class="tl-name" id="tlName">Main cut ▾</span><span class="tl-tt"><button class="on" data-t="film" aria-label="画面">▦</button><button data-t="lanes" aria-label="声音">≋</button></span>
-          <div class="menu tl-menu" id="tlMenu"><div class="on">Main cut <span>✓</span></div><div>Director's cut</div><div>Trailer C</div><hr><div>＋ 新建时间线</div></div>
-        </div>
-        <div class="tl-wrap"><div class="strip" id="strip"></div><div class="hero" id="hero"><span class="xs" style="color:#fff">Shot 09 · 4.2s</span></div></div>
+    <!-- left edge → vertical filter rail, hover to reveal -->
+    <div class="cv-rail-zone" id="sf-cvRailZone" tabindex="0" aria-label="素材筛选">
+      <div class="cv-rail" id="sf-cvFilter">
+        <button class="rb on" data-flt="all" data-tip="全部素材" aria-label="全部素材" data-sf-call="cvFilter" data-value="all"><svg viewBox="0 0 24 24"><path d="m12 2 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5"/><path d="m3 17 9 5 9-5"/></svg></button>
+        <button class="rb" data-flt="char" data-tip="角色素材" aria-label="角色素材" data-sf-call="cvFilter" data-value="char"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6.5 8-6.5s8 2.5 8 6.5"/></svg></button>
+        <button class="rb" data-flt="mood" data-tip="情绪板" aria-label="情绪板" data-sf-call="cvFilter" data-value="mood"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18c1 0 1.6-.8 1.6-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.1 0-.9.7-1.6 1.6-1.6H16a5 5 0 0 0 5-5c0-3.9-4-7.4-9-7.4Z"/></svg></button>
+        <button class="rb" data-flt="visual" data-tip="视觉参考" aria-label="视觉参考" data-sf-call="cvFilter" data-value="visual"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="9.5" r="1.5"/><path d="m4 18 5-5 4 3.5 3-2.5 4 4"/></svg></button>
+        <button class="rb" data-flt="note" data-tip="创意笔记" aria-label="创意笔记" data-sf-call="cvFilter" data-value="note"><svg viewBox="0 0 24 24"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5V14l-6 6H5.5A1.5 1.5 0 0 1 4 18.5Z"/><path d="M14 20v-4.5A1.5 1.5 0 0 1 15.5 14H20"/></svg></button>
       </div>
     </div>
-    <div class="sf-co" id="sfCo">
-      <div class="co-trace" id="coTrace" tabindex="-1"><div class="co-glass"></div><div class="co-body" id="coBody" tabindex="-1">
-        <div class="cmsg me"><span>保留右侧呼吸空间，让镜头慢慢靠近。</span></div>
-        <div class="cmsg">好。Shot 9 排出了三个版本，<b>Take 2</b> 最接近：街道先静下来，音乐再回来。</div>
-        <div class="cmsg me"><span>从同样的素材再做一版预告。</span></div>
-        <div class="cmsg">已生成 <b>Trailer C</b>。点它的名字可以查看。</div>
-        <div class="cmsg me"><span>色调再冷一点。</span></div>
-        <div class="cmsg">已调整。点这段历史、选中文字或滚动，对话组件都不会退场。</div>
-      </div></div>
-      <div class="co-bar" id="coBar" tabindex="-1" data-cmp data-nofocus><div class="co-in" id="coIn" contenteditable="true" role="textbox" aria-label="告诉 AI 你想要什么" data-ph="Tell AI what you want — leave the rest to it"></div><button class="co-send" id="coSend" aria-label="发送">↑</button></div>
-    </div>
-  </div>
+    <!-- focus / edit lightbox -->
+    <div class="cv-focus" id="sf-cvFocus"><div class="cv-focus-bd" id="sf-cvFocusBd"></div><button class="preview-close" type="button" data-sf-call="cvUnfocus" aria-label="关闭预览">×</button><div class="cv-focus-stage" id="sf-cvFocusStage"></div></div>
 
+    <div class="stage">
+      <div class="browser" data-cmp data-nofocus data-passive id="sf-browser">
+        <div class="mid">
+          <div class="cpanel" id="sf-cpanel">
+            <div class="cp-main"><button class="cp-close" type="button" data-sf-call="cpClose" aria-label="关闭上下文面板">×</button>
+              <div class="cp-fade t"></div>
+              <div class="cp-body" id="sf-cpBody"></div>
+              <div class="cp-fade b"></div>
+            </div>
+          </div>
+          <div class="bpanel">
+            <div class="b-main">
+              <div class="bfade t"></div>
+              <div class="bview" id="sf-bview"></div>
+              <div class="bfade b"></div>
+            </div>
+          </div>
+        </div></div>
+
+      <div class="timeline" data-cmp data-nofocus data-live tabindex="0" aria-label="时间线">
+        <div class="tlhead">
+          <div class="tlname" id="sf-tlname" data-sf-call="toggleTlMenu"><span id="sf-tlnameLabel">Timeline A</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div>
+          <div class="tltrack" id="sf-tltrack">
+            <button class="tt" data-track="graphics" data-sf-call="setTrack" data-value="graphics" aria-label="图形轨道"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6.5V5h14v1.5"/><path d="M12 5v14"/><path d="M9.2 19h5.6"/></svg></button>
+            <button class="tt on" data-track="video" data-sf-call="setTrack" data-value="video" aria-label="视频轨道"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="13" rx="2.2"/><path d="M10.5 9.2l4 2.8-4 2.8z" fill="currentColor" stroke="none"/></svg></button>
+            <button class="tt" data-track="audio" data-sf-call="setTrack" data-value="audio" aria-label="音频轨道"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11v2M8 8.5v7M12 5v14M16 8.5v7M20 11v2"/></svg></button>
+          </div>
+        </div>
+        <div class="tlmenu" id="sf-tlmenu"></div>
+        <div class="tlctl">
+          <div class="seg" id="sf-layerSeg">
+            <button type="button" class="on" data-sf-call="setLayer" data-value="script">剧本</button>
+            <button type="button" data-sf-call="setLayer" data-value="storyboard">分镜</button>
+            <button type="button" data-sf-call="setLayer" data-value="movie">影片素材</button>
+          </div>
+          <div class="seg" id="sf-zoomSeg">
+            <button type="button" data-sf-call="setZoom" data-value="Film">全片</button>
+            <button type="button" data-sf-call="setZoom" data-value="Act">幕级</button>
+            <button type="button" data-sf-call="setZoom" data-value="Beat">节拍</button>
+            <button type="button" data-sf-call="setZoom" data-value="Scene">场景级</button>
+            <button type="button" class="on" data-sf-call="setZoom" data-value="Shot">镜头级</button>
+          </div>
+        </div>
+
+        <div class="tlrow">
+          <div class="stripwrap"><div class="filmstrip" id="sf-strip">
+            <div class="filmtrack" id="sf-ftrack">
+              <div class="perfbar top" id="sf-perfTop"></div>
+              <div class="frames" id="sf-frames"></div>
+              <div class="perfbar bot" id="sf-perfBot"></div>
+            </div>
+          </div></div>
+          <div class="hero" id="sf-hero"></div>
+          <div class="lane-heads" id="sf-laneHeads"></div>
+        </div>
+      </div>
+
+      <div class="copilot" data-cmp data-hold>
+        <div class="ctrace">
+          <div class="cglass"></div>
+          <div class="ctrace-body" id="sf-ctraceBody" tabindex="-1">
+            <div id="sf-ctraceInner"></div>
+          </div>
+        </div>
+        <div class="cbar">
+          <div id="sf-cinput" contenteditable="true" role="textbox" aria-multiline="true" aria-label="告诉 AI 你想要什么"><span contenteditable="false" class="selpill" id="sf-selpill"></span><span contenteditable="false" class="cplaceholder">告诉 AI 你想要什么，其余交给它</span></div>
+          <button class="send" aria-label="发送" data-keep data-sf-call="send"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+        </div>
+      </div>
+    </div>
+    <div class="reply" id="sf-reply" role="status"></div>
+  </div>
   <div class="sub">动效规则 <small>每一条都按右边的按钮单独看</small></div>
   <div class="bento" id="motion" data-scope="motion"></div>
 

@@ -8,8 +8,36 @@
   </div>
 </section>
 
+<section class="wrap sec" id="table">
+  <div class="sec-h"><div><div class="k">12 / DATA TABLE</div><h2>数据表</h2></div><p>真实的记录表：排序、筛选、搜索、勾选和批量操作、行内操作、展开详情、改列宽、显示隐藏列、切换密度、分页。切页和筛选时表格高度不变。</p></div>
+  <div class="dt card" id="dt" data-scope="dt" data-dim="none" data-cmp data-hold>
+    <div class="dt-bar">
+      <b>片源库</b>
+      <div class="seg" id="dtSt" role="group" aria-label="按状态筛选"></div>
+      <span style="flex:1"></span>
+      <span class="sq-w"><input class="input sq" id="dtQ" placeholder="搜索记录" aria-label="搜索记录"></span>
+      <div class="seg quiet" id="dtD" role="group" aria-label="行密度"><button class="on">舒适</button><button>紧凑</button></div>
+      <div class="menu-host"><button class="btn sec2 sm" id="dtCB">列 ▾</button><div class="menu pop" id="dtC"></div></div>
+      <button class="btn sec2 sm" data-toast="已导出 CSV（示例）">导出</button>
+    </div>
+    <div class="dt-sc" id="dtS"><table class="dt-t"><colgroup id="dtCols"></colgroup><thead><tr id="dtH"></tr></thead><tbody id="dtB"></tbody></table></div>
+    <div class="dt-foot">
+      <div class="dt-pg" id="dtPg"><span class="xs mute" id="dtN"></span><span style="flex:1"></span><button class="btn ghost sm" id="dtPrev" aria-label="上一页">‹</button><div class="seg quiet" id="dtP" role="group" aria-label="页码"></div><button class="btn ghost sm" id="dtNext" aria-label="下一页">›</button></div>
+      <div class="dt-bulk" id="dtBk"><span class="xs b" id="dtBn"></span><button class="btn ghost sm" id="dtBc">清除选择</button><span style="flex:1"></span><button class="btn sec2 sm" id="dtBo">标为通过</button><button class="btn sec2 sm" id="dtBa">归档</button></div>
+    </div>
+  </div>
+  <p class="note">点一行展开详情，详情把下面的行挤开；点表格外或按 Esc 收起。按住 Shift 勾选可以连选。拖动表头右缘改列宽。</p>
+</section>
+
+<section class="wrap sec" id="gallery">
+  <div class="sec-h"><div><div class="k">13 / GALLERY</div><h2>图片瀑布流</h2></div><p>每张图放进当前最短的一列。筛选和换图大小时图片滑到新位置；往下滚动自动加载，占位先按真实比例占好，页面不会跳。</p></div>
+  <div class="mg-bar"><div class="seg" id="mgF" role="group" aria-label="按类别筛选"></div><span style="flex:1"></span><div class="seg quiet" id="mgZ" role="group" aria-label="图片大小"><button data-w="170">小图</button><button class="on" data-w="240">中图</button><button data-w="340">大图</button></div></div>
+  <div class="mg" id="mg" data-scope="mg"></div>
+  <div class="mg-s xs faint" id="mgS"></div>
+</section>
+
 <section class="wrap sec" id="daily">
-  <div class="sec-h"><div><div class="k">12 / EVERYDAY</div><h2>日常场景</h2></div><p>同一套规则放进九个日常组件。鼠标移上一个，别的变暗，移走就恢复；确认和保存这类操作，要用时才出现。</p></div>
+  <div class="sec-h"><div><div class="k">14 / EVERYDAY</div><h2>日常场景</h2></div><p>同一套规则放进九个日常组件。鼠标移上一个，别的变暗，移走就恢复；确认和保存这类操作，要用时才出现。</p></div>
   <div class="daily" data-scope="daily">
     <div class="card d-cal" data-cmp><div class="between"><b>十月</b><span class="xs mute">3 件事</span></div><div class="cal mini" id="cal2"></div></div>
     <div class="card d-chat" data-cmp><div class="row" style="flex-wrap:nowrap"><span class="avatar">林</span><div><div class="b sm">林 · 项目搭档</div><div class="xs mute">在线</div></div></div><div class="chatlog" id="chatlog"><div class="cmsg"><span class="bub">样片今晚能看吗？</span></div><div class="cmsg me"><span>能，九点前发你。</span></div></div><form class="row" id="chatf" style="flex-wrap:nowrap"><input class="input" placeholder="回复" aria-label="回复"><button class="btn ico" aria-label="发送" data-tool>↑</button></form></div>
@@ -24,12 +52,12 @@
 </section>
 
 <section class="wrap sec" id="values">
-  <div class="sec-h"><div><div class="k">13 / VALUES</div><h2>统一数值表</h2></div><p>界面只能从这里取值。源码逐项对照 Story Forge v5。</p></div>
+  <div class="sec-h"><div><div class="k">15 / VALUES</div><h2>统一数值表</h2></div><p>界面只能从这里取值。源码逐项对照 Story Forge v5。</p></div>
   <div class="card" style="overflow:auto"><table class="vt" id="vt"></table></div>
 </section>
 
 <section class="wrap sec" id="refs" style="padding-bottom:60px">
-  <div class="sec-h"><div><div class="k">14 / REFERENCES</div><h2>参考来源</h2></div><p>每个来源取什么，不取什么。原始抽帧在 references/frames。</p></div>
+  <div class="sec-h"><div><div class="k">16 / REFERENCES</div><h2>参考来源</h2></div><p>每个来源取什么，不取什么。原始抽帧在 references/frames。</p></div>
   <div class="grid g4" id="reflist" data-scope="refs"></div>
 </section>
 

@@ -27,6 +27,8 @@ page = f"""<!doctype html>
 {read("base.css")}
 {read("scenes.css")}
 {read("more.css")}
+{read("sf.css")}
+{read("data.css")}
 </style>
 </head>
 <body>
@@ -50,8 +52,10 @@ const I18N={i18n_data};
 {read("i18n.js")}
 {read("ux.js")}
 {read("app1.js")}
+{read("sf.js")}
 {read("app2.js")}
 {read("app3.js")}
+{read("data.js")}
 {read("app4.js")}
 </script>
 </body>

@@ -25,7 +25,7 @@ let saved=new URLSearchParams(location.hash.slice(1)).get('scheme');try{saved=sa
 setScheme(saved&&THEMES.themes.some(s=>s.id===saved)?saved:THEMES.default);
 
 /* 目录：刻度是待机的核，悬停展开；手机上是底部胶囊。滚动用脚本完成，任何打开方式都有效 */
-const rail=$('#rail'),NAV=[['terms','术语'],['schemes','主题'],['shape','圆角 · 边框 · 层级'],['controls','控件'],['workspace','工作台'],['dash','数据看板'],['canvas','画布与节点'],['maps','关系图'],['agents','多 Agent'],['more','AI · 小组件'],['work','资料 · 任务'],['daily','日常场景'],['values','数值表'],['refs','参考来源']];
+const rail=$('#rail'),NAV=[['terms','术语'],['schemes','主题'],['shape','圆角 · 边框 · 层级'],['controls','控件'],['workspace','工作台'],['dash','数据看板'],['canvas','画布与节点'],['maps','关系图'],['agents','多 Agent'],['more','AI · 小组件'],['work','资料 · 任务'],['table','数据表'],['gallery','图片瀑布流'],['daily','日常场景'],['values','数值表'],['refs','参考来源']];
 function goTo(id){document.getElementById(id).scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'})}
 rail.innerHTML=NAV.map(([id,n])=>`<a href="#${id}" data-go="${id}" aria-label="${n}"><span>${n}</span></a>`).join('');
 $('#pnavL').innerHTML=NAV.map(([id,n])=>`<a data-go="${id}">${n}</a>`).join('');
@@ -80,50 +80,6 @@ $('#radii').innerHTML=[['9','控件','按钮、输入框、标签','var(--r-ctl)
 function dial(svg){let s='';for(let r=0;r<5;r++){const R=50+r*13,n=30+r*7;for(let k=0;k<n;k++){const a=-Math.PI/2+k/n*Math.PI*2,x=110+R*Math.cos(a),y=110+R*Math.sin(a),t=k/n;let c='var(--dot)',d=1.3;if(r===1&&t<.22){c='var(--c1)';d=3}if(r===3&&t>.2&&t<.5&&k%2===0){c='var(--ink)';d=2.6}s+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${d}" fill="${c}"/>`}}svg.innerHTML=s}
 $$('[data-dial]').forEach(dial);
 let stv=2;$('[id="st-"]').onclick=()=>{stv=Math.max(0,stv-1);$('#stv').textContent=stv};$('[id="st+"]').onclick=()=>{stv++;$('#stv').textContent=stv};
-
-/* ========== 工作台 ========== */
-(function(){
-const sf=$('#sf'),tl=$('#sfTl'),bar=$('#coBar'),co=$('#sfCo'),inp=$('#coIn'),cp=$('#sfCp');
-/* 模式 */
-$$('#sfMode button').forEach(b=>b.onclick=()=>{$$('#sfMode button').forEach(x=>x.classList.toggle('on',x===b));sf.classList.toggle('explore',b.dataset.m==='explore');clearSel();if(b.dataset.m==='explore')cvFit()});
-/* 聚焦范围：点到组件内的非输入区，焦点仍留在组件内；输入栏空白处把光标还给输入框 */
-bar.addEventListener('mousedown',e=>{if(e.target===bar){e.preventDefault();inp.focus()}});
-$('#coTrace').addEventListener('mousedown',e=>{if(!e.target.closest('#coBody'))$('#coBody').focus()});
-co.addEventListener('keydown',e=>{if(e.key==='Escape'){document.activeElement.blur();e.stopPropagation()}});
-/* 发送 */
-const body=$('#coBody');
-function send(){const pill=$('.co-pill',inp);const t=inp.textContent.replace(pill?pill.textContent:'','').trim();if(!t)return;body.insertAdjacentHTML('beforeend',`<div class="cmsg me"><span></span></div>`);body.lastElementChild.firstChild.textContent=t;inp.textContent='';if(pill)inp.append(pill);body.scrollTop=1e5;setTimeout(()=>{body.insertAdjacentHTML('beforeend','<div class="cmsg">收到。这是本地示例回复。</div>');body.scrollTop=1e5},500);inp.focus()}
-inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}});
-$('#coSend').onclick=send;
-const dropPill=()=>{const p=$('.co-pill',inp);if(p)p.remove()};
-const clearClips=()=>{$$('.clip.sel',strip).forEach(x=>x.classList.remove('sel'));$$('.lane',strip).forEach(l=>l.style.height='')};
-function clearSel(){cp.classList.remove('open');$$('.selel.on').forEach(x=>x.classList.remove('on'));clearClips();$$('.ci.sel').forEach(x=>x.classList.remove('zoom','sel'));dropPill()}
-inp.addEventListener('input',()=>{if(!inp.textContent&&!$('.co-pill',inp))inp.innerHTML=''});
-function setPill(n){let p=$('.co-pill',inp);if(!p){p=document.createElement('span');p.className='co-pill';p.contentEditable=false;inp.prepend(p)}p.textContent='@'+n}
-/* 选中文字 → 打开上下文面板（挤占），并把 @ 标签放进输入框 */
-const NAMES={light:'Shot 07',mara:'Mara',line:'Shot 08',tape:'Tape',jun:'Jun',line2:'Shot 09',push:'Shot 10'};
-$$('.selel').forEach(el=>el.onclick=()=>{clearClips();$$('.selel').forEach(x=>x.classList.toggle('on',x===el));const n=NAMES[el.dataset.k];$('#cpT').textContent=n;setPill(n);cp.classList.add('open')});
-$('#cpX').onclick=clearSel;
-/* 胶片 */
-const strip=$('#strip');
-function film(){tl.classList.remove('lanes');const f=Array.from({length:18},(_,i)=>`<div class="pic ${'abcd'[i%4]} ${i===8?'cur':''}" data-i="${i}"></div>`).join('');const p=`<div class="perf">${'<i></i>'.repeat(50)}</div>`;strip.innerHTML=p+`<div class="frames" style="transform:translateX(-160px)">${f}</div>`+p}
-function lanes(){tl.classList.add('lanes');const L=[['c1',[[2,16],[24,12],[44,22],[74,14]]],['c2',[[0,30],[36,40]]],['c3',[[10,6],[30,8],[52,6],[66,10],[84,8]]]];strip.innerHTML=`<div class="lanes-b">${L.map(([c,cs])=>`<div class="lane">${cs.map(([l,w])=>`<div class="clip" style="left:${l}%;width:${w}%;background:var(--${c})">${Array.from({length:Math.round(w)},(_,k)=>`<i style="height:${20+Math.abs(Math.sin(k*1.3+l))*60}%"></i>`).join('')}</div>`).join('')}</div>`).join('')}</div>`;
- $$('.clip',strip).forEach(c=>c.onclick=()=>{$$('.selel.on').forEach(x=>x.classList.remove('on'));dropPill();$$('.clip',strip).forEach(x=>x.classList.remove('sel'));c.classList.add('sel');const lane=c.parentNode;$$('.lane',strip).forEach(l=>l.style.height=(l===lane?46:18)+'px');$('#cpT').textContent='Audio clip';cp.classList.add('open')})}
-$$('.tl-tt button').forEach(b=>b.onclick=()=>{if($('.clip.sel',strip))clearSel();$$('.tl-tt button').forEach(x=>x.classList.toggle('on',x===b));b.dataset.t==='film'?film():lanes()});film();
-const menu=$('#tlMenu');$('#tlName').onclick=e=>{e.stopPropagation();menu.classList.toggle('show')};
-$$('div',menu).forEach(d=>d.onclick=e=>{e.stopPropagation();menu.classList.remove('show');const t=d.textContent.replace('✓','').trim();if(!t.startsWith('＋')){$('#tlName').textContent=t+' ▾';$$('div',menu).forEach(x=>{x.classList.toggle('on',x===d);const s=$('span',x);if(s)s.remove()});d.insertAdjacentHTML('beforeend','<span>✓</span>')}});
-document.addEventListener('click',()=>menu.classList.remove('show'));tl.addEventListener('ux:rest',()=>menu.classList.remove('show'));addEventListener('keydown',e=>{if(e.key==='Escape')menu.classList.remove('show')});
-/* Explore 画布 */
-const vp=$('#cvVp'),inr=$('#cvIn');let P={x:0,y:0,s:1};const ap=()=>inr.style.transform=`translate(${P.x}px,${P.y}px) scale(${P.s})`;
-const items=[['note','note',60,40,'LOGLINE','The quiet city','A couple keeps every tape of a life they stopped living.'],['img','char',310,10,'Mara','a'],['img','mood',540,70,'Night window','c'],['note','note',790,30,'THEME','留白','Nothing is explained. Sound leaves first.'],['img','char',90,240,'Jun','d'],['note','mood',320,220,'TONE','CRT 冷光','Low key, single source, dust in the beam.'],['img','mood',560,290,'Stair','b'],['note','note',800,240,'NOTE','Shot 9','Slow push-in. Hold 2 beats after the line.'],['img','char',1020,120,'Tape','a']];
-inr.innerHTML=items.map((t,i)=>t[0]==='note'?`<div class="ci note" data-g="${t[1]}" data-i="${i}" style="left:${t[2]}px;top:${t[3]}px"><div class="ci-t">${t[4]}</div><div class="ci-h">${t[5]}</div><div class="ci-b">${t[6]}</div></div>`:`<div class="ci img" data-g="${t[1]}" data-i="${i}" style="left:${t[2]}px;top:${t[3]}px"><div class="pic ${t[5]}"></div><div class="ci-c">${t[4]}</div></div>`).join('');
-window.cvFit=()=>{const w=vp.clientWidth;P.s=Math.min(1,w/1320);P.x=(w-1240*P.s)/2;P.y=70;ap()};
-let pan=null;vp.addEventListener('pointerdown',e=>{const c=e.target.closest('.ci');if(c){const sx=e.clientX,sy=e.clientY,ox=parseFloat(c.style.left),oy=parseFloat(c.style.top);let moved=false;c.setPointerCapture(e.pointerId);c.classList.add('drag');const mv=ev=>{const dx=(ev.clientX-sx)/P.s,dy=(ev.clientY-sy)/P.s;if(Math.abs(dx)+Math.abs(dy)>3)moved=true;c.style.left=ox+dx+'px';c.style.top=oy+dy+'px'};const up=()=>{c.classList.remove('drag');c.removeEventListener('pointermove',mv);c.removeEventListener('pointerup',up);if(!moved){const on=c.classList.contains('zoom');$$('.ci',inr).forEach(x=>x.classList.remove('zoom','sel'));if(!on){c.classList.add('zoom','sel');setPill(($('.ci-h',c)||$('.ci-c',c)).textContent)}else dropPill()}};c.addEventListener('pointermove',mv);c.addEventListener('pointerup',up);return}if($('.ci.sel',inr))dropPill();$$('.ci',inr).forEach(x=>x.classList.remove('zoom','sel'));pan={x:e.clientX-P.x,y:e.clientY-P.y};vp.classList.add('grab');vp.setPointerCapture(e.pointerId)});
-vp.addEventListener('pointermove',e=>{if(pan){P.x=e.clientX-pan.x;P.y=e.clientY-pan.y;ap()}});vp.addEventListener('pointerup',()=>{pan=null;vp.classList.remove('grab')});
-vp.addEventListener('wheel',e=>{if(!sf.classList.contains('explore'))return;e.preventDefault();const r=vp.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top,ns=Math.max(.4,Math.min(2,P.s*(e.deltaY<0?1.08:.92)));P.x=mx-(mx-P.x)*ns/P.s;P.y=my-(my-P.y)*ns/P.s;P.s=ns;ap()},{passive:false});
-inr.addEventListener('dblclick',e=>{const c=e.target.closest('.ci');if(!c)return;const h=($('.ci-h',c)||$('.ci-c',c)).textContent,b=$('.ci-b',c);scrim(b?`<div style="max-height:64vh;overflow:auto"><div class="xs faint b" style="letter-spacing:.14em">${$('.ci-t',c).textContent}</div><h2 style="font-size:28px;margin:10px 0">${h}</h2><p style="line-height:1.8">${b.textContent}</p></div>`:`<div class="pic ${$('.pic',c).className.split(' ')[1]}" style="height:min(46vh,320px);box-shadow:var(--e4)"></div><p class="sm" style="text-align:center;margin-top:calc(12px*var(--y))">${h}</p>`)});
-$$('#cvRail button').forEach(b=>b.onclick=()=>{$$('#cvRail button').forEach(x=>x.classList.toggle('on',x===b));const f=b.dataset.f;inr.classList.toggle('flt',f!=='all');$$('.ci',inr).forEach(c=>c.classList.toggle('m',c.dataset.g===f))});
-})();
 
 /* ========== 动效卡 ========== */
 const MO=[

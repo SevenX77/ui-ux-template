@@ -6,15 +6,17 @@
    data-hold             点开会展开内容、占位置：鼠标移走后别人继续变暗，点外面才结束。可写在表面或组件上
    data-cmp              组件。状态写在 data-state：rest / hover / focus / dim
    data-nofocus          组件只有悬停，没有聚焦
+   data-passive          只接收同一表面的变暗状态，不获取悬停或聚焦
    data-live             组件没有控件，但指针或点击会让它变化（拖动、悬停演示、点击切换）
    data-tool             组件的工具：静息隐藏，悬停或聚焦时出现
    data-keep             点到这里不算离开聚焦范围
+   UX.hitRegion(c, {enter,exit,bounds,enabled})  可见实体组成的命中范围；enter/exit 返回元素；bounds 使用包围框。返回清理函数
    没有 data-hold 的组件点不点都一样：鼠标在它上面时别人变暗，移走就恢复。
    纯展示组件（没有控件，也没有 data-live）只出阴影，别人不变暗，也没有聚焦。
    事件：ux:hover ux:rest ux:focus ux:blur，会冒泡 */
 const UX=(()=>{
   const INTENT=150,RELEASE=500,LINGER=150,touch=()=>matchMedia('(hover:none)').matches;
-  const store=new WeakMap(),focused=new Set();
+  const store=new WeakMap(),focused=new Set(),regions=new Map();
   const get=s=>{let d=store.get(s);if(!d){d={hover:null,last:null,over:null,pend:0,exit:0,linger:0,focus:null,quiet:false};store.set(s,d)}return d};
   const cmpOf=n=>n&&n.closest?n.closest('[data-cmp]'):null;
   const scopeOf=c=>c.closest('[data-scope]')||document.body;
@@ -36,7 +38,7 @@ const UX=(()=>{
   }
   function admit(s,c){const d=get(s);clearTimeout(d.linger);d.linger=0;d.hover=d.last=c;c.classList.add('ux-hover');paint(s);emit(c,'hover')}
   function enter(c){
-    if(touch())return;
+    if(touch()||c.hasAttribute('data-passive'))return;
     const s=scopeOf(c),d=get(s);d.over=c;clearTimeout(d.pend);
     if(d.focus===c&&d.quiet){d.quiet=false;paint(s)}
     if(d.hover===c)return;
@@ -56,11 +58,34 @@ const UX=(()=>{
     if(s.dataset.dim!=='none'&&lively(c)){c.dataset.state='rest';d.linger=setTimeout(()=>{d.linger=0;paint(s);emit(c,'rest')},LINGER);return}
     paint(s);emit(c,'rest');
   }
-  document.addEventListener('mouseover',e=>{const c=cmpOf(e.target);if(c&&!c.contains(e.relatedTarget))enter(c)});
-  document.addEventListener('mouseout',e=>{const c=cmpOf(e.target);if(c&&!c.contains(e.relatedTarget))leave(c)});
+  document.addEventListener('mouseover',e=>{const c=cmpOf(e.target);if(c&&!regions.has(c)&&!c.contains(e.relatedTarget))enter(c)});
+  document.addEventListener('mouseout',e=>{const c=cmpOf(e.target);if(c&&!regions.has(c)&&!c.contains(e.relatedTarget))leave(c)});
+  /* Opt-in hit geometry. Defaults remain unchanged for every other sample.
+     The caller supplies real bodies, not another hover/lock implementation. */
+  function hitRegion(c,o){
+    let inside=false;
+    const hit=(parts,x,y)=>{
+      const rs=parts.filter(Boolean).filter(e=>{
+        const st=getComputedStyle(e);return st.display!=='none'&&st.visibility!=='hidden';
+      }).map(e=>e.getBoundingClientRect()).filter(r=>r.width>0&&r.height>0);
+      if(!rs.length)return false;
+      if(o.bounds)return x>=Math.min(...rs.map(r=>r.left))&&x<=Math.max(...rs.map(r=>r.right))&&y>=Math.min(...rs.map(r=>r.top))&&y<=Math.max(...rs.map(r=>r.bottom));
+      return rs.some(r=>x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom);
+    };
+    const move=e=>{
+      const allowed=!o.enabled||o.enabled();
+      const now=allowed&&hit((inside?(o.exit||o.enter):o.enter)(),e.clientX,e.clientY);
+      if(now===inside)return;inside=now;now?enter(c):leave(c);
+    };
+    regions.set(c,move);
+    const cleanup=()=>{if(inside)leave(c);regions.delete(c);};
+    return cleanup;
+  }
+  document.addEventListener('pointermove',e=>{if(e.pointerType==='touch')return;regions.forEach(move=>move(e))},{passive:true});
+  document.addEventListener('pointerout',e=>{if(!e.relatedTarget)regions.forEach((move)=>move({clientX:-1e6,clientY:-1e6}))});
   /* 聚焦：立刻响应。展开内容的组件要点到范围外或按 Esc 才结束 */
   function blur(s){const d=get(s);if(!d.focus)return;const c=d.focus;d.focus=null;d.quiet=false;c.classList.remove('ux-focus');focused.delete(s);paint(s);emit(c,'blur')}
-  function focus(c){const s=scopeOf(c),d=get(s);if(d.focus===c)return;blur(s);d.focus=c;d.quiet=touch()&&!holds(c);c.classList.add('ux-focus');focused.add(s);paint(s);emit(c,'focus')}
+  function focus(c){if(c.hasAttribute('data-passive'))return;const s=scopeOf(c),d=get(s);if(d.focus===c)return;blur(s);d.focus=c;d.quiet=touch()&&!holds(c);c.classList.add('ux-focus');focused.add(s);paint(s);emit(c,'focus')}
   const outside=t=>t.closest&&t.closest('#scrim,.bar,.rail,.pnav,.toast-host');
   document.addEventListener('pointerdown',e=>{
     if(outside(e.target))return;
@@ -87,7 +112,7 @@ const UX=(()=>{
     const els=[...host.querySelectorAll(sel)],a=new Map(els.map(e=>[e,e.getBoundingClientRect()]));fn();
     /* 上一段补间还没走完就又变位时，从当前看到的位置接着走 */
     els.forEach(e=>{const o=flips.get(e);if(o)o.cancel();flips.delete(e)});
-    els.forEach(e=>{const r=a.get(e),b=e.getBoundingClientRect(),dx=r.left-b.left,dy=r.top-b.top;if(dx||dy)flips.set(e,e.animate([{transform:`translate(${dx}px,${dy}px)`},{transform:'none'}],{duration:450,easing:'cubic-bezier(.16,1,.3,1)'}))});
+    els.forEach(e=>{if(!e.isConnected)return;const r=a.get(e),b=e.getBoundingClientRect(),dx=r.left-b.left,dy=r.top-b.top;if(dx||dy)flips.set(e,e.animate([{transform:`translate(${dx}px,${dy}px)`},{transform:'none'}],{duration:450,easing:'cubic-bezier(.16,1,.3,1)'}))});
   }
   /* 拖动排序：卡片跟着指针走，原位留空槽；空槽实时移到离卡片最近的位置，其他卡片让开，所以松手前就能看到结果。
      item 条目；zone 可放入的容器，默认只有 host；handle 抓手；on 每次变位后调用。Esc 取消，回到原位 */
@@ -175,12 +200,12 @@ const UX=(()=>{
       el.dispatchEvent(new MouseEvent('click',o));
     });
   },true);
-  return {intent,flip,sortable,blur:s=>blur(s),focus,paint,transition};
+  return {intent,flip,sortable,blur:s=>blur(s),focus,paint,transition,hitRegion};
 })();
 
 /* ========== 选择器：同一块底滑过去，不闪现。按钮自己在变宽时也跟得上 ========== */
 (function(){
-  const HOST='.seg,.notch,.tl-tt,.cv-rail,.cal',TAU=85,st=new WeakMap();
+  const HOST='.seg,.notch,.cv-rail,.cal,.sf .bctl,.sf .tltrack',TAU=85,st=new WeakMap();
   const calm=()=>matchMedia('(prefers-reduced-motion:reduce)').matches;
   const read=b=>({x:b.offsetLeft,y:b.offsetTop,w:b.offsetWidth,h:b.offsetHeight});
   const draw=(i,c)=>{i.style.width=c.w+'px';i.style.height=c.h+'px';i.style.transform=`translate(${c.x}px,${c.y}px)`};
