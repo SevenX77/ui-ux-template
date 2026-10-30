@@ -31,14 +31,18 @@ page = f"""<!doctype html>
 </head>
 <body>
 <script>if(new URLSearchParams(location.hash.slice(1)).get("embed"))document.body.classList.add("embed")</script>
-<div class="bar"><div class="bar-in" id="barIn" role="group" aria-label="配色方案"></div></div>
-<nav class="rail" id="rail" aria-label="目录"></nav>
+<div class="bar"><div class="bar-in" id="barIn" role="group" aria-label="配色方案" data-scope="bar" data-dim="none" data-cmp data-nofocus><div class="seg" id="barT"></div></div></div>
+<nav class="rail" id="rail" aria-label="目录" data-scope="chrome" data-dim="none" data-cmp data-nofocus></nav>
 <div class="pnav" id="pnav"><div class="pnav-list" id="pnavL"></div><button class="pnav-b" id="pnavB"><i></i><span id="pnavT">目录</span></button></div>
+<main id="page">
 {read("01-found.html")}
 {read("02-work.html")}
 {read("03a-agents.html")}
 {read("04-more.html")}
 {read("03-apps.html")}
+</main>
+<div class="scrim" id="scrim"><div id="scrimIn"></div></div>
+<div class="toast-host" id="toasts"></div>
 <div class="device" id="device"><nav class="device-nav" id="devNav" aria-label="目录"></nav><div class="device-shell" id="devShell"><iframe id="devFrame" title="Phone view"></iframe></div></div>
 <script>
 const THEMES={theme_data};

@@ -2,8 +2,8 @@
 (function(){
 /* 流式回复 */
 const R=[['Shot 9 建议用缓慢推近：街道先静下来，音乐再回来。这样观众的注意力会被带到窗口，而不是对白。','高','good',['换成手持','再冷一点','生成三个版本']],['可以把推近改到第二拍之后。前两拍保持静止，让磁带上的灰尘先被看见。不过这版节奏更慢，需要配合配乐判断。','中','c3',['对比两版','缩短 1 秒','配乐一起看']]];
-let ri=0,st=null;
-function play(){clearInterval(st);const [t0,c,col,ch]=R[ri%R.length],t=tr(t0);ri++;const el=$('#streamT');el.textContent='';el.classList.remove('done');$('#chips').innerHTML='';$('#confTag').innerHTML=`<i class="dotc" style="background:var(--${col})"></i>把握${c}`;let i=0;st=setInterval(()=>{el.textContent=t.slice(0,++i);if(i>=t.length){clearInterval(st);el.classList.add('done');$('#chips').innerHTML=ch.map(x=>`<button class="chip">${x}</button>`).join('');$$('#chips .chip').forEach(b=>b.onclick=play)}},38)}
+let ri=0,st=null,rt='';document.addEventListener('langchange',()=>{const el=$('#streamT');if(rt&&el.classList.contains('done'))el.textContent=tr(rt)});
+function play(){clearInterval(st);const [t0,c,col,ch]=R[ri%R.length];rt=t0;ri++;const el=$('#streamT');el.setAttribute('data-noi18n','');el.textContent='';el.classList.remove('done');$('#chips').innerHTML='';$('#confTag').innerHTML=`<i class="dotc" style="background:var(--${col})"></i>把握${c}`;let i=0;st=setInterval(()=>{const t=tr(rt);el.textContent=t.slice(0,++i);if(i>=t.length){clearInterval(st);el.classList.add('done');$('#chips').innerHTML=ch.map(x=>`<button class="chip">${x}</button>`).join('');$$('#chips .chip').forEach(b=>b.onclick=play)}},38)}
 $('#regen').onclick=play;
 new IntersectionObserver((e,o)=>{if(e[0].isIntersecting){play();o.disconnect()}}).observe($('#streamT'));
 /* Effort */
@@ -18,16 +18,23 @@ let vt=null,vs=0;$('#vB').onclick=function(){const v=$('#voice');if(vt){clearInt
 /* 命令面板 */
 const CM=[['新建时间线','Ctrl N'],['切换配色：荧光','S N'],['切换配色：彩光','S P'],['打开上下文面板','Ctrl .'],['问 AI：这一幕节奏对吗？','↵'],['导出 Trailer C','Ctrl E'],['查找素材','Ctrl P']];
 let cq='',ci=0;function cl(){const L=CM.filter(c=>c[0].includes(cq)||tr(c[0]).toLowerCase().includes(cq.toLowerCase()));ci=Math.min(ci,Math.max(0,L.length-1));$('#cmdL').innerHTML=L.length?L.map((c,i)=>`<div class="cmd-r ${i===ci?'on':''}" data-i="${i}"><span>${c[0]}</span><kbd>${c[1]}</kbd></div>`).join(''):`<div class="cmd-r on"><span>问 AI："${cq.replace(/</g,'&lt;')}"</span><kbd>↵</kbd></div>`;$$('#cmdL .cmd-r').forEach(r=>{r.onmouseenter=()=>{ci=+r.dataset.i||0;$$('#cmdL .cmd-r').forEach(x=>x.classList.toggle('on',x===r))};r.onclick=()=>run(r)})}
-function run(r){const t=$('span',r).textContent;if(t.includes('荧光')||t.includes('Neon'))setScheme('neon');if(t.includes('彩光')||t.includes('Prism'))setScheme('prism');toast(tr('已执行：')+t)}
+function run(r){const t=$('span',r).textContent;if(t.includes('荧光')||t.includes('Neon'))setScheme('neon');if(t.includes('彩光')||t.includes('Prism'))setScheme('prism');toast(tr('已执行：')+t);$('#cmdI').blur()}
 $('#cmdI').oninput=e=>{cq=e.target.value;ci=0;cl()};$('#cmdI').onkeydown=e=>{const n=$$('#cmdL .cmd-r').length;if(e.key==='ArrowDown'){ci=(ci+1)%n;cl();e.preventDefault()}if(e.key==='ArrowUp'){ci=(ci-1+n)%n;cl();e.preventDefault()}if(e.key==='Enter')run($('#cmdL .cmd-r.on'))};cl();addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();$('#cmdI').focus();$('#cmdI').scrollIntoView({block:'center',behavior:'smooth'})}});
+const cmdC=$('#cmd').closest('[data-cmp]'),cmdS=cmdC.closest('[data-scope]'),cmdIn=$('#cmdI');cmdIn.addEventListener('focus',()=>UX.focus(cmdC));cmdIn.addEventListener('blur',()=>{if(cmdC.classList.contains('ux-focus'))UX.blur(cmdS)});cmdIn.addEventListener('keydown',e=>{if(e.key==='Escape')cmdIn.blur()});$('#cmdL').addEventListener('mousedown',e=>e.preventDefault());
+$$('#cmdRc button').forEach(b=>b.onclick=()=>{const i=$('#cmdI');i.value=b.textContent;cq=i.value;ci=0;cl();i.focus()});
 /* 按住打开 */
-const h=$('#hold');let ht=null;const dn=()=>{h.classList.add('down');ht=setTimeout(()=>{$('#pack').classList.toggle('open');h.classList.remove('down');h.textContent=$('#pack').classList.contains('open')?'按住合上':'按住打开'},900)},upf=()=>{clearTimeout(ht);h.classList.remove('down')};h.addEventListener('pointerdown',dn);h.addEventListener('pointerup',upf);h.addEventListener('pointerleave',upf);h.addEventListener('keydown',e=>{if(e.key===' '&&!e.repeat)dn()});h.addEventListener('keyup',upf);
+const h=$('#hold'),rd=$('#radar'),pk=$('#pack');let ht=null;
+const hEnd=()=>{h.classList.remove('down');rd.classList.remove('holding')};
+const dn=e=>{if(ht)return;if(e.pointerId!=null)h.setPointerCapture(e.pointerId);h.classList.add('down');rd.classList.add('holding');ht=setTimeout(()=>{ht=null;pk.classList.toggle('open');hEnd();h.textContent=pk.classList.contains('open')?'按住合上':'按住打开'},900)};
+const upf=()=>{clearTimeout(ht);ht=null;hEnd()};
+h.addEventListener('pointerdown',dn);h.addEventListener('pointerup',upf);h.addEventListener('pointercancel',upf);h.addEventListener('blur',upf);h.addEventListener('contextmenu',e=>e.preventDefault());
+h.addEventListener('keydown',e=>{if((e.key===' '||e.key==='Enter')&&!e.repeat)dn(e)});h.addEventListener('keyup',upf);
 /* 时间刻度 */
 const EVT=['第一次演示','图形界面','鼠标普及','网页出现','触屏手机','生成式 AI'];const sb=$('#sB'),N=60;sb.innerHTML=Array.from({length:N},()=>'<i style="height:16%"></i>').join('');const bs=$$('i',sb);
 function sc(k){bs.forEach((b,i)=>{const d=Math.abs(i-k);b.style.height=Math.max(14,100-d*d*2.6)+'%';b.classList.toggle('on',i===k)});$('#sY').textContent=1968+Math.round(k/(N-1)*58);$('#sT').textContent=EVT[Math.floor(k/N*EVT.length)]}
 $('#scrub').addEventListener('pointermove',e=>{const r=sb.getBoundingClientRect();sc(Math.max(0,Math.min(N-1,Math.floor((e.clientX-r.left)/r.width*N))))});sc(4);
 /* 参数 */
-$('#params').innerHTML=[['Exposure',60,' EV'],['Bloom',35,''],['Field of view',52,'°'],['Samples',24,'']].map(([n,v,u])=>`<div class="par"><div class="between"><span class="mute">${n}</span><span class="val">${v}${u}</span></div><input class="slider" type="range" value="${v}" aria-label="${n}" style="margin-top:6px" oninput="this.previousElementSibling.lastElementChild.textContent=this.value+'${u}'"></div>`).join('');
+$('#params').innerHTML=[['Exposure',60,' EV'],['Bloom',35,''],['Field of view',52,'°'],['Samples',24,'']].map(([n,v,u])=>`<div class="par"><div class="between"><span class="mute">${n}</span><span class="val">${v}${u}</span></div><input class="slider" type="range" value="${v}" aria-label="${n}" style="margin-top:calc(6px*var(--y))" oninput="this.previousElementSibling.lastElementChild.textContent=this.value+'${u}'"></div>`).join('');
 /* 小件 */
 const pl=$('#pillDl'),po=$('#pillOpen');pl.onclick=()=>{pl.style.display='none';po.style.display='flex'};$('#pillCopy').onclick=()=>{toast('已复制');setTimeout(()=>{po.style.display='none';pl.style.display='flex'},600)};
 let cnOn=false;$('#cnB').onclick=()=>{cnOn=!cnOn;$('#cn').textContent=cnOn?'4485 0192 8841 7516':'4485 •••• •••• 7516';$('#cnB').setAttribute('aria-label',cnOn?'隐藏卡号':'显示卡号')};
@@ -44,7 +51,7 @@ $$('[data-count]').forEach(x=>whenSeen(x,()=>countUp(x)));
 const odo=$('#odo');function setOdo(n){const s=n.toLocaleString('en-US');if(odo.children.length!==s.length)odo.innerHTML=[...s].map(ch=>/\d/.test(ch)?`<span class="odo"><i>${[...'0123456789'].map(d=>`<span>${d}</span>`).join('')}</i></span>`:`<span>${ch}</span>`).join('');[...s].forEach((ch,i)=>{const c=odo.children[i],w=$('i',c);if(w)w.style.transform=`translateY(-${ch}em)`})}
 setOdo(10000);setTimeout(()=>setOdo(32023),400);$('#odoCard').onclick=()=>setOdo(10000+Math.floor(Math.random()*80000));
 $('#heat').innerHTML=Array.from({length:168},(_,i)=>{const d=Math.floor(i/24),h=i%24,v=Math.max(.06,Math.pow(Math.max(0,Math.sin((h-7)/14*Math.PI)),1.6)*(d>4?.35:1)*(.55+.45*Math.abs(Math.sin(i*2.1))));return `<i data-v="${Math.round(v*40)}" style="opacity:${v.toFixed(2)}"></i>`}).join('');
-$('#heat').addEventListener('mouseover',e=>{if(e.target.dataset.v)$('#heatT').textContent=e.target.dataset.v+' / 40'});
+$('#heat').addEventListener('mouseover',e=>{if(e.target.dataset.v)$('#heatT').textContent=e.target.dataset.v+' / 40'});$('#heat').addEventListener('mouseleave',()=>$('#heatT').textContent='7 天 × 24 小时');
 const TK={1:'repeating-radial-gradient(circle at 42% 52%,var(--c2) 0 10px,var(--c3) 10px 20px,var(--c1) 20px 30px,var(--c4) 30px 40px)',2:'repeating-linear-gradient(0deg,var(--c1) 0 16px,var(--c5) 16px 32px,var(--c2) 32px 48px,var(--c3) 48px 64px)',3:'linear-gradient(135deg,var(--sunk),var(--sel))'};
 const tkc=$('#tkCover');tkc.style.background=TK[1];$$('#tkSeg button').forEach(b=>b.addEventListener('click',()=>tkc.style.background=TK[b.dataset.v]));
 const sil=$('#silver');sil.addEventListener('pointermove',e=>{const r=sil.getBoundingClientRect();sil.style.setProperty('--sx',((e.clientX-r.left)/r.width*100).toFixed(0)+'%')});

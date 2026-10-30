@@ -20,7 +20,8 @@ Status: established by default consent unless the owner objects (2026-10-30). Th
 | 静息 | Rest | Nothing touches it; it recedes. | Opacity .72, no shadow, no send button. |
 | 悬停 | Hover | The pointer stays .15s; a preview only, content does not expand. | Lifts and gains a shadow; no history. |
 | 聚焦 | Focus | The user clicks in; response is immediate and the component is fully open. | Width 80%, history and send appear. |
-| 变暗 | Dim | Another component is active; opacity .3, still clickable. | Hovering the timeline dims chat and text. |
+| 变暗 | Dim | An interactive component is active; opacity .3, still clickable. | Hovering the timeline dims chat and text. |
+| 纯展示 | Display only | The component has nothing to trigger: no control and no change in response to the pointer. Hover only adds a shadow, others do not dim, and it has no focus. | An explanation card, a KPI card. |
 | 退场 | Retire | Conflict removes it entirely; it cannot be clicked. | Chat focus collapses the timeline to height 0. |
 
 ## How components give way
@@ -36,7 +37,8 @@ The relation between the two components decides which one applies.
 | Term | English | Meaning |
 | --- | --- | --- |
 | 聚焦范围 | Focus scope | Every region that still counts as inside a component; only a click outside ends focus. The chat's scope includes input, send and history. |
-| 注意力锁 | Attention lock | Only one component can be in hover at a time; the next is admitted 500ms after the previous one leaves. |
+| 持有聚焦 | Held focus | A click has expanded content or taken space. Others stay dim after the pointer leaves, until a click outside or Esc. Example: the chat with its history open. |
+| 注意力锁 | Attention lock | Between components that claim the whole surface, the next is admitted 500ms after the previous one leaves. Example: the workspace timeline and chat. |
 | 意图延迟 | Intent delay | The wait before responding to entry, so a passing pointer triggers nothing: .15s for hover, 0 for a deliberate click. |
 
 ## Visual
