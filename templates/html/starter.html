@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh" data-scheme="neon">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Core HTML starter</title>
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../core/dist/tokens.css">
+  <link rel="stylesheet" href="../../core/styles/base.css">
+  <link rel="stylesheet" href="../../core/styles/scenes.css">
+  <link rel="stylesheet" href="../../core/styles/more.css">
+  <link rel="stylesheet" href="../../core/styles/sf.css">
+  <link rel="stylesheet" href="../../core/styles/data.css">
+</head>
+<body>
+  <div class="bar">
+    <div class="bar-in" data-scope="bar" data-dim="none" data-cmp data-nofocus>
+      <div class="seg" id="theme" role="group" aria-label="配色方案"></div>
+    </div>
+  </div>
+  <main id="page">
+    <section class="wrap sec">
+      <div class="sec-h"><div><div class="k">CORE / STARTER</div><h1>按需出现。</h1></div><p>一个设计核心，所有技术栈共用。</p></div>
+      <div class="bento" data-scope="starter">
+        <article class="card s6" data-cmp>
+          <h2>任务</h2><p class="sm mute">移入后显示工具，并让同一表面的其他组件变暗。</p>
+          <button class="btn sec2 sm" data-tool>打开</button>
+        </article>
+        <article class="card s6" data-cmp data-nofocus>
+          <h2>摘要</h2><p class="sm mute">展示组件只增加阴影，不占用注意力。</p>
+        </article>
+      </div>
+    </section>
+  </main>
+  <script type="module">
+    import {UX} from '../../core/behavior/ux.js';
+
+    const root=document.documentElement;
+    const themes=await fetch('../../core/tokens/themes.json').then(response=>{
+      if(!response.ok)throw new Error('Cannot load core themes');
+      return response.json();
+    });
+    const initial=themes.themes.find(theme=>theme.id===themes.default);
+    const pair=[initial,themes.themes.find(theme=>theme.id===initial.pair)];
+    const group=document.getElementById('theme');
+    const select=id=>{
+      root.dataset.scheme=id;
+      group.querySelectorAll('button').forEach(button=>button.classList.toggle('on',button.dataset.scheme===id));
+    };
+    pair.forEach(theme=>{
+      const button=document.createElement('button');
+      button.type='button';button.dataset.scheme=theme.id;button.textContent=theme.name.zh;
+      button.addEventListener('click',()=>{
+        if(root.dataset.scheme===theme.id)return;
+        const apply=()=>select(theme.id);
+        if(document.startViewTransition&&!matchMedia('(prefers-reduced-motion:reduce)').matches)UX.transition(apply);
+        else apply();
+      });
+      group.append(button);
+    });
+    select(initial.id);
+  </script>
+</body>
+</html>

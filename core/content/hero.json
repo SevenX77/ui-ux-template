@@ -1,0 +1,29 @@
+{
+  "eyebrow": "UI / UX HANDBOOK · V0.8",
+  "heading": [
+    "平时干净。",
+    "需要时才出现。"
+  ],
+  "description": "一页看完全部规范和样张。顶部切换配色、语言和设备；样张都能操作。把鼠标移到屏幕最左边，会滑出目录。所有数据和业务都是虚构的。",
+  "stats": [
+    [
+      "THEMES",
+      6
+    ],
+    [
+      "RADII",
+      5
+    ],
+    [
+      "DEPTHS",
+      6
+    ],
+    [
+      "SECTIONS",
+      16
+    ]
+  ],
+  "style": {
+    "letterSpacing": ".14em"
+  }
+}

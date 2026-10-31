@@ -1,0 +1,640 @@
+{
+  "records": [
+    {
+      "id": 0,
+      "name": "Scene 15 rough cut",
+      "type": "视频",
+      "owner": "Dana",
+      "status": "已通过",
+      "len": 86,
+      "size": 1364,
+      "date": "10/05",
+      "art": 0
+    },
+    {
+      "id": 1,
+      "name": "Shot 14 master",
+      "type": "文档",
+      "owner": "Dana",
+      "status": "已通过",
+      "len": 376,
+      "size": 1205,
+      "date": "10/12",
+      "art": 1
+    },
+    {
+      "id": 2,
+      "name": "Trailer 31 mix",
+      "type": "图片",
+      "owner": "Jun",
+      "status": "处理中",
+      "len": 394,
+      "size": 674,
+      "date": "10/18",
+      "art": 2
+    },
+    {
+      "id": 3,
+      "name": "Storyboard 31",
+      "type": "文档",
+      "owner": "Leo",
+      "status": "已通过",
+      "len": 253,
+      "size": 194,
+      "date": "10/01",
+      "art": 3
+    },
+    {
+      "id": 4,
+      "name": "Score cue 25",
+      "type": "音频",
+      "owner": "Leo",
+      "status": "处理中",
+      "len": 437,
+      "size": 25,
+      "date": "10/21",
+      "art": 4
+    },
+    {
+      "id": 5,
+      "name": "Grade pass 14",
+      "type": "文档",
+      "owner": "Leo",
+      "status": "已退回",
+      "len": 37,
+      "size": 605,
+      "date": "10/24",
+      "art": 5
+    },
+    {
+      "id": 6,
+      "name": "Interview 05",
+      "type": "图片",
+      "owner": "Mara",
+      "status": "处理中",
+      "len": 203,
+      "size": 199,
+      "date": "10/05",
+      "art": 6
+    },
+    {
+      "id": 7,
+      "name": "Moodboard 38",
+      "type": "图片",
+      "owner": "Leo",
+      "status": "待审",
+      "len": 184,
+      "size": 72,
+      "date": "10/27",
+      "art": 7
+    },
+    {
+      "id": 8,
+      "name": "Script draft 27",
+      "type": "音频",
+      "owner": "Mara",
+      "status": "已通过",
+      "len": 423,
+      "size": 357,
+      "date": "10/11",
+      "art": 8
+    },
+    {
+      "id": 9,
+      "name": "Location plate 30",
+      "type": "文档",
+      "owner": "Dana",
+      "status": "待审",
+      "len": 487,
+      "size": 426,
+      "date": "10/07",
+      "art": 9
+    },
+    {
+      "id": 10,
+      "name": "Foley take 12",
+      "type": "视频",
+      "owner": "Jun",
+      "status": "处理中",
+      "len": 242,
+      "size": 1124,
+      "date": "10/14",
+      "art": 10
+    },
+    {
+      "id": 11,
+      "name": "Titles 12",
+      "type": "图片",
+      "owner": "Dana",
+      "status": "处理中",
+      "len": 418,
+      "size": 1545,
+      "date": "10/04",
+      "art": 11
+    },
+    {
+      "id": 12,
+      "name": "Scene 21 rough cut",
+      "type": "文档",
+      "owner": "Jun",
+      "status": "处理中",
+      "len": 489,
+      "size": 792,
+      "date": "10/01",
+      "art": 12
+    },
+    {
+      "id": 13,
+      "name": "Shot 14 master",
+      "type": "音频",
+      "owner": "Dana",
+      "status": "处理中",
+      "len": 363,
+      "size": 389,
+      "date": "10/11",
+      "art": 13
+    },
+    {
+      "id": 14,
+      "name": "Trailer 16 mix",
+      "type": "视频",
+      "owner": "Dana",
+      "status": "已通过",
+      "len": 385,
+      "size": 83,
+      "date": "10/18",
+      "art": 14
+    },
+    {
+      "id": 15,
+      "name": "Storyboard 09",
+      "type": "文档",
+      "owner": "Jun",
+      "status": "已通过",
+      "len": 21,
+      "size": 1661,
+      "date": "10/10",
+      "art": 15
+    },
+    {
+      "id": 16,
+      "name": "Score cue 32",
+      "type": "视频",
+      "owner": "Mara",
+      "status": "处理中",
+      "len": 243,
+      "size": 918,
+      "date": "10/04",
+      "art": 16
+    },
+    {
+      "id": 17,
+      "name": "Grade pass 10",
+      "type": "文档",
+      "owner": "Dana",
+      "status": "已通过",
+      "len": 397,
+      "size": 1423,
+      "date": "10/05",
+      "art": 17
+    },
+    {
+      "id": 18,
+      "name": "Interview 11",
+      "type": "文档",
+      "owner": "Jun",
+      "status": "待审",
+      "len": 191,
+      "size": 1828,
+      "date": "10/12",
+      "art": 18
+    },
+    {
+      "id": 19,
+      "name": "Moodboard 22",
+      "type": "视频",
+      "owner": "Leo",
+      "status": "处理中",
+      "len": 140,
+      "size": 1580,
+      "date": "10/29",
+      "art": 19
+    },
+    {
+      "id": 20,
+      "name": "Script draft 01",
+      "type": "图片",
+      "owner": "Leo",
+      "status": "待审",
+      "len": 82,
+      "size": 292,
+      "date": "10/06",
+      "art": 20
+    },
+    {
+      "id": 21,
+      "name": "Location plate 13",
+      "type": "音频",
+      "owner": "Jun",
+      "status": "已通过",
+      "len": 232,
+      "size": 1237,
+      "date": "10/18",
+      "art": 21
+    },
+    {
+      "id": 22,
+      "name": "Foley take 09",
+      "type": "文档",
+      "owner": "Jun",
+      "status": "待审",
+      "len": 533,
+      "size": 731,
+      "date": "10/13",
+      "art": 22
+    },
+    {
+      "id": 23,
+      "name": "Titles 07",
+      "type": "图片",
+      "owner": "Mara",
+      "status": "处理中",
+      "len": 249,
+      "size": 1247,
+      "date": "10/18",
+      "art": 23
+    },
+    {
+      "id": 24,
+      "name": "Scene 15 rough cut",
+      "type": "图片",
+      "owner": "Jun",
+      "status": "已通过",
+      "len": 271,
+      "size": 919,
+      "date": "10/02",
+      "art": 24
+    },
+    {
+      "id": 25,
+      "name": "Shot 37 master",
+      "type": "视频",
+      "owner": "Jun",
+      "status": "已通过",
+      "len": 256,
+      "size": 168,
+      "date": "10/13",
+      "art": 25
+    },
+    {
+      "id": 26,
+      "name": "Trailer 21 mix",
+      "type": "图片",
+      "owner": "Dana",
+      "status": "处理中",
+      "len": 156,
+      "size": 409,
+      "date": "10/02",
+      "art": 26
+    },
+    {
+      "id": 27,
+      "name": "Storyboard 25",
+      "type": "图片",
+      "owner": "Leo",
+      "status": "已通过",
+      "len": 366,
+      "size": 116,
+      "date": "10/03",
+      "art": 27
+    },
+    {
+      "id": 28,
+      "name": "Score cue 10",
+      "type": "视频",
+      "owner": "Mara",
+      "status": "已退回",
+      "len": 131,
+      "size": 1033,
+      "date": "10/28",
+      "art": 28
+    },
+    {
+      "id": 29,
+      "name": "Grade pass 20",
+      "type": "音频",
+      "owner": "Leo",
+      "status": "已通过",
+      "len": 208,
+      "size": 494,
+      "date": "10/21",
+      "art": 29
+    },
+    {
+      "id": 30,
+      "name": "Interview 17",
+      "type": "图片",
+      "owner": "Dana",
+      "status": "待审",
+      "len": 390,
+      "size": 305,
+      "date": "10/09",
+      "art": 30
+    },
+    {
+      "id": 31,
+      "name": "Moodboard 24",
+      "type": "图片",
+      "owner": "Dana",
+      "status": "已通过",
+      "len": 346,
+      "size": 778,
+      "date": "10/18",
+      "art": 31
+    },
+    {
+      "id": 32,
+      "name": "Script draft 10",
+      "type": "音频",
+      "owner": "Jun",
+      "status": "已通过",
+      "len": 201,
+      "size": 1138,
+      "date": "10/12",
+      "art": 32
+    },
+    {
+      "id": 33,
+      "name": "Location plate 06",
+      "type": "文档",
+      "owner": "Dana",
+      "status": "处理中",
+      "len": 69,
+      "size": 64,
+      "date": "10/07",
+      "art": 33
+    },
+    {
+      "id": 34,
+      "name": "Foley take 31",
+      "type": "文档",
+      "owner": "Jun",
+      "status": "已退回",
+      "len": 23,
+      "size": 1322,
+      "date": "10/14",
+      "art": 34
+    },
+    {
+      "id": 35,
+      "name": "Titles 09",
+      "type": "文档",
+      "owner": "Leo",
+      "status": "待审",
+      "len": 182,
+      "size": 1550,
+      "date": "10/26",
+      "art": 35
+    },
+    {
+      "id": 36,
+      "name": "Scene 16 rough cut",
+      "type": "视频",
+      "owner": "Jun",
+      "status": "处理中",
+      "len": 71,
+      "size": 290,
+      "date": "10/27",
+      "art": 36
+    },
+    {
+      "id": 37,
+      "name": "Shot 20 master",
+      "type": "文档",
+      "owner": "Mara",
+      "status": "处理中",
+      "len": 36,
+      "size": 1734,
+      "date": "10/22",
+      "art": 37
+    },
+    {
+      "id": 38,
+      "name": "Trailer 34 mix",
+      "type": "视频",
+      "owner": "Dana",
+      "status": "已退回",
+      "len": 114,
+      "size": 677,
+      "date": "10/16",
+      "art": 38
+    },
+    {
+      "id": 39,
+      "name": "Storyboard 30",
+      "type": "图片",
+      "owner": "Mara",
+      "status": "已退回",
+      "len": 133,
+      "size": 469,
+      "date": "10/27",
+      "art": 39
+    },
+    {
+      "id": 40,
+      "name": "Score cue 28",
+      "type": "音频",
+      "owner": "Jun",
+      "status": "处理中",
+      "len": 324,
+      "size": 889,
+      "date": "10/25",
+      "art": 40
+    },
+    {
+      "id": 41,
+      "name": "Grade pass 36",
+      "type": "图片",
+      "owner": "Jun",
+      "status": "已退回",
+      "len": 439,
+      "size": 270,
+      "date": "10/04",
+      "art": 41
+    },
+    {
+      "id": 42,
+      "name": "Interview 09",
+      "type": "音频",
+      "owner": "Jun",
+      "status": "已退回",
+      "len": 233,
+      "size": 14,
+      "date": "10/15",
+      "art": 42
+    },
+    {
+      "id": 43,
+      "name": "Moodboard 07",
+      "type": "图片",
+      "owner": "Jun",
+      "status": "已通过",
+      "len": 123,
+      "size": 683,
+      "date": "10/22",
+      "art": 43
+    },
+    {
+      "id": 44,
+      "name": "Script draft 16",
+      "type": "图片",
+      "owner": "Dana",
+      "status": "已通过",
+      "len": 39,
+      "size": 1148,
+      "date": "10/09",
+      "art": 44
+    },
+    {
+      "id": 45,
+      "name": "Location plate 30",
+      "type": "音频",
+      "owner": "Dana",
+      "status": "待审",
+      "len": 471,
+      "size": 660,
+      "date": "10/02",
+      "art": 45
+    }
+  ],
+  "columns": [
+    {
+      "k": "name",
+      "l": "名称",
+      "w": 0,
+      "lock": 1
+    },
+    {
+      "k": "type",
+      "l": "类型",
+      "w": 100
+    },
+    {
+      "k": "owner",
+      "l": "负责人",
+      "w": 112
+    },
+    {
+      "k": "status",
+      "l": "状态",
+      "w": 104
+    },
+    {
+      "k": "len",
+      "l": "时长",
+      "w": 76,
+      "num": 1
+    },
+    {
+      "k": "size",
+      "l": "大小",
+      "w": 88,
+      "num": 1
+    },
+    {
+      "k": "date",
+      "l": "更新",
+      "w": 76,
+      "num": 1
+    }
+  ],
+  "types": [
+    "视频",
+    "音频",
+    "图片",
+    "文档"
+  ],
+  "statuses": [
+    "待审",
+    "处理中",
+    "已通过",
+    "已退回"
+  ],
+  "owners": [
+    "Mara",
+    "Jun",
+    "Dana",
+    "Leo"
+  ],
+  "statusColors": {
+    "待审": "var(--ink3)",
+    "处理中": "var(--c1)",
+    "已通过": "var(--good)",
+    "已退回": "var(--bad)"
+  },
+  "pageSize": 8,
+  "minColumnWidth": 56,
+  "fadeSize": "20px",
+  "fadeZero": "0px",
+  "scrollTolerance": 1,
+  "detailCloseDelay": 360,
+  "urlRevokeDelay": 1000,
+  "backgroundSuffix": " center/cover",
+  "styles": {
+    "flex": {
+      "flex": 1
+    },
+    "statusCount": {
+      "opacity": 0.6,
+      "fontWeight": 500
+    },
+    "noteLabel": {
+      "marginBottom": "calc(4px*var(--y))"
+    },
+    "noteActions": {
+      "marginTop": "calc(6px*var(--y))"
+    },
+    "previewCard": {
+      "padding": "14px"
+    },
+    "previewPicture": {
+      "aspectRatio": "16/10"
+    },
+    "previewBar": {
+      "margin": "calc(10px*var(--y)) 0"
+    },
+    "previewTitle": {
+      "minWidth": 0,
+      "overflowWrap": "anywhere"
+    },
+    "selectionColumn": {
+      "width": "40px"
+    },
+    "hiddenColumn": {
+      "display": "none"
+    }
+  },
+  "cssUnit": "px",
+  "text": {
+    "t0": "12 / DATA TABLE",
+    "t1": "数据表",
+    "t2": "真实的记录表：排序、筛选、搜索、勾选和批量操作、行内操作、展开详情、改列宽、显示隐藏列、切换密度、分页。切页和筛选时表格高度不变。",
+    "t3": "片源库",
+    "t4": "舒适",
+    "t5": "紧凑",
+    "t6": "列 ▾",
+    "t7": "导出",
+    "t8": "‹",
+    "t9": "›",
+    "t10": "清除选择",
+    "t11": "标为通过",
+    "t12": "归档",
+    "t13": "点一行展开详情，详情把下面的行挤开；点表格外或按 Esc 收起。按住 Shift 勾选可以连选。拖动表头右缘改列宽。",
+    "t14": "按状态筛选",
+    "t15": "搜索记录",
+    "t16": "行密度",
+    "t17": "上一页",
+    "t18": "页码",
+    "t19": "下一页"
+  }
+}

@@ -1,0 +1,482 @@
+{
+  "text": {
+    "t0": "06 / DASHBOARD",
+    "t1": "数据看板",
+    "t2": "一样大的格子看不出重点。这里是 Fintech 式总览，以及六种基本布局。",
+    "t3": "Income",
+    "t4": "7 天",
+    "t5": "30 天",
+    "t6": "12 月",
+    "t7": "↗",
+    "t8": "✕",
+    "t9": "$0",
+    "t10": "this month",
+    "t11": "收入来源",
+    "t12": "最近到账",
+    "t13": "导出",
+    "t14": "now",
+    "t15": "支出分类",
+    "t16": "$5,690",
+    "t17": "收入趋势",
+    "t18": "7天",
+    "t19": "30天",
+    "t20": "本周产出",
+    "t21": "0",
+    "t22": "最近记录",
+    "t23": "查看全部 →",
+    "t24": "点 Income：详情在原地展开，其他组件挤到右边，看板总尺寸不变，右边的组件照常可用。点 ✕、点看板外面或按 Esc 收起。",
+    "t25": "六种布局 ",
+    "t26": "进来第一眼知道该看哪"
+  },
+  "styles": {
+    "s0": {
+      "fontSize": "15px"
+    },
+    "s1": {
+      "opacity": ".82",
+      "marginTop": "calc(4px*var(--y))"
+    },
+    "s2": {
+      "marginTop": "calc(6px*var(--y))"
+    },
+    "s3": {
+      "flex": "42",
+      "background": "var(--c1)"
+    },
+    "s4": {
+      "flex": "20",
+      "background": "var(--c2)"
+    },
+    "s5": {
+      "flex": "15",
+      "background": "var(--c3)"
+    },
+    "s6": {
+      "flex": "23",
+      "background": "var(--c4)"
+    },
+    "s7": {
+      "marginTop": "calc(2px*var(--y))"
+    },
+    "s8": {
+      "marginTop": "calc(4px*var(--y))"
+    },
+    "category": {
+      "gridTemplateColumns": "10px 1fr auto 36px"
+    },
+    "right": {
+      "textAlign": "right"
+    },
+    "ledgerRow": {
+      "gridTemplateColumns": "28px 1fr 90px 90px 60px"
+    },
+    "ledgerTag": {
+      "justifySelf": "end"
+    },
+    "layoutTitle": {
+      "marginTop": "calc(6px*var(--y))"
+    },
+    "layoutNote": {
+      "lineHeight": "var(--lh-t)"
+    },
+    "modal": {
+      "padding": "16px"
+    }
+  },
+  "attrs": {
+    "a0": "0",
+    "a1": "false",
+    "a2": "收入详情",
+    "a3": "收起",
+    "a4": "32023",
+    "a5": "$",
+    "a6": "0 0 600 200",
+    "a7": "none",
+    "a8": "0 0 220 220",
+    "a9": "0 0 600 180",
+    "a10": "128"
+  },
+  "series": [
+    30,
+    44,
+    38,
+    52,
+    47,
+    62,
+    58,
+    72,
+    66,
+    80,
+    74,
+    92,
+    88,
+    104,
+    99,
+    118,
+    112,
+    128,
+    134,
+    126,
+    142,
+    150
+  ],
+  "categories": [
+    [
+      "Rent",
+      "$2,400",
+      "42%",
+      1
+    ],
+    [
+      "Software",
+      "$1,120",
+      "20%",
+      2
+    ],
+    [
+      "Travel",
+      "$860",
+      "15%",
+      3
+    ],
+    [
+      "Others",
+      "$1,310",
+      "23%",
+      4
+    ]
+  ],
+  "bars": [
+    30,
+    52,
+    40,
+    70,
+    46,
+    92,
+    60
+  ],
+  "ledger": [
+    [
+      "S",
+      "Studio B 预约",
+      "10月28日",
+      "−$320",
+      "ok"
+    ],
+    [
+      "F",
+      "Footage licence",
+      "10月27日",
+      "−$89",
+      "ok"
+    ],
+    [
+      "C",
+      "Client payment",
+      "10月26日",
+      "+$4,200",
+      "in"
+    ],
+    [
+      "R",
+      "Render credits",
+      "10月25日",
+      "−$40",
+      "wait"
+    ]
+  ],
+  "sources": [
+    [
+      "客户项目",
+      0.568
+    ],
+    [
+      "授权费",
+      0.231
+    ],
+    [
+      "订阅",
+      0.153
+    ],
+    [
+      "其他",
+      0.048
+    ]
+  ],
+  "recent": [
+    [
+      "Client payment",
+      "+$4,200"
+    ],
+    [
+      "Trailer C 授权",
+      "+$1,850"
+    ],
+    [
+      "Studio 订阅",
+      "+$620"
+    ]
+  ],
+  "ranges": {
+    "7": {
+      "sum": 7480,
+      "prev": 7180,
+      "days": 7,
+      "sub": "last 7 days",
+      "wave": [
+        0.42,
+        0.68,
+        1.1
+      ]
+    },
+    "30": {
+      "sum": 32023,
+      "prev": 28470,
+      "days": 30,
+      "sub": "this month",
+      "wave": [
+        0.2,
+        0.82,
+        0.8
+      ]
+    },
+    "365": {
+      "sum": 386400,
+      "prev": 331200,
+      "days": 365,
+      "sub": "last 12 months",
+      "wave": [
+        0.3,
+        0.9,
+        0.45
+      ]
+    }
+  },
+  "chart": {
+    "points": 24,
+    "width": 600,
+    "incomeHeight": 200,
+    "trendHeight": 180,
+    "trendPad": 40,
+    "trendX": 4,
+    "basePad": 14,
+    "incomePad": 34,
+    "waveA": 0.07,
+    "waveB": 0.04,
+    "waveRate": 2.3,
+    "wavePhase": 1,
+    "duration": 450,
+    "curve": 3,
+    "trendMoney": 210,
+    "tipOffset": 4,
+    "tipSide": "8px",
+    "tipThreshold": 0.7,
+    "incomeFactor": 1.2,
+    "incomeBase": 0.4,
+    "white": "#fff",
+    "incomeOpacity": ".26",
+    "trendOpacity": ".28",
+    "strokeWidth": "2",
+    "zeroOpacity": "0",
+    "pathLength": "1",
+    "linecap": "round",
+    "vector": "non-scaling-stroke",
+    "gradient": {
+      "x1": "0",
+      "y1": "0",
+      "x2": "0",
+      "y2": "1"
+    }
+  },
+  "labels": {
+    "complete": "完成",
+    "processing": "处理中",
+    "previous": "上期",
+    "change": "变化",
+    "average": "日均",
+    "recent": "最近记录",
+    "close": "关闭",
+    "source": "收入来源",
+    "income": "收入",
+    "export": "导出",
+    "modalClose": "×"
+  },
+  "layouts": [
+    {
+      "title": "主区布局",
+      "description": "一眼知道看哪：一张大主图，其他退后",
+      "style": {
+        "gridTemplate": "1.4fr 1fr/1fr 1fr 1fr"
+      },
+      "items": [
+        {
+          "className": "v",
+          "style": {
+            "gridColumn": "span 2"
+          }
+        },
+        {
+          "className": "",
+          "style": {}
+        },
+        {
+          "className": "",
+          "style": {}
+        },
+        {
+          "className": "",
+          "style": {}
+        },
+        {
+          "className": "",
+          "style": {}
+        }
+      ]
+    },
+    {
+      "title": "横带分层",
+      "description": "从结论往下看到细节",
+      "style": {
+        "gridTemplateRows": ".8fr 1.2fr .6fr"
+      },
+      "items": [
+        {
+          "className": "h",
+          "style": {}
+        },
+        {
+          "className": "",
+          "style": {}
+        },
+        {
+          "className": "",
+          "style": {}
+        }
+      ]
+    },
+    {
+      "title": "主区加侧栏",
+      "description": "要盯的固定，要翻的滚动",
+      "style": {
+        "gridTemplateColumns": "2.4fr 1fr"
+      },
+      "items": [
+        {
+          "className": "",
+          "style": {}
+        },
+        {
+          "className": "h",
+          "style": {}
+        }
+      ]
+    },
+    {
+      "title": "全幅画布加浮动面板",
+      "description": "前后两层，面板贴边",
+      "style": {
+        "gridTemplateColumns": "1fr"
+      },
+      "items": [
+        {
+          "className": "v",
+          "style": {
+            "position": "absolute",
+            "inset": "7px"
+          }
+        },
+        {
+          "className": "",
+          "style": {
+            "position": "absolute",
+            "left": "14px",
+            "top": "14px",
+            "width": "34%",
+            "height": "30%",
+            "background": "var(--raise)"
+          }
+        },
+        {
+          "className": "",
+          "style": {
+            "position": "absolute",
+            "right": "14px",
+            "bottom": "14px",
+            "width": "30%",
+            "height": "44%",
+            "background": "var(--raise)"
+          }
+        }
+      ]
+    },
+    {
+      "title": "看板分列",
+      "description": "看流程走到哪一步",
+      "style": {
+        "gridTemplateColumns": "repeat(4,1fr)"
+      },
+      "items": [
+        {
+          "className": "",
+          "style": {}
+        },
+        {
+          "className": "h",
+          "style": {}
+        },
+        {
+          "className": "",
+          "style": {}
+        },
+        {
+          "className": "",
+          "style": {}
+        }
+      ]
+    },
+    {
+      "title": "时间轴泳道",
+      "description": "谁在忙，哪里撞了",
+      "style": {
+        "gridTemplateRows": "repeat(5,1fr)"
+      },
+      "items": [
+        {
+          "className": "",
+          "style": {
+            "marginRight": "40%"
+          }
+        },
+        {
+          "className": "h",
+          "style": {
+            "marginLeft": "25%",
+            "marginRight": "20%"
+          }
+        },
+        {
+          "className": "",
+          "style": {
+            "marginLeft": "50%"
+          }
+        },
+        {
+          "className": "",
+          "style": {
+            "marginRight": "60%"
+          }
+        },
+        {
+          "className": "",
+          "style": {
+            "marginLeft": "35%",
+            "marginRight": "15%"
+          }
+        }
+      ]
+    }
+  ],
+  "output": 128,
+  "hotBar": 5,
+  "csvRevokeDelay": 1000
+}
