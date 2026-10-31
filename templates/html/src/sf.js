@@ -3,6 +3,10 @@
 'use strict';
 const sf=window.document.getElementById('sf');
 if(!sf)return;
+const coreValue=name=>getComputedStyle(sf).getPropertyValue('--sf-'+name).trim();
+const design=name=>parseFloat(coreValue(name));
+const notch=sf.querySelector('#sf-bctlRim');['x','y'].forEach(a=>notch.setAttribute(a,coreValue('notch-region-start')));['width','height'].forEach(a=>notch.setAttribute(a,coreValue('notch-region-size')));
+notch.querySelector('feGaussianBlur').setAttribute('stdDeviation',design('notch-blur'));notch.querySelector('feOffset').setAttribute('dy',design('notch-offset-y'));
 
 // Decision 7: each name is one generated image, inlined by src/build.py as a CSS variable.
 const bg=name=>`var(--sf-${name.replace(/\.jpg$/,'')}) center/cover no-repeat`;
@@ -103,115 +107,65 @@ function tracksFor(k=ver){const master=recordShots('A');return SOURCE_TRACKS.fla
  // Coalesce adjacent parts of one source cue; retain gaps when a cut changes its placement.
  return segments.reduce((out,c)=>{const last=out[out.length-1];if(last&&last.start+last.dur===c.start){last.dur+=c.dur;last.shotIds.push(c.shotId);}else out.push({...c,shotIds:[c.shotId]});return out;},[]);
  });}
-let ver='A',sel=3,vi=0,layer='script',zoomLevel='Shot',track='video',selClip=null;
-const PX_PER_SEC=27.5;
+let ver='A',sel=0,vi=0,layer='script',zoomLevel='Shot',track='video',selClip=null;
+const SLOT_W=design('slot-width'),PX_PER_SEC=design('lane-px-per-second'),EDGE=design('drag-edge'),GUTTER=design('lane-gutter'),ROW_H=design('lane-row-height'),VIDEO_PAD=design('video-pad'),SCALE=design('magnifier-height')/design('slot-height');
+const LANE_ROWS=Object.fromEntries(['voice','sound','music','subtitles','graphics'].map(id=>[id,design('lane-'+id+'-rows')]));
+const LANE_HEIGHTS=Object.fromEntries(Object.entries(LANE_ROWS).map(([id,rows])=>[id,rows*ROW_H]));
+let padX=VIDEO_PAD,playback={running:false,time:0,last:0,raf:0},drag=null,hoverBlock=-1,pointerX=0,bindT=0,viewKey='',hoverWatch=false,keyWatch=false,watchTimer=0;
+const strip=sf.querySelector('#sf-strip'),hero=sf.querySelector('#sf-hero');
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function currentShot(t=playback.time){const shots=recordShots();return shots.find(s=>t<s.start+s.dur)||shots[shots.length-1];}
+function derivedSel(){const id=currentShot().id;return Math.max(0,curArr().findIndex(u=>memberShots(u).some(s=>s.id===id)));}
 function unitStart(i){return duration(curArr().slice(0,i));}
-function unitWidth(s){return s.dur*PX_PER_SEC;}
-function setTrack(t,el){track=t;selClip=null;sf.querySelectorAll('#sf-tltrack .tt').forEach(b=>b.classList.toggle('on',b===el));buildStrip();renderView();}
-function miniWave(seed,n=10){let b='';for(let k=0;k<n;k++){const v=Math.abs(Math.sin(seed*5.3+k*1.27)+Math.sin(seed*2.1+k*.7)*.5);b+=`<i style="height:${(22+v/1.5*58).toFixed(0)}%"></i>`;}return b;}
-function laneClip(c,index){const left=padX+c.start*PX_PER_SEC,w=c.dur*PX_PER_SEC;return `<div class="clip ${c.cls} ${c.row?'subrow':''}" data-sf-call="pickClip" data-value="${index}" data-clip-id="${c.id}" data-start="${c.start}" data-duration="${c.dur}" title="${esc(c.text)}" style="left:${left}px;width:${w}px"><span class="ctx">${esc(c.text)}</span></div>`;}
+function unitWidth(s){return memberShots(s).length*SLOT_W;}
+function videoTimeToX(t,shots=recordShots(),pad=padX){const s=shots.find(s=>t<s.start+s.dur)||shots[shots.length-1];return pad+shots.indexOf(s)*SLOT_W+clamp((t-s.start)/s.dur,0,1)*SLOT_W;}
+function laneTimeToX(t,pad=padX){return pad+t*PX_PER_SEC;}
+function timeToX(t){return track==='video'?videoTimeToX(t):laneTimeToX(t);}
+function xToTime(x){const shots=recordShots(),p=Math.max(0,x-padX);if(track!=='video')return clamp(p/PX_PER_SEC,0,duration(shots));const i=Math.min(shots.length-1,Math.floor(p/SLOT_W));return clamp(shots[i].start+clamp((p-i*SLOT_W)/SLOT_W,0,1)*shots[i].dur,0,duration(shots));}
+function setTrack(t,el){track=t;selClip=null;sf.querySelectorAll('#sf-tltrack .tt').forEach(b=>b.classList.toggle('on',b===el));buildStrip();renderView();keepPlayhead(true);}
+function miniWave(seed,n=design('wave-count')){let b='';for(let k=0;k<n;k++){const mix=design('wave-mix'),v=Math.abs(Math.sin(seed*design('wave-seed-a')+k*design('wave-step-a'))+Math.sin(seed*design('wave-seed-b')+k*design('wave-step-b'))*mix);b+=`<i style="height:${(design('wave-min')+v/(1+mix)*design('wave-range')).toFixed(0)}%"></i>`;}return b;}
+function laneClip(c,index){return `<div class="clip ${c.cls}" data-sf-call="pickClip" data-value="${index}" data-clip-id="${c.id}" data-start="${c.start}" data-duration="${c.dur}" title="${esc(c.text)}" style="left:${padX+c.start*PX_PER_SEC}px;width:${c.dur*PX_PER_SEC}px;top:${(c.row||0)*ROW_H}px"><span class="ctx">${esc(c.text)}</span></div>`;}
 function laneBg(){return `<div class="lbg">${recordShots().map(s=>`<div class="lblk" style="left:${padX+s.start*PX_PER_SEC}px;width:${s.dur*PX_PER_SEC}px;background:${s.g}"></div>`).join('')}</div>`;}
-function buildLanes(){const clips=tracksFor();const lanes=track==='audio'?[['voice','人声'],['sound','声音设计'],['music','音乐']]:[['subtitles','字幕'],['graphics','图形']];const heads=sf.querySelector('#sf-laneHeads');heads.innerHTML=lanes.map(([id,label])=>`<div class="lh ${id}"><span class="dot"></span>${label}</div>`).join('');return laneBg()+lanes.map(([id])=>`<div class="lane" data-lane="${id}">${clips.map((c,i)=>c.lane===id?laneClip(c,i):'').join('')}</div>`).join('');}
-function growLane(el,to){el.style.height=to+'px';}
-function pickClip(el,index){selClip=tracksFor()[index];if(!selClip)return;activeSel={type:'clip',clip:selClip};sf.querySelectorAll('#sf-frames .clip.sel').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');const lanes=[...el.closest('.lane').parentNode.querySelectorAll('.lane')],picked=lanes.indexOf(el.closest('.lane'));lanes.forEach((l,i)=>growLane(l,i===picked?46:26));sf.querySelectorAll('#sf-laneHeads .lh').forEach((h,i)=>growLane(h,i===picked?46:26));openPanel();renderView();updateCtx();cvSetPill(selClip.text);cvCopilot(true);}
+function buildLanes(){const clips=tracksFor(),lanes=track==='audio'?[['voice','人声'],['sound','声音设计'],['music','音乐']]:[['subtitles','字幕'],['graphics','图形']];
+ sf.querySelector('#sf-laneHeads').innerHTML=lanes.map(([id,label])=>`<div class="lh lh-${id}" style="height:${LANE_HEIGHTS[id]}px"><span class="dot"></span>${label}</div>`).join('');
+ return laneBg()+lanes.map(([id])=>`<div class="lane" data-lane="${id}" style="height:${LANE_HEIGHTS[id]}px">${clips.map((c,i)=>c.lane===id?laneClip(c,i):'').join('')}</div>`).join('');}
+function pickClip(el,index){selClip=tracksFor()[index];if(!selClip)return;activeSel={type:'clip',clip:selClip};sf.querySelectorAll('#sf-frames .clip.sel').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');openPanel();renderView();updateCtx();cvSetPill(selClip.text,'clip:'+selClip.id);cvCopilot(true);}
 function clipPreviewClick(){if(selClip){activeSel={type:'clip',clip:selClip};openPanel();updateCtx();}}
-
-const FW=110, EDGE=72; let padX=180;  // EDGE = overscroll margin at BOTH ends → symmetric spring-back
-const strip=sf.querySelector('#sf-strip');
-function picHTML(s){
-  if(layer==='storyboard')return `<div class="pic sb">${s.shotIds?`<div class="panel-mosaic">${s.shotIds.map(id=>`<div style="background:${sbBg(BY_ID[id])}"></div>`).join('')}</div>`:sbArt(s)}</div>`;
-  if(layer==='script')return `<div class="pic itl">${esc(zoomLevel==='Film'?LOG_LINE:ownScriptText(memberShots(s).map(x=>x.id)))}</div>`;
-  return `<div class="pic"><div class="g" style="background:${s.g}"></div></div>`;
-}
-function buildStrip(){
-  const arr=curArr(); sel=Math.max(0,Math.min(arr.length-1,sel));
-  padX=Math.max(8,(strip.clientWidth-FW)/2)+EDGE;            // need padX before positioning lane clips
-  const frames=sf.querySelector('#sf-frames'), heads=sf.querySelector('#sf-laneHeads');
-  strip.classList.toggle('lanes', track!=='video');
-  if(track==='video'){
-    frames.style.width=(padX*2+duration(cutShots())*PX_PER_SEC)+'px';
-    frames.innerHTML=arr.map((s,i)=>
-      `<div class="frame" data-shot-id="${s.id}" data-start="${unitStart(i)}" data-duration="${s.dur}" style="width:${unitWidth(s)}px" title="${s.n} · ${tc(unitStart(i))} · ${s.f}" data-sf-call="pickShot" data-value="${i}">${picHTML(s)}<span class="num">${zoomLevel==='Shot'?(unitWidth(s)<80?s.num:s.num+' · '+tc(unitStart(i))):s.n+' · '+s.d}</span></div>`).join('');
-    if(heads)heads.classList.remove('show');
-  }else{
-    frames.style.width=(padX*2+duration(cutShots())*PX_PER_SEC)+'px';
-    frames.innerHTML=buildLanes(arr);
-    if(heads)heads.classList.add('show');
-  }
-  layoutStrip();scrollToShot(sel,true);updateHero();updatePill();
-}
-function layoutStrip(){
-  padX=Math.max(8,(strip.clientWidth-FW)/2)+EDGE;
-  sf.querySelector('#sf-frames').style.setProperty('--pad',padX+'px');
-  fillPerfs();
-}
-function fillPerfs(){
-  const trackW=padX*2+duration(cutShots())*PX_PER_SEC;const n=Math.ceil(trackW/26)+2;
-  let h='';for(let i=0;i<n;i++)h+='<div class="hole"></div>';
-  sf.querySelector('#sf-perfTop').innerHTML=h;sf.querySelector('#sf-perfBot').innerHTML=h;
-}
-function scrollToShot(i,instant){
-  const arr=curArr();i=Math.max(0,Math.min(arr.length-1,i));
-  const target=padX+unitStart(i)*PX_PER_SEC+unitWidth(arr[i])/2-strip.clientWidth/2;
-  strip.scrollTo({left:Math.max(0,target),behavior:instant?'auto':'smooth'});
-}
-/* click a timeline frame → navigate to it AND tag it on the copilot (@tag + shadow), like picking any material */
-function pickShot(i){
-  const arr=curArr(); i=Math.max(0,Math.min(arr.length-1,i)); sel=i;
-  activeSel=zoomLevel==='Shot'?{type:'shot',shotId:arr[i].id,shotIdx:i}:{type:'unit',unit:arr[i]};
-  scrollToShot(i); updateHero(); updatePill(); renderView(); if(sf.querySelector('.browser.panel-open'))updateCtx(); cvCopilot(true);
-}
-/* clicking a frame must not steal focus from the copilot input (keeps the chat history open) */
-strip.addEventListener('pointerdown',e=>{if(document.activeElement===sf.querySelector('#sf-cinput')&&e.target.closest('.frame,.clip'))e.preventDefault();});
-function updateHero(){
-  const hero=sf.querySelector('#sf-hero');const s=curArr()[sel];
-  if(!s||track!=='video'){hero.style.display='none';return;}    // lane tracks: material shows in the browser, not the timeline
-  hero.style.display='block';
-  hero.className='hero'+(layer==='storyboard'?' sb':layer==='script'?' itl':'');
-  if(layer==='storyboard')hero.innerHTML=(s.shotIds?`<div class="panel-mosaic">${s.shotIds.map(id=>`<div style="background:${sbBg(BY_ID[id])}"></div>`).join('')}</div>`:sbBig(s))+`<div class="cap">${s.n} · ${s.f}</div>`;
-  else if(layer==='script')hero.innerHTML=`<div>${esc(zoomLevel==='Film'?LOG_LINE:scriptText(memberShots(s).map(x=>x.id)))}</div><div class="cap">${s.n} · ${s.f}</div>`;
-  else hero.innerHTML=`<div class="hg" style="background:${s.g}"></div><div class="cap">${s.n} · ${s.f} · ${s.d}</div>`;
-  const wrap=sf.querySelector('.stripwrap');
-  hero.style.left=(wrap.offsetLeft+wrap.clientWidth/2-hero.offsetWidth/2)+'px';
-}
-function updatePill(){
-  if(!activeSel||!['shot','unit'].includes(activeSel.type)||activeSel.scriptId)return;   // only follow an explicitly-picked shot; no auto-tag from mere scrubbing
-  const s=curArr()[sel];
-  if(!s)return;
-  let p=sf.querySelector('#sf-selpill');
-  if (!p) {
-    const cinput = sf.querySelector('#sf-cinput');
-    if (cinput) {
-      p = document.createElement('span');
-      p.id = 'sf-selpill';
-      p.contentEditable = 'false';
-      p.className = 'selpill';
-      cinput.insertBefore(p, cinput.firstChild);
-    }
-  }
-  if (p) {
-    p.classList.add('show');
-    p.textContent=`@${s.n} · ${s.f}`;
-    if(typeof checkInputText === 'function') checkInputText();
-  }
-}
-/* native scroll → sync centered frame into the focus (hero) overlay */
-let rafid, bindT;
-/* the elements bound to the picked material — copilot @tag + the browser material/cpanel —
-   are debounced so they only commit once the scrub settles, not on every scroll frame */
-function commitSel(){if(activeSel&&!activeSel.scriptId&&activeSel.type!=='clip'){const s=curArr()[sel];activeSel=zoomLevel==='Shot'?{type:'shot',shotId:s.id,shotIdx:sel}:{type:'unit',unit:s};}updatePill();renderView();}
-strip.addEventListener('scroll',()=>{if(rafid)return;rafid=requestAnimationFrame(()=>{rafid=null;
-  const center=strip.scrollLeft+strip.clientWidth/2;const arr=curArr();let best=0,bd=1e9;
-  for(let i=0;i<arr.length;i++){const c=padX+unitStart(i)*PX_PER_SEC+unitWidth(arr[i])/2,d=Math.abs(c-center);if(d<bd){bd=d;best=i;}}
-  if(best!==sel){sel=best;updateHero();                 // live: the timeline's own focus tracks immediately
-    clearTimeout(bindT);bindT=setTimeout(commitSel,160);// debounced: @tag + browser settle after the scroll stops
-  }
-});},{passive:true});
-/* vertical wheel → horizontal film scroll (native, reliable). hero is pointer-events:none so wheel lands on the film. */
+function picHTML(s){const members=memberShots(s);
+ if(layer==='script')return `<div class="pic itl"><div class="strip-text">${esc(zoomLevel==='Film'?LOG_LINE:ownScriptText(members.map(x=>x.id)))}</div></div>`;
+ return `<div class="pic${layer==='storyboard'?' sb':''}"><div class="shot-join">${members.map(sh=>`<div class="slot" data-slot-shot="${sh.id}" style="background:${layer==='storyboard'?sbBg(sh):sh.g}"></div>`).join('')}</div></div>`;}
+function buildStrip(){sel=derivedSel();padX=track==='video'?VIDEO_PAD:GUTTER+design('lane-pad');hoverBlock=-1;const arr=curArr(),frames=sf.querySelector('#sf-frames'),heads=sf.querySelector('#sf-laneHeads');
+ strip.classList.toggle('lanes',track!=='video');sf.dataset.track=track;
+ frames.style.width=(padX*2+(track==='video'?cutShots().length*SLOT_W:duration(cutShots())*PX_PER_SEC))+'px';
+ frames.innerHTML=track==='video'?arr.map((s,i)=>`<div class="frame" data-shot-id="${s.id}" data-members="${memberShots(s).map(s=>s.id).join(',')}" data-start="${unitStart(i)}" data-duration="${s.dur}" style="width:${unitWidth(s)}px" title="${esc(s.n)} · ${tc(unitStart(i))} · ${s.f}" data-sf-call="pickShot" data-value="${i}">${picHTML(s)}<span class="num">${zoomLevel==='Shot'?s.num+' · '+tc(unitStart(i)):s.n+' · '+s.d}</span></div>`).join(''):buildLanes();
+ heads.classList.toggle('show',track!=='video');layoutStrip();paintPosition();updateHero();requestAnimationFrame(measureOverflow);}
+function layoutStrip(){sf.querySelector('#sf-frames').style.setProperty('--pad',padX+'px');fillPerfs();}
+function fillPerfs(){const w=padX*2+(track==='video'?cutShots().length*SLOT_W:duration(cutShots())*PX_PER_SEC),n=Math.ceil(w/(design('perf-width')+design('perf-gap')))+2,h='<div class="hole"></div>'.repeat(n);sf.querySelector('#sf-perfTop').innerHTML=h;sf.querySelector('#sf-perfBot').innerHTML=h;}
+function keepPlayhead(force=false){const x=timeToX(playback.time),left=strip.scrollLeft,w=strip.clientWidth,inset=design('playhead-inset');if(force||x<left+w*inset||x>left+w*(1-inset))strip.scrollLeft=clamp(x-w*(force ? .5 : x<left+w*inset ? inset : 1-inset),0,strip.scrollWidth-w);}
+function scrollToShot(i){setTime(unitStart(i));keepPlayhead(true);}
+function pickShot(i){const s=curArr()[clamp(i,0,curArr().length-1)];activeSel=zoomLevel==='Shot'?{type:'shot',shotId:s.id,shotIdx:cutShots().findIndex(x=>x.id===s.id)}:{type:'unit',unit:s};sf.querySelectorAll('.frame').forEach(el=>el.classList.toggle('picked',el.dataset.shotId===s.id));openPanel();cvSetPill(s.n+' · '+s.f,(zoomLevel==='Shot'?'shot:':'unit:')+s.id);updateCtx();cvCopilot(true);}
+function updateHero(){if(!strip.matches(':hover')||track!=='video'||playback.running||drag||hoverBlock<0||!matchMedia('(hover:hover)').matches){hero.classList.remove('is-visible');return;}
+ const s=curArr()[hoverBlock];if(!s)return;const wrap=sf.querySelector('.stripwrap'),r=strip.getBoundingClientRect(),wr=wrap.getBoundingClientRect(),natural=unitWidth(s),scaled=natural*SCALE,w=Math.min(scaled,wr.width),start=padX+curArr().slice(0,hoverBlock).reduce((x,u)=>x+unitWidth(u),0);
+ const center=r.left+start-strip.scrollLeft+natural/2,left=clamp(center-w/2,wr.left,wr.right-w),fraction=clamp((pointerX-(r.left+start-strip.scrollLeft))/natural,0,1),shift=scaled>w?(scaled-w)*fraction:0;
+ if(hero.dataset.key!==layer+':'+zoomLevel+':'+s.id){hero.innerHTML=`<div class="hero-content">${picHTML(s)}</div><div class="cap">${esc(s.n+' · '+s.f)}</div>`;hero.dataset.key=layer+':'+zoomLevel+':'+s.id;}
+ hero.className='hero is-visible'+(layer==='script'?' itl':layer==='storyboard'?' sb':'');hero.style.width=w+'px';hero.style.left=(left-sf.querySelector('.tlrow').getBoundingClientRect().left)+'px';hero.style.setProperty('--hero-content-width',natural+'px');hero.style.setProperty('--hero-shift',-shift+'px');}
+function pointerBlock(x){const p=x-strip.getBoundingClientRect().left+strip.scrollLeft-padX;let at=0;return curArr().findIndex(u=>{const a=at;at+=unitWidth(u);return p>=a&&p<at;});}
+strip.addEventListener('pointermove',e=>{pointerX=e.clientX;if(drag){drag.x=e.clientX;drag.moved=Math.max(drag.moved,Math.hypot(e.clientX-drag.sx,e.clientY-drag.sy));setTime(xToTime(e.clientX-strip.getBoundingClientRect().left+strip.scrollLeft));}else{hoverBlock=pointerBlock(e.clientX);updateHero();}});
+strip.addEventListener('pointerleave',()=>{if(!drag){hoverBlock=-1;updateHero();}});
+strip.addEventListener('scroll',()=>{if(!drag){hoverBlock=pointerBlock(pointerX);updateHero();}},{passive:true});
 strip.addEventListener('wheel',e=>{if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){strip.scrollLeft+=e.deltaY;e.preventDefault();}},{passive:false});
-
-function setLayer(l,el){if(layer!==l)cpClose();layer=l;sf.querySelectorAll('#sf-layerSeg button').forEach(d=>d.classList.remove('on'));el.classList.add('on');buildStrip();renderView();}
-function setZoom(z,el){zoomLevel=z;sel=0;sf.querySelectorAll('#sf-zoomSeg button').forEach(d=>d.classList.remove('on'));el.classList.add('on');cpClose();buildStrip();renderView();flash('已切换范围：'+({Film:'全片',Act:'幕级',Scene:'场景级',Beat:'节拍',Shot:'镜头级'}[z]||z));}
+strip.addEventListener('pointerdown',e=>{if(e.button)return;e.preventDefault();stopPlayback();strip.setPointerCapture(e.pointerId);drag={id:e.pointerId,sx:e.clientX,sy:e.clientY,x:e.clientX,moved:0,target:e.target.closest('.frame,.clip'),raf:0};setTime(xToTime(e.clientX-strip.getBoundingClientRect().left+strip.scrollLeft));updateWatching();updateHero();
+ const tick=()=>{if(!drag)return;const r=strip.getBoundingClientRect(),x=drag.x,v=x<r.left+EDGE?-design('drag-speed')*clamp((r.left+EDGE-x)/EDGE,0,1):x>r.right-EDGE?design('drag-speed')*clamp((x-r.right+EDGE)/EDGE,0,1):0;if(v){strip.scrollLeft+=v;setTime(xToTime(x-r.left+strip.scrollLeft));}drag.raf=requestAnimationFrame(tick);};drag.raf=requestAnimationFrame(tick);});
+function endDrag(e){if(!drag||e.pointerId!==drag.id)return;const d=drag;drag=null;cancelAnimationFrame(d.raf);if(strip.hasPointerCapture(e.pointerId))strip.releasePointerCapture(e.pointerId);if(e.type==='pointerup'&&d.moved<design('pick-distance')&&d.target){if(d.target.classList.contains('clip'))pickClip(d.target,+d.target.dataset.value);else pickShot(+d.target.dataset.value);}updateWatching();updateHero();}
+strip.addEventListener('pointerup',endDrag);strip.addEventListener('pointercancel',endDrag);strip.addEventListener('lostpointercapture',endDrag);
+function paintPosition(){sel=derivedSel();sf.querySelector('#sf-playhead').style.left=timeToX(playback.time)+'px';sf.querySelectorAll('.frame').forEach(el=>el.classList.toggle('current',Number(el.dataset.value)===sel));paintMonitor();highlightScript();}
+function setTime(t){const previous=sel;playback.time=clamp(t,0,duration(cutShots()));paintPosition();if(sel!==previous&&!sf.classList.contains('is-watching')){clearTimeout(bindT);bindT=setTimeout(()=>renderView(),design('unit-debounce'));}}
+function updateWatching(){const on=sf.classList.contains('mode-create')&&((historyState!=='pinned'&&(hoverWatch||keyWatch))||!!drag||playback.running),was=sf.classList.contains('is-watching');sf.classList.toggle('is-watching',on);if(was&&!on){clearTimeout(bindT);bindT=setTimeout(()=>renderView(),design('unit-debounce'));}measureMonitor();}
+function stopPlayback(){playback.running=false;cancelAnimationFrame(playback.raf);playback.raf=0;const b=sf.querySelector('#sf-transport');b.textContent='▶';b.setAttribute('aria-label','播放');b.setAttribute('aria-pressed','false');updateWatching();}
+function transport(){if(playback.running){stopPlayback();return;}if(playback.time>=duration(cutShots()))setTime(0);playback.running=true;playback.last=performance.now();const b=sf.querySelector('#sf-transport');b.textContent='Ⅱ';b.setAttribute('aria-label','暂停');b.setAttribute('aria-pressed','true');updateWatching();updateHero();
+ const tick=now=>{if(!playback.running)return;setTime(playback.time+(now-playback.last)/1000);playback.last=now;keepPlayhead();if(playback.time>=duration(cutShots())){stopPlayback();return;}playback.raf=requestAnimationFrame(tick);};playback.raf=requestAnimationFrame(tick);}
+function setLayer(l,el){if(layer!==l)cpClose();layer=l;viewKey='';sf.querySelectorAll('#sf-layerSeg button').forEach(d=>d.classList.toggle('on',d===el));buildStrip();renderView();}
+function setZoom(z,el){zoomLevel=z;sel=derivedSel();viewKey='';sf.querySelectorAll('#sf-zoomSeg button').forEach(d=>d.classList.toggle('on',d===el));cpClose();buildStrip();renderView();flash('已切换范围：'+({Film:'全片',Act:'幕',Scene:'场',Beat:'节拍',Shot:'镜头'}[z]||z));}
 
 /* Timeline cut dropdown: pointer behavior and menu ownership stay shared; keyboard uses a roving item. */
 const tlname=sf.querySelector('#sf-tlname'),tlmenu=sf.querySelector('#sf-tlmenu');
@@ -269,53 +223,36 @@ document.addEventListener('ui:menu-open',e=>{if(e.detail?.owner!=='sf-timeline')
 sf.querySelector('.timeline').addEventListener('ux:rest',closeTlMenu);
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeTlMenu();if(!cvFocusId)cpClose();}});
 
-function cutTo(i){i=Math.max(0,Math.min(VKEYS.length-1,i)); if(VKEYS[i]===ver){return;}
-  vi=i; ver=VKEYS[vi]; sel=0; setCutLabel(); buildStrip(); renderView();
-  cpClose();playback.time=0;flash('已载入剪辑：'+VNAME[ver]);}
-/* ---- Create: scope-aware browser with selectable elements ---- */
-/* the context panel is always bound to whatever the browser is showing: when the timeline
-   scrubs the browser to another shot / group, rebind activeSel to it before (re)rendering.
-   (script layer keeps its own selScript binding; a closed panel has nothing to bind) */
-function syncActiveSel(){
-  if(!sf.querySelector('.browser.panel-open')||layer==='script'||activeSel?.type==='clip')return;
-  const s=curArr()[sel];if(!s)return;
-  activeSel=zoomLevel==='Shot'?{type:'shot',shotId:s.id,shotIdx:cutShots().findIndex(x=>x.id===s.id)}:{type:'unit',unit:s};
-}
+function cutTo(i){i=clamp(i,0,VKEYS.length-1);if(VKEYS[i]===ver)return;stopPlayback();vi=i;ver=VKEYS[i];playback.time=0;sel=0;viewKey='';setCutLabel();cpClose();buildStrip();renderView();keepPlayhead(true);flash('已载入剪辑：'+VNAME[ver]);}
+/* The monitor and lined script keep their DOM identity while the playhead moves. */
 const TAKES=Object.fromEntries(SHOT_LIST.map(s=>[s.id,[{id:s.id+'-source',shotId:s.id,picture:s.picture,kind:'source-still',label:'源静帧',framing:'center',scale:100},...(s.picture?[{id:s.id+'-study',shotId:s.id,picture:s.picture,kind:'framing-study',sameSource:true,label:'备选构图研究 · 同源静帧',framing:'40% center',scale:115}]:[])]]));
 const selectedTakes=Object.fromEntries(SHOT_LIST.map(s=>[s.id,TAKES[s.id][0].id]));
-let playback={running:false,time:0,last:0,raf:0};
-function stopPlayback(){playback.running=false;cancelAnimationFrame(playback.raf);playback.raf=0;}
-function playerPaint(){const shots=recordShots(),total=duration(shots),t=Math.min(playback.time,total),s=shots.find(s=>t<s.start+s.dur)||shots[shots.length-1];const picture=sf.querySelector('#sf-playerPicture');if(!picture)return;picture.style.background=s.g;picture.dataset.shotId=s.id;sf.querySelector('#sf-playerCaption').textContent=s.n+' · '+tc(t)+' / '+tc(total);sf.querySelector('#sf-playerSeek').value=t;sf.querySelector('#sf-playButton').textContent=playback.running?'暂停静帧预览':'播放静帧剪辑';}
-function togglePlayback(){if(playback.running){stopPlayback();playerPaint();return;}if(playback.time>=duration(cutShots()))playback.time=0;playback.running=true;playback.last=performance.now();playerPaint();const tick=now=>{if(!playback.running||!sf.querySelector('#sf-playerPicture')){stopPlayback();return;}playback.time+=(now-playback.last)/1000;playback.last=now;if(playback.time>=duration(cutShots()))stopPlayback();playerPaint();if(playback.running)playback.raf=requestAnimationFrame(tick);};playback.raf=requestAnimationFrame(tick);}
-function playerHTML(){playback.time=0;return `<div class="cut-player" data-cut="${ver}"><div class="player-picture" id="sf-playerPicture" style="background:${cutShots()[0].g}"></div><div class="player-controls"><button type="button" id="sf-playButton" data-sf-call="togglePlayback">播放静帧剪辑</button><input id="sf-playerSeek" type="range" min="0" max="${duration(cutShots())}" value="0" step="0.01" aria-label="静帧剪辑进度"><span id="sf-playerCaption">${cutShots()[0].n} · ${tc(0)} / ${tc(duration(cutShots()))}</span></div><p class="shot-hint">定时静帧预览，无视频或音频渲染</p>${CUTS[ver].deliverableOf?'<p class="shot-hint">Festival Master E · deliverable of Picture Lock A</p>':''}</div>`;}
-function chooseTake(id){const s=curArr()[sel],take=TAKES[s.id]?.find(t=>t.id===id);if(!take)return;selectedTakes[s.id]=id;renderView();}
-function renderView(){
- const b=sf.querySelector('#sf-bview');if(!b)return;stopPlayback();syncActiveSel();
- if(track!=='video'&&selClip){const c=selClip;const sh=BY_ID[c.shotIds[0]];b.innerHTML=`<div class="shot-stage clip-detail" data-clip-id="${c.id}"><div class="t">${esc(c.text)}</div><div class="s">${tc(c.start)} · ${c.dur}s</div>${c.kind==='aud'?`<div class="audio-preview">${miniWave(c.start+1,45)}</div><p class="shot-hint">音频提示记录，无音频渲染</p>`:`<div class="shot-frame" data-sf-call="clipPreviewClick"><div class="g" style="background:${sh.g}"></div><div class="clip-overlay">${esc(c.text)}</div></div>`}</div>`;}
- else if(layer==='script'){b.innerHTML=scriptHTML();if(activeSel?.scriptId)b.querySelectorAll('[data-sf-call=selScript]').forEach(e=>e.classList.toggle('on',e.dataset.value===activeSel.scriptId));}
- else if(zoomLevel==='Film'&&layer==='movie'){b.innerHTML=playerHTML();}
- else if(zoomLevel==='Shot'){
-  const sh=cutShots()[sel],idx=sel,take=TAKES[sh.id].find(t=>t.id===selectedTakes[sh.id])||TAKES[sh.id][0];
-  const media=layer==='storyboard'?sbBig(sh):`<div class="g" style="background:${sh.g};background-position:${take.framing};background-size:${take.scale}% auto"></div>`;
-  b.innerHTML=`<div class="shot-stage" data-shot-id="${sh.id}"><div class="shot-frame ${activeSel?.shotId===sh.id?'on':''}" data-sf-call="selShot" data-value="${idx}">${media}</div><div class="shot-meta"><div class="t">${sh.n} · ${tc(recordShots()[sel].start)}</div><div class="s">${sh.desc} · ${sh.d}</div></div>${layer==='movie'?`<p class="shot-hint">静帧构图研究，非视频备选条次</p><div class="take-list">${TAKES[sh.id].map(t=>`<button type="button" class="take-option ${t.id===take.id?'on':''}" aria-pressed="${t.id===take.id}" data-sf-call="chooseTake" data-value="${t.id}"><span class="take-thumb" style="background:${sh.g};background-position:${t.framing};background-size:${t.scale}% auto"></span><span>${t.label}</span></button>`).join('')}</div>`:'<div class="shot-hint">点击画面查看提示词和参数</div>'}</div>`;
- }else{
-  const u=curArr()[sel];const tiles=u.shotIds.map(id=>{const sh=BY_ID[id],idx=cutShots().findIndex(s=>s.id===id);return `<div class="unit-tile" data-shot-id="${id}" data-sf-call="selShot" data-value="${idx}"><div class="unit-thumb">${layer==='storyboard'?sbArt(sh):`<div class="g" style="background:${sh.g}"></div>`}<span class="n">${sh.n} · ${tc(recordShots()[idx].start)}</span></div><div class="unit-cap"><div class="t">${sh.n}</div><div class="s">${sh.desc}</div></div></div>`;}).join('');
-  b.innerHTML=`<div class="unit-view" data-unit-id="${u.id}"><div class="unit-head" data-sf-call="selUnit"><span class="scope-tag">${zoomLevel}</span><span class="name">${u.n}</span><span class="sub">${u.f}</span></div><div class="unit-grid">${tiles}</div></div>`;
- }
- b.scrollTop=0;if(sf.querySelector('.browser.panel-open'))updateCtx();
-}
-function scriptHTML(){const u=curArr()[sel],members=memberShots(u).map(s=>s.id);
- if(zoomLevel==='Film')return `<div class="script" data-script-scope="Film"><div class="sl">STATIC · ${VNAME[ver]} · ${duration(cutShots())}s</div><p class="selel" data-sf-call="selUnit">${LOG_LINE}</p></div>`;
- const visible=scriptFor(members),sceneIds=[...new Set(memberShots(u).map(s=>s.scene))];
- // Headings occur once per location, even when a shot-specific view contains just one line.
- const content=sceneIds.map(scene=>{const entries=visible.filter(e=>e.type!=='scene'&&e.shots.some(id=>members.includes(id)&&BY_ID[id].scene===scene));return `<div class="selel head" data-sf-call="selScript" data-type="scene" data-value="${scene}">${SCENES[scene].slug}</div>`+entries.map(e=>{const covered=e.shots.filter(id=>CUTS[ver].shotIds.includes(id)&&members.includes(id));return `<div class="script-element" data-script-id="${e.id}">${e.speaker?`<div class="cue">${CHAR_DB[e.speaker].name.toUpperCase()}</div>${e.paren?`<div class="paren">${e.paren}</div>`:''}`:''}<p class="selel ${e.type==='dialogue'?'dlg':''}" data-sf-call="selScript" data-type="${e.type}" data-value="${e.id}" data-shot-ids="${covered.join(',')}">${esc(e.text)} <small class="coverage">${covered.map(id=>BY_ID[id].n).join(', ')}</small></p></div>`;}).join('');}).join('');
- return `<div class="script" data-script-scope="${zoomLevel}"><div class="sl">STATIC · ${u.n} · ${u.d}</div>${content}</div>`;
-}
+
+function measureMonitor(){const br=sf.querySelector('#sf-browser'),info=sf.querySelector('.monitor-info');if(br&&info)sf.style.setProperty('--monitor-fit',Math.max(0,(br.clientHeight-info.offsetHeight-design('monitor-clearance'))*16/9)+'px');}
+function paintMonitor(){const mon=sf.querySelector('.monitor'),picture=sf.querySelector('#sf-monitorPicture');if(!picture)return;mon.hidden=layer==='script';sf.classList.toggle('layer-script',layer==='script');const s=currentShot();
+ const image=s.picture?(layer==='storyboard'?sbBg(s):s.g):s.g;if(picture.dataset.image!==image){picture.style.background=image;picture.dataset.image=image;}picture.dataset.shotId=s.id;picture.dataset.value=cutShots().findIndex(x=>x.id===s.id);
+ sf.querySelector('#sf-monitorTime').textContent=tc(playback.time)+' / '+tc(duration(cutShots()));sf.querySelector('#sf-monitorName').textContent=s.n+' · '+s.desc+' · '+s.d;const note=sf.querySelector('#sf-monitorNote');if(!note.textContent)note.textContent='定时静帧预览，无视频或音频渲染';}
+function chooseTake(id){const sh=currentShot(),take=TAKES[sh.id]?.find(t=>t.id===id);if(!take)return;selectedTakes[sh.id]=id;viewKey='';renderView();}
+function renderView(){const b=sf.querySelector('#sf-bview');if(!b)return;paintMonitor();const u=curArr()[sel],key=[ver,layer,zoomLevel,layer==='script'?'cut':u.id,selClip?.id||''].join(':');
+ if(key===viewKey){highlightScript();return;}if(sf.classList.contains('is-watching')&&viewKey&&layer!=='script')return;viewKey=key;
+ if(layer==='script')b.innerHTML=scriptHTML();
+ else if(track!=='video'&&selClip){const c=selClip,sh=BY_ID[c.shotIds[0]];b.innerHTML=`<div class="shot-stage clip-detail" data-clip-id="${c.id}"><div class="t">${esc(c.text)}</div><div class="s">${tc(c.start)} · ${c.dur}s</div>${c.kind==='aud'?`<div class="audio-preview">${miniWave(c.start+1,design('wave-detail-count'))}</div><p class="shot-hint">音频提示记录，无音频渲染</p>`:`<div class="shot-frame" data-sf-call="clipPreviewClick"><div class="g" style="background:${sh.g}"></div><div class="clip-overlay">${esc(c.text)}</div></div>`}</div>`;}
+ else if(zoomLevel==='Shot'){const sh=currentShot(),take=TAKES[sh.id].find(t=>t.id===selectedTakes[sh.id])||TAKES[sh.id][0];b.innerHTML=layer==='movie'?`<div class="unit-view" data-shot-id="${sh.id}"><p class="shot-hint">静帧构图研究，非视频备选条次</p><div class="take-list">${TAKES[sh.id].map(t=>`<button type="button" class="take-option ${t.id===take.id?'on':''}" aria-pressed="${t.id===take.id}" data-sf-call="chooseTake" data-value="${t.id}"><span class="take-thumb" style="background:${sh.g};background-position:${t.framing};background-size:${t.scale}% auto"></span><span>${t.label}</span></button>`).join('')}</div></div>`:'<div class="unit-view"><p class="shot-hint">点击监看画面查看提示词和参数</p></div>';}
+ else{const tiles=memberShots(u).map(sh=>{const idx=cutShots().findIndex(s=>s.id===sh.id);return `<div class="unit-tile" data-shot-id="${sh.id}" data-sf-call="selShot" data-value="${idx}"><div class="unit-thumb">${layer==='storyboard'?sbArt(sh):`<div class="g" style="background:${sh.g}"></div>`}<span class="n">${sh.n} · ${tc(recordShots()[idx].start)}</span></div><div class="unit-cap"><div class="t">${sh.n}</div><div class="s">${sh.desc}</div></div></div>`;}).join('');b.innerHTML=`<div class="unit-view" data-unit-id="${u.id}"><div class="unit-head" data-sf-call="selUnit"><span class="scope-tag">${zoomLevel}</span><span class="name">${u.n}</span><span class="sub">${u.f}</span></div><div class="unit-grid">${tiles}</div></div>`;}
+ b.scrollTop=0;highlightScript();requestAnimationFrame(measureOverflow);}
+function scriptHTML(){const ids=CUTS[ver].shotIds,visible=scriptFor(ids),content=visible.map(e=>{const covered=e.shots.filter(id=>ids.includes(id));if(e.type==='scene')return `<div class="selel head" data-script-id="${e.id}" data-sf-call="selScript" data-type="scene" data-value="${e.id}" data-shot-ids="${covered.join(',')}">${esc(e.text)}</div>`;
+ return `<div class="script-element" data-script-id="${e.id}" data-shot-ids="${covered.join(',')}">${e.speaker?`<div class="cue">${CHAR_DB[e.speaker].name.toUpperCase()}</div>${e.paren?`<div class="paren">${e.paren}</div>`:''}`:''}<p class="selel ${e.type==='dialogue'?'dlg':''}" data-sf-call="selScript" data-type="${e.type}" data-value="${e.id}" data-shot-ids="${covered.join(',')}">${esc(e.text)} <small class="coverage">${covered.map(id=>BY_ID[id].n).join(', ')}</small></p></div>`;}).join('');
+ return `<div class="script" data-script-scope="cut" data-level="${zoomLevel}"><div class="sl">STATIC · ${VNAME[ver]} · ${duration(cutShots())}s</div>${zoomLevel==='Film'?`<p class="selel logline" data-sf-call="selUnit">${LOG_LINE}</p>`:''}${content}</div>`;}
+let highlighted='';
+function highlightScript(){if(layer!=='script')return;const b=sf.querySelector('#sf-bview'),ids=memberShots(curArr()[sel]).map(s=>s.id);let first=null;
+ b.querySelectorAll('.script [data-shot-ids]').forEach(el=>{const on=el.dataset.shotIds.split(',').some(id=>ids.includes(id));el.classList.toggle('hl',on);if(on&&el.classList.contains('script-element')&&!first)first=el;});
+ const key=ver+':'+zoomLevel+':'+sel;if(first&&key!==highlighted){highlighted=key;const r=first.getBoundingClientRect(),br=b.getBoundingClientRect();if(r.top<br.top+design('script-clearance')||r.bottom>br.bottom-design('script-clearance'))b.scrollTop+=r.top-br.top-Math.max(design('script-clearance'),(br.height-r.height)/2);}}
+function measureOverflow(){sf.querySelectorAll('.clip .ctx,#sf-cinput,.tlname>span,.ci-b,.bview,.cp-body,.ctrace-body,.cv-doc').forEach(el=>el.classList.toggle('is-overflow',el.scrollWidth>el.clientWidth+1||el.scrollHeight>el.clientHeight+1));}
 
 /* ---- selection → context panel ---- */
 let activeSel=null;
 function openPanel(){const br=sf.querySelector('#sf-browser');if(br)br.classList.add('panel-open');}
-function cpClose(){selClip=null;sf.querySelectorAll('.clip.sel,.cp-sec.sel').forEach(c=>c.classList.remove('sel'));sf.querySelectorAll('.lane,.lh').forEach(c=>c.style.height='');const br=sf.querySelector('#sf-browser');if(br)br.classList.remove('panel-open');activeSel=null;
+function cpClose(){selClip=null;sf.querySelectorAll('.clip.sel,.cp-sec.sel').forEach(c=>c.classList.remove('sel'));sf.querySelectorAll('.frame.picked').forEach(c=>c.classList.remove('picked'));const br=sf.querySelector('#sf-browser');if(br)br.classList.remove('panel-open');activeSel=null;
   sf.querySelectorAll('#sf-bview .on').forEach(x=>x.classList.remove('on'));
   cvClearPill();cvCopilot(false);}   // deselect → drop the @tag and the bar's shadow (same as Explore)
 /* clicking empty space ANYWHERE in the browser region (incl. the wide blank gutters either side of the
@@ -323,7 +260,7 @@ function cpClose(){selClip=null;sf.querySelectorAll('.clip.sel,.cp-sec.sel').for
    click lands on a selectable element or inside the context panel itself */
 (function(){const br=sf.querySelector('#sf-browser');const bv=sf.querySelector('#sf-bview');if(!br)return;
   br.addEventListener('click',e=>{
-    if(e.target.closest('.selel,.shot-frame,.unit-tile,.unit-head,.cpanel,.cut-player,.take-list'))return;
+    if(e.target.closest('.selel,.shot-frame,.monitor,.unit-tile,.unit-head,.cpanel,.take-list'))return;
     if(sf.querySelector('.browser.panel-open'))cpClose();
   });
   /* picking a browser material must NOT steal focus from the copilot input (keeps the chat/history open) */
@@ -358,7 +295,7 @@ function selScript(type,id,el){clearSel();if(el)el.classList.add('on');const e=S
 }
 function selShot(i,el){const sh=cutShots()[i];if(!sh)return;
  if(sf.querySelector('.browser.panel-open')&&activeSel?.type==='shot'&&activeSel.shotId===sh.id){mediaPreview(layer==='storyboard'?sbBg(sh):sh.g,sh.n+' · '+sh.desc,layer==='storyboard'?'board':'shot');return;}
- clearSel();if(el)el.classList.add('on');activeSel={type:'shot',shotId:sh.id,shotIdx:i};openPanel();cvSetPill(sh.n+' · '+sh.desc);cvCopilot(true);if(zoomLevel==='Shot'){sel=i;scrollToShot(i);updateHero();}updateCtx();
+ clearSel();if(el)el.classList.add('on');activeSel={type:'shot',shotId:sh.id,shotIdx:i};openPanel();cvSetPill(sh.n+' · '+sh.desc,'shot:'+sh.id);cvCopilot(true);if(currentShot()?.id!==sh.id){setTime(recordShots()[i].start);keepPlayhead(true);}updateCtx();
 }
 function selUnit(el){clearSel();if(el)el.classList.add('on');const u=curArr()[sel];if(!u)return;activeSel={type:'unit',unit:u,label:zoomLevel+' · '+u.n};openPanel();cvSetPill(u.n+' · '+u.f);cvCopilot(true);updateCtx();}
 
@@ -401,23 +338,8 @@ function unitAll(u){const members=memberShots(u),chars=u.chars||[],scenes=[...ne
  +sec('摄影参考',rows([['视觉目标',STYLE_REF.rig],['画幅','16:9'],['光线',STYLE_REF.light],['调色',STYLE_REF.grade]]));}
 
 function send(){
-  const cinput=sf.querySelector('#sf-cinput');
-  const pill=sf.querySelector('#sf-selpill');
-  let v=cinput.textContent;
-  if(pill && pill.classList.contains('show')){
-    v=v.replace(pill.textContent,'');
-  }
-  const placeholder=cinput.querySelector('.cplaceholder');
-  if(placeholder){
-    v=v.replace(placeholder.textContent,'');
-  }
-  v=v.trim();
-  if(!v)return;
-
-  cinput.innerHTML='';
-  if(pill) cinput.appendChild(pill);
-  if(placeholder) cinput.appendChild(placeholder);
-  if(typeof checkInputText==='function') checkInputText();
+  const cinput=sf.querySelector('#sf-cinput'),v=cinput.textContent.replace(/\u200b/g,'').trim();if(!v)return;
+  cinput.innerHTML='';lastCaret=null;closeMention();checkInputText();if(historyState==='closed')setHistory('peek');
   pushChat('user',esc(v),true);
   setTimeout(()=>{const target=activeSel?.type==='shot'?BY_ID[activeSel.shotId]?.n:activeSel?.unit?.n||curArr()[sel]?.n||'STATIC';
     let r=`Local sample only. Selected <b>${esc(target)}</b>. No generation or edit was run.`;
@@ -432,136 +354,40 @@ function send(){
       }else r=`<b>${esc(target)}</b>: select one shot at Shot / Footage to inspect its actual still records. No generation or grading was run.`;
     }
     pushChat('bot',r,true);
-  },700);}
-let ft;function flash(html){const r=sf.querySelector('#sf-reply');r.innerHTML=html;r.classList.add('show');clearTimeout(ft);ft=setTimeout(()=>r.classList.remove('show'),3600);}
+  },design('chat-reply-delay'));}
+let ft;function flash(html){const r=sf.querySelector('#sf-reply');r.innerHTML=html;r.classList.add('show');clearTimeout(ft);ft=setTimeout(()=>r.classList.remove('show'),design('toast-duration'));}
 
-// CSS owns the editable input height.
-
-function checkInputText() {
-  const cinput = sf.querySelector('#sf-cinput');
-  if (!cinput) return;
-
-  let selpill = sf.querySelector('#sf-selpill');
-  if (!selpill) {
-    selpill = document.createElement('span');
-    selpill.id = 'sf-selpill';
-    selpill.contentEditable = 'false';
-    selpill.className = 'selpill';
-    cinput.insertBefore(selpill, cinput.firstChild);
-  } else if (selpill.parentNode !== cinput || cinput.firstChild !== selpill) {
-    cinput.insertBefore(selpill, cinput.firstChild);
-  }
-
-  // Ensure there is always a space after the pill when shown
-  if (selpill.classList.contains('show')) {
-    let next = selpill.nextSibling;
-    if (!next || next.nodeType !== Node.TEXT_NODE) {
-      const spaceNode = document.createTextNode('\u00A0');
-      cinput.insertBefore(spaceNode, next);
-    } else if (!next.textContent.startsWith('\u00A0')) {
-      next.textContent = '\u00A0' + next.textContent;
-    }
-  }
-
-  let text = cinput.textContent;
-  if (selpill && selpill.classList.contains('show')) {
-    text = text.replace(selpill.textContent, '');
-  }
-  const placeholder = cinput.querySelector('.cplaceholder');
-  if (placeholder) {
-    text = text.replace(placeholder.textContent, '');
-  }
-  // Remove the non-breaking space prefix from text length calculation
-  if (selpill && selpill.classList.contains('show') && text.startsWith('\u00A0')) {
-    text = text.substring(1);
-  }
-  text = text.trim();
-  cinput.classList.toggle('has-text', text.length > 0);
-
-}
-
-const cinputEl = sf.querySelector('#sf-cinput');
-if (cinputEl) {
-  cinputEl.addEventListener('input', checkInputText);
-  cinputEl.addEventListener('keyup', e => {
-    checkInputText();
-  });
-  cinputEl.addEventListener('focus', () => {
-    if (typeof startLogStream === 'function') startLogStream();
-  });
-  cinputEl.addEventListener('keydown', e => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      send();
-    } else if (e.key === 'Tab' && !e.shiftKey) {
-      e.preventDefault();
-      const sendBtn = sf.querySelector('.cbar .send');
-      if (sendBtn) {
-        sendBtn.focus();
-      }
-    } else if (e.key === 'Backspace') {
-      const selection = window.getSelection();
-      if (selection.rangeCount > 0) {
-        const range = selection.getRangeAt(0);
-        if (range.collapsed) {
-          const startContainer = range.startContainer;
-          const startOffset = range.startOffset;
-          const pill = sf.querySelector('#sf-selpill');
-
-          if (pill && pill.classList.contains('show')) {
-            // Case 1: Cursor is inside the main input container, near the start
-            if (startContainer === cinputEl && startOffset <= 1) {
-              e.preventDefault();
-              if(sf.classList.contains('mode-explore'))cvDeselect();else cpClose();
-              let next = pill.nextSibling;
-              if (next && next.nodeType === Node.TEXT_NODE && next.textContent.startsWith('\u00A0')) {
-                next.textContent = next.textContent.substring(1);
-                const newRange = document.createRange();
-                newRange.setStart(next, 0);
-                newRange.collapse(true);
-                selection.removeAllRanges();
-                selection.addRange(newRange);
-              }
-              checkInputText();
-              return;
-            }
-
-            // Case 2: Cursor is in the text node right after the pill
-            let node = startContainer;
-            if (node.nodeType === Node.TEXT_NODE) {
-              let prev = node.previousSibling;
-              while (prev && prev.nodeType === Node.TEXT_NODE && prev.textContent === '') {
-                prev = prev.previousSibling;
-              }
-              if (prev === pill) {
-                // Cursor is right after the non-breaking space (offset 1)
-                if (startOffset === 1 && node.textContent.startsWith('\u00A0')) {
-                  e.preventDefault();
-                  if(sf.classList.contains('mode-explore'))cvDeselect();else cpClose();
-                  node.textContent = node.textContent.substring(1);
-                  const newRange = document.createRange();
-                  newRange.setStart(node, 0);
-                  newRange.collapse(true);
-                  selection.removeAllRanges();
-                  selection.addRange(newRange);
-                  checkInputText();
-                  return;
-                }
-                // Cursor is at offset 0 (directly touching the pill)
-                if (startOffset === 0) {
-                  e.preventDefault();
-                  if(sf.classList.contains('mode-explore'))cvDeselect();else cpClose();
-                  checkInputText();
-                  return;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  });
-}
+// Native contenteditable owns wrapping and atomic Backspace; ranges own insertion at the last caret.
+const cinputEl=sf.querySelector('#sf-cinput'),mentionMenu=sf.querySelector('#sf-mentions');
+let lastCaret=null,mentionRange=null,mentionIndex=0,mentionItems=[],historyState='closed',historyTimer=0;
+const mentionCatalog=()=>[...cutShots().map(s=>({key:'shot:'+s.id,name:s.n,detail:s.desc})),...Object.entries(CHAR_DB).map(([id,c])=>({key:'char:'+id,name:c.name,detail:'Character'})),...Object.entries(SCENES).map(([id,s])=>({key:'location:'+id,name:s.set,detail:s.slug}))];
+function chatFocused(){return sf.querySelector('.copilot').classList.contains('ux-focus');}
+function saveCaret(){const s=getSelection();if(s.rangeCount&&cinputEl.contains(s.anchorNode)){lastCaret=s.getRangeAt(0).cloneRange();}}
+function caretEnd(){const r=document.createRange();r.selectNodeContents(cinputEl);r.collapse(false);return r;}
+function putChip(name,key,committed=chatFocused(),range=null){key=key||name;const old=[...cinputEl.querySelectorAll('.selpill')].find(p=>p.dataset.material===key);if(old){if(committed)delete old.dataset.tentative;return;}
+ if(!committed)cinputEl.querySelectorAll('.selpill[data-tentative]').forEach(p=>p.remove());
+ const p=document.createElement('span');p.className='selpill show';p.contentEditable='false';p.dataset.material=key;p.dataset.name=name;p.textContent='@'+name;if(!committed)p.dataset.tentative='';
+ const r=range||(committed&&lastCaret&&cinputEl.contains(lastCaret.startContainer)?lastCaret.cloneRange():caretEnd());r.deleteContents();r.insertNode(p);r.setStartAfter(p);r.collapse(true);lastCaret=r.cloneRange();
+ if(committed){const s=getSelection();s.removeAllRanges();s.addRange(r);}checkInputText();}
+function checkInputText(){if(!cinputEl)return;const text=cinputEl.textContent.replace(/\u200b/g,'').trim();if(!text&&!cinputEl.querySelector('.selpill'))cinputEl.innerHTML='';cinputEl.classList.toggle('has-text',!!text);requestAnimationFrame(measureOverflow);}
+function closeMention(){mentionMenu.hidden=true;mentionRange=null;mentionItems=[];}
+function paintMentions(){mentionMenu.innerHTML=mentionItems.map((m,i)=>`<button type="button" role="option" aria-selected="${i===mentionIndex}" class="${i===mentionIndex?'on':''}" data-mention-index="${i}"><b>${esc(m.name)}</b><small>${esc(m.detail)}</small></button>`).join('');}
+function updateMention(){saveCaret();const s=getSelection();if(!s.rangeCount||!s.isCollapsed||s.anchorNode?.nodeType!==Node.TEXT_NODE||!cinputEl.contains(s.anchorNode)){closeMention();return;}
+ const text=s.anchorNode.textContent.slice(0,s.anchorOffset),match=text.match(/(?:^|\s)@([^\s@]*)$/);if(!match){closeMention();return;}
+ mentionRange=s.getRangeAt(0).cloneRange();mentionRange.setStart(s.anchorNode,s.anchorOffset-match[1].length-1);mentionItems=mentionCatalog().filter(m=>(m.name+' '+m.detail).toLowerCase().includes(match[1].toLowerCase())).slice(0,design('mention-limit'));if(!mentionItems.length){closeMention();return;}
+ mentionIndex=0;paintMentions();mentionMenu.hidden=false;const r=s.getRangeAt(0).getBoundingClientRect(),bar=sf.querySelector('.cbar').getBoundingClientRect();mentionMenu.style.left=clamp(r.left-bar.left,0,Math.max(0,bar.width-design('mention-width')-design('mention-inset')))+'px';mentionMenu.style.bottom=(bar.bottom-(r.top||cinputEl.getBoundingClientRect().top)+design('mention-gap'))+'px';}
+function insertMention(i){const m=mentionItems[i],r=mentionRange;if(!m||!r)return;closeMention();putChip(m.name,m.key,true,r);cinputEl.focus({preventScroll:true});}
+mentionMenu.addEventListener('pointerdown',e=>{e.preventDefault();const b=e.target.closest('[data-mention-index]');if(b)insertMention(+b.dataset.mentionIndex);});
+document.addEventListener('selectionchange',saveCaret);
+cinputEl.addEventListener('input',()=>{checkInputText();updateMention();});
+cinputEl.addEventListener('focus',()=>{cinputEl.querySelectorAll('.selpill[data-tentative]').forEach(p=>delete p.dataset.tentative);saveCaret();});
+cinputEl.addEventListener('keydown',e=>{if(!mentionMenu.hidden&&['Enter','Escape','ArrowDown','ArrowUp'].includes(e.key)){e.preventDefault();e.stopPropagation();if(e.key==='Escape')closeMention();else if(e.key==='Enter')insertMention(mentionIndex);else{mentionIndex=(mentionIndex+(e.key==='ArrowDown'?1:-1)+mentionItems.length)%mentionItems.length;paintMentions();}return;}
+ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}else if(e.key==='Tab'&&!e.shiftKey){e.preventDefault();sf.querySelector('.cbar .send').focus();}});
+function setHistory(state){historyState=state;sf.classList.toggle('history-peek',state==='peek');sf.classList.toggle('history-pinned',state==='pinned');const b=sf.querySelector('#sf-historyToggle');b.setAttribute('aria-expanded',String(state!=='closed'));b.setAttribute('aria-pressed',String(state==='pinned'));if(state!=='closed')renderChat(false);if(state==='pinned'){hoverWatch=false;keyWatch=false;}updateWatching();}
+function toggleHistory(){clearTimeout(historyTimer);setHistory(historyState==='pinned'?'closed':'pinned');}
+function peekHistory(){clearTimeout(historyTimer);if(historyState!=='pinned')setHistory('peek');}
+function leaveHistory(){clearTimeout(historyTimer);historyTimer=setTimeout(()=>{if(historyState==='peek')setHistory('closed');},design('history-grace'));}
+[sf.querySelector('#sf-historyToggle'),sf.querySelector('.ctrace')].forEach(el=>{el.addEventListener('pointerenter',peekHistory);el.addEventListener('pointerleave',leaveHistory);});
 
 // Copilot chat history (mock — like a normal copilot thread)
 const CHAT=[
@@ -588,10 +414,10 @@ function pushChat(role,text,animate){
   const box=sf.querySelector('#sf-ctraceInner .cmsg:last-child .b');
   const holder=document.createElement('div');holder.innerHTML=text;
   const plain=holder.textContent;box.textContent='';box.setAttribute('aria-live','polite');
-  let i=0;const timer=setInterval(()=>{box.textContent=plain.slice(0,i+=3);
+  let i=0;const timer=setInterval(()=>{box.textContent=plain.slice(0,i+=design('chat-stream-step'));
     const body=sf.querySelector('#sf-ctraceBody');body.scrollTop=body.scrollHeight;
     if(i>=plain.length){clearInterval(timer);box.innerHTML=text;}
-  },24);
+  },design('chat-stream-interval'));
 }
 // Decision 4: the handbook owns the theme pair; toggleTheme is intentionally removed.
 function bMode(el){
@@ -608,31 +434,13 @@ function bMode(el){
   }else{
     app.classList.remove('mode-explore');app.classList.add('mode-create');
     cvClearPill();cvCopilot(false);   // default Create → no @tag, no shadow (cpClose above already deselected)
-    renderView();
-    requestAnimationFrame(()=>{layoutStrip();scrollToShot(sel,true);updateHero();});
+    renderView();updateWatching();
+    requestAnimationFrame(()=>{layoutStrip();keepPlayhead(true);updateHero();});
   }
 }
-function startLogStream(){renderChat(false);}   // on copilot focus → show the thread
-/* clicking the box's blank / tag / placeholder → put the caret at the END, not jumping before the pill */
+/* The blank padding is part of the bar; its invisible side gutters are not. */
 const _cbar=sf.querySelector('.cbar');
-if(_cbar)_cbar.addEventListener('pointerdown',e=>{
-  if(e.target.id==='sf-cinput') return;                        // clicking the editable text → default caret
-  if(e.target.closest && e.target.closest('.send')) return; // send button → normal
-  const ci=sf.querySelector('#sf-cinput');
-  const onPill = !!(e.target.closest && e.target.closest('.selpill'));
-  // When the box is already open, a click on any non-text chrome (placeholder text, blank padding —
-  // anything but the pill) should DISMISS it. The placeholder is a separate <span>, so without this
-  // it used to fall through and re-focus the input, which is why it took a second click to blur.
-  if(document.activeElement===ci && !onPill){
-    e.preventDefault();
-    UX.blur(sf);
-    return;
-  }
-  e.preventDefault();                                       // closed (or clicking the pill) → caret to end
-  ci.focus();
-  const r=document.createRange(); r.selectNodeContents(ci); r.collapse(false);
-  const s=getSelection(); s.removeAllRanges(); s.addRange(r);
-});
+_cbar.addEventListener('pointerdown',e=>{if(e.target===cinputEl||e.target.closest('.send,.mention-menu'))return;e.preventDefault();cinputEl.focus({preventScroll:true});const r=caretEnd(),s=getSelection();s.removeAllRanges();s.addRange(r);saveCaret();});
 
 /* ============================================================
    EXPLORE · infinite freeform canvas engine
@@ -676,7 +484,7 @@ const CV_ITEMS=[
  {id:'workflow',type:'img',tag:'visual',title:'Workflow Overview · reference',g:bg('workflow-overview-board.jpg'),phase:'Seed'},
  {id:'seedboard',type:'img',tag:'visual',title:'Story Seed Board',g:bg('story-seed-board.jpg'),phase:'Seed'}
 ].map((it,order)=>({...it,order})).sort((a,b)=>PIPELINE.indexOf(a.phase)-PIPELINE.indexOf(b.phase)||a.order-b.order)
- .map(({order,...it},i)=>({...it,x:-860+(i%6)*360,y:-330+Math.floor(i/6)*290}));
+ .map(({order,...it},i)=>({...it,x:design('canvas-origin-x')+(i%design('canvas-columns'))*design('canvas-column-pitch'),y:design('canvas-origin-y')+Math.floor(i/design('canvas-columns'))*design('canvas-row-pitch')}));
 
 const CV_TAGN={char:'Character',mood:'Mood Board',visual:'Visual Ref',note:'Note'};
 
@@ -706,8 +514,8 @@ function cvRender(){
 
 /* ---- selection ↔ copilot @target ---- */
 function cvPillName(it){return it.title||(it.type==='img'?'Reference':'Note');}
-function cvSetPill(name){const p=sf.querySelector('#sf-selpill');if(!p)return;p.classList.add('show');p.textContent='@'+name;if(typeof checkInputText==='function')checkInputText();}
-function cvClearPill(){const p=sf.querySelector('#sf-selpill');if(!p)return;p.classList.remove('show');p.textContent='';if(typeof checkInputText==='function')checkInputText();}
+function cvSetPill(name,key){putChip(name,key);}
+function cvClearPill(){cinputEl.querySelectorAll('.selpill[data-tentative]').forEach(p=>p.remove());checkInputText();}
 function cvCopilot(on){const c=sf.querySelector('.cbar');if(c)c.classList.toggle('cv-active',!!on);}
 
 function cvSelect(id,focus){
@@ -730,12 +538,12 @@ function cvCenterOn(id){
   const el=cvInner.querySelector(`.ci[data-id="${id}"]`), it=CV_ITEMS.find(x=>x.id===id);
   if(!el||!it)return;
   const w=el.offsetWidth,h=el.offsetHeight,r=cvVp.getBoundingClientRect();
-  cvInner.style.transition='transform .42s cubic-bezier(.16,1,.3,1)';
+  cvInner.classList.add('is-centering');
   cvUserMoved=true;
   cvPan.x=r.width/2-(it.x+w/2)*cvScale;
   cvPan.y=r.height/2-(it.y+h/2)*cvScale;
   cvApply();
-  setTimeout(()=>{cvInner.style.transition='';},440);
+  setTimeout(()=>{cvInner.classList.remove('is-centering');},design('canvas-center-release'));
 }
 
 function cvBindItem(el,it){
@@ -745,7 +553,7 @@ function cvBindItem(el,it){
     const wasSel=(cvSelId===it.id);
     const sx=e.clientX, sy=e.clientY, ox=it.x, oy=it.y; let moved=false;
     el.classList.add('dragging');
-    const mv=ev=>{if(Math.abs(ev.clientX-sx)+Math.abs(ev.clientY-sy)>4){moved=true;cvUserMoved=true;el.classList.remove('zoom');}
+    const mv=ev=>{if(Math.abs(ev.clientX-sx)+Math.abs(ev.clientY-sy)>design('pick-distance')){moved=true;cvUserMoved=true;el.classList.remove('zoom');}
       it.x=ox+(ev.clientX-sx)/cvScale; it.y=oy+(ev.clientY-sy)/cvScale;
       el.style.left=it.x+'px'; el.style.top=it.y+'px';};
     const up=ev=>{el.classList.remove('dragging');document.removeEventListener('pointermove',mv);document.removeEventListener('pointerup',up);document.removeEventListener('pointercancel',up);
@@ -773,7 +581,7 @@ cvVp.addEventListener('wheel',e=>{
   if(e.ctrlKey||e.metaKey){
     const r=cvVp.getBoundingClientRect(), mx=e.clientX-r.left, my=e.clientY-r.top;
     const cx=(mx-cvPan.x)/cvScale, cy=(my-cvPan.y)/cvScale;
-    cvScale=Math.min(2.5,Math.max(0.1,cvScale*Math.exp(-e.deltaY*0.0015)));
+    cvScale=Math.min(design('canvas-scale-max'),Math.max(design('canvas-scale-min'),cvScale*Math.exp(-e.deltaY*design('canvas-wheel-rate'))));
     cvPan.x=mx-cx*cvScale; cvPan.y=my-cy*cvScale;
   }else{cvPan.x-=e.deltaX; cvPan.y-=e.deltaY;}
   cvApply();
@@ -782,7 +590,7 @@ cvVp.addEventListener('wheel',e=>{
 function cvZoom(factor){
   cvUserMoved=true;
   const r=cvVp.getBoundingClientRect(),mx=r.width/2,my=r.height/2;
-  const next=Math.min(2.5,Math.max(.1,cvScale*factor));
+  const next=Math.min(design('canvas-scale-max'),Math.max(design('canvas-scale-min'),cvScale*factor));
   cvPan.x=mx-(mx-cvPan.x)*next/cvScale;cvPan.y=my-(my-cvPan.y)*next/cvScale;
   cvScale=next;cvApply();
 }
@@ -792,8 +600,8 @@ function cvFit(){
   let a=1e9,b=1e9,c=-1e9,d=-1e9;
   els.forEach(el=>{const x=parseFloat(el.style.left),y=parseFloat(el.style.top),w=el.offsetWidth,h=el.offsetHeight;
     a=Math.min(a,x);b=Math.min(b,y);c=Math.max(c,x+w);d=Math.max(d,y+h);});
-  const pad=90, r=cvVp.getBoundingClientRect();
-  cvScale=Math.min(1.3,Math.max(0.1,Math.min(r.width/(c-a+pad*2),r.height/(d-b+pad*2))));
+  const pad=design('canvas-fit-pad'), r=cvVp.getBoundingClientRect();
+  cvScale=Math.min(design('canvas-fit-max'),Math.max(design('canvas-scale-min'),Math.min(r.width/(c-a+pad*2),r.height/(d-b+pad*2))));
   cvPan.x=r.width/2-(a+(c-a)/2)*cvScale;
   cvPan.y=r.height/2-(b+(d-b)/2)*cvScale;
   cvApply();
@@ -839,7 +647,7 @@ function cvFocus(id){
   }));
   fo.classList.add('show');
   cvSetPill(cvPillName(it)); cvCopilot(true);
-  const ci=sf.querySelector('#sf-cinput'); // UX owns the copilot history.
+  const ci=sf.querySelector('#sf-cinput'); // Focus only changes the bar; history has its own state.
   if(ci){ci.focus();const r=document.createRange();r.selectNodeContents(ci);r.collapse(false);const s=getSelection();s.removeAllRanges();s.addRange(r);}
 }
 function cvUnfocus(){
@@ -871,13 +679,13 @@ sf.addEventListener('click',e=>{
     case 'bMode':bMode(el);break;
     case 'cvFilter':cvFilter(v,el);break;
     case 'cvFit':cvFit();break;
-    case 'cvZoomOut':cvZoom(.85);break;
-    case 'cvZoomIn':cvZoom(1.15);break;
+    case 'cvZoomOut':cvZoom(design('canvas-zoom-out'));break;
+    case 'cvZoomIn':cvZoom(design('canvas-zoom-in'));break;
     case 'setTrack':setTrack(v,el);break;
     case 'setLayer':setLayer(v,el);break;
     case 'setZoom':setZoom(v,el);break;
-    case 'pickClip':pickClip(el,+v);break;
-    case 'pickShot':pickShot(+v);break;
+    case 'pickClip':if(e.detail===0)pickClip(el,+v);break;
+    case 'pickShot':if(e.detail===0){setTime(unitStart(+v));pickShot(+v);}break;
     case 'pickTl':pickTl(+v);break;
     case 'selShot':selShot(+v,el);break;
     case 'selScript':selScript(el.dataset.type,v,el);break;
@@ -885,32 +693,30 @@ sf.addEventListener('click',e=>{
     case 'mediaPreview':mediaPreview(el.dataset.bg,el.dataset.caption,el.dataset.kind);break;
     case 'clipPreviewClick':clipPreviewClick();break;
     case 'toggleTlMenu':toggleTlMenu(e);break;
-    case 'togglePlayback':togglePlayback();break;
+    case 'transport':transport();break;
+    case 'toggleHistory':toggleHistory();break;
     case 'chooseTake':chooseTake(v);break;
     case 'send':send();break;
     case 'cpClose':cpClose();break;
     case 'cvUnfocus':cvUnfocus();break;
   }
 });
-sf.addEventListener('input',e=>{if(e.target.id==='sf-playerSeek'){playback.time=Number(e.target.value);playerPaint();}});
 const timeline=sf.querySelector('.timeline'),copilot=sf.querySelector('.copilot');
-// Decision 5: geometric hit areas and the 500ms lock are owned by UX, not this sample.
-UX.hitRegion(timeline,{
-  enter:()=>[sf.querySelector('.tlrow')],
-  exit:()=>[...sf.querySelectorAll('.tlctl,.filmstrip,.hero,.tlhead,.tlmenu.show')],
-  bounds:true,
-  enabled:()=>!cvFocusId&&sf.classList.contains('mode-create')&&!copilot.classList.contains('ux-focus')
-});
-UX.hitRegion(copilot,{enter:()=>[sf.querySelector('.cbar')],exit:()=>[sf.querySelector('.cbar')]});
-sf.querySelector('#sf-cinput').addEventListener('focus',()=>UX.focus(copilot));
-// One held owner spans input, send, history and preview-preserving data-keep controls.
-copilot.addEventListener('ux:blur',()=>{
-  if(copilot.contains(document.activeElement))document.activeElement.blur();
-});
+// Attention uses stable visible bounds, never the bounds of tools that are appearing.
+UX.hitRegion(timeline,{enter:()=>[timeline],exit:()=>[timeline,sf.querySelector('.tlmenu.show')],enabled:()=>!cvFocusId&&sf.classList.contains('mode-create')&&historyState!=='pinned'});
+UX.hitRegion(copilot,{enter:()=>[sf.querySelector('.cbar'),sf.querySelector('#sf-historyToggle'),sf.querySelector('.ctrace')],exit:()=>[sf.querySelector('.cbar'),sf.querySelector('#sf-historyToggle'),sf.querySelector('.ctrace')]});
+timeline.addEventListener('ux:hover',()=>{clearTimeout(watchTimer);hoverWatch=true;updateWatching();});
+timeline.addEventListener('ux:rest',()=>{clearTimeout(watchTimer);watchTimer=setTimeout(()=>{hoverWatch=false;updateWatching();},design('watch-grace'));});
+timeline.addEventListener('focusin',()=>{if(timeline.matches(':focus-visible')||timeline.querySelector(':focus-visible')){keyWatch=true;updateWatching();}});
+timeline.addEventListener('focusout',()=>{requestAnimationFrame(()=>{keyWatch=timeline.contains(document.activeElement);updateWatching();});});
+timeline.addEventListener('keydown',e=>{if(e.code==='Space'&&!e.target.matches('button,[contenteditable]')){e.preventDefault();e.stopPropagation();transport();}});
+cinputEl.addEventListener('focus',()=>UX.focus(copilot));
+copilot.addEventListener('ux:focus',()=>{cinputEl.querySelectorAll('.selpill[data-tentative]').forEach(p=>delete p.dataset.tentative);});
+copilot.addEventListener('ux:blur',()=>{if(copilot.contains(document.activeElement))document.activeElement.blur();closeMention();if(historyState==='peek')setHistory('closed');});
 copilot.addEventListener('keydown',e=>{if(e.key==='Escape'){UX.blur(sf);if(cvFocusId)cvUnfocus();}});
-sf.querySelector('.timeline').setAttribute('data-keep','');
-sf.querySelector('.cpanel').setAttribute('data-keep','');
-sf.querySelector('.cv-focus-stage').setAttribute('data-keep','');
+timeline.setAttribute('data-keep','');sf.querySelector('.cpanel').setAttribute('data-keep','');sf.querySelector('.cv-focus-stage').setAttribute('data-keep','');
+sf.querySelector('#sf-monitorPicture').addEventListener('pointerdown',e=>{if(chatFocused())e.preventDefault();});
+const overflowObserver=new ResizeObserver(()=>{measureOverflow();measureMonitor();});[cinputEl,sf.querySelector('#sf-bview'),sf.querySelector('#sf-cpBody'),sf.querySelector('#sf-browser')].forEach(el=>overflowObserver.observe(el));
 // Keyboard can reach every material without requiring a pointer or a hover.
 const keyboardItems=new MutationObserver(()=>{
   sf.querySelectorAll('.ci,.frame,.clip,.selel,.shot-frame,.unit-tile,.unit-head,.cp-sec,.ref-thumb,.tlname,.mi').forEach(el=>{
@@ -935,12 +741,12 @@ Object.defineProperty(window,'SF_DATA',{enumerable:true,configurable:false,get:(
  levels:Object.fromEntries(['Film','Act','Scene','Beat','Shot'].map(level=>[level,unitsFor(level,'A')])),
  tracks:Object.fromEntries(VKEYS.map(k=>[k,tracksFor(k)])),sourceTracks:SOURCE_TRACKS,script:SCRIPT,
  takes:Object.fromEntries(SHOT_LIST.map(s=>[s.id,TAKES[s.id].map(t=>({...t,selected:t.id===selectedTakes[s.id]}))])),
- pipeline:PIPELINE,explore:CV_ITEMS,selection:{cut:ver,layer,zoom:zoomLevel,track}
+ pipeline:PIPELINE,explore:CV_ITEMS,selection:{cut:ver,layer,zoom:zoomLevel,track,sel,time:playback.time,running:playback.running,shotId:currentShot().id,activeSel,history:historyState},timeline:{slotWidth:SLOT_W,pxPerSec:PX_PER_SEC,pad:padX,videoX:videoTimeToX(playback.time),laneX:laneTimeToX(playback.time),exampleVideoX:videoTimeToX(10.5,recordShots('A'),VIDEO_PAD),laneHeights:LANE_HEIGHTS}
 })))});
 
 // Initial setup and event listeners execution
 setCutLabel();buildStrip();renderView();renderChat(false);
 cvInit();cvDeselect();   // default Explore → no @target until a block is clicked
 requestAnimationFrame(()=>{layoutStrip();scrollToShot(sel,true);updateHero();});
-window.addEventListener('resize',()=>{layoutStrip();scrollToShot(sel,true);updateHero();const width=sf.clientWidth;if(width!==cvLastWidth){cvLastWidth=width;if(!cvUserMoved&&sf.matches('.mode-explore'))cvFit();}});
+window.addEventListener('resize',()=>{layoutStrip();keepPlayhead();updateHero();measureMonitor();const width=sf.clientWidth;if(width!==cvLastWidth){cvLastWidth=width;if(!cvUserMoved&&sf.matches('.mode-explore'))cvFit();}});
 })();

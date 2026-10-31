@@ -1,7 +1,7 @@
 <section class="wrap sec" id="workspace">
-  <div class="sec-h"><div><div class="k">05 / WORKSPACE · 复刻 STORY FORGE</div><h2>工作台</h2></div><p>Story Forge 的完整工作台。Explore 里拖动和缩放画布，用左侧按钮筛选素材；Create 里切换剧本、分镜、素材三层和五级缩放，点剧本元素打开右侧面板，切换时间线和音视频轨道，点对话框写提示并发送。</p></div>
+  <div class="sec-h"><div><div class="k">05 / WORKSPACE · 复刻 STORY FORGE</div><h2>工作台</h2></div><p>Story Forge 的完整工作台。Explore 里拖动和缩放画布，用左侧按钮筛选素材；Create 里切换剧本、故事板、影片三层和全片、幕、场、节拍、镜头五级范围，拖动播放头或播放定时静帧预览，在对话框光标处引用多个素材；悬停历史按钮预览，点击固定。</p></div>
   <div class="sf mode-explore" id="sf" data-scope="sf" data-lock>
-    <div class="titlebar" data-cmp data-nofocus data-passive><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><div class="proj">STATIC</div><div class="bctl"><svg class="bctl-bg" viewBox="0 0 207 42" preserveAspectRatio="none" aria-hidden="true"><defs><filter id="sf-bctlRim" x="-40%" y="-40%" width="180%" height="180%" color-interpolation-filters="sRGB"><feComponentTransfer in="SourceAlpha"><feFuncA type="table" tableValues="1 0"/></feComponentTransfer><feGaussianBlur stdDeviation="4"/><feOffset dx="0" dy="-5" result="o"/><feFlood/><feComposite in2="o" operator="in"/><feComposite in2="SourceAlpha" operator="in"/><feMerge><feMergeNode in="SourceGraphic"/><feMergeNode/></feMerge></filter></defs><path class="bctl-path" filter="url(#sf-bctlRim)" d="M0,0 C7,0 14,7 14,14 L14,26 A16,16 0 0,0 30,42 L177,42 A16,16 0 0,0 193,26 L193,14 C193,7 200,0 207,0 Z"/></svg><button type="button" class="on" data-sf-call="bMode" data-mode="explore">Explore</button><button type="button" data-sf-call="bMode" data-mode="create">Create</button></div></div>
+    <div class="titlebar" data-cmp data-nofocus data-passive><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><div class="proj">STATIC</div><div class="bctl"><svg class="bctl-bg" viewBox="0 0 207 42" preserveAspectRatio="none" aria-hidden="true"><defs><filter id="sf-bctlRim" color-interpolation-filters="sRGB"><feComponentTransfer in="SourceAlpha"><feFuncA type="table" tableValues="1 0"/></feComponentTransfer><feGaussianBlur/><feOffset dx="0" result="o"/><feFlood/><feComposite in2="o" operator="in"/><feComposite in2="SourceAlpha" operator="in"/><feMerge><feMergeNode in="SourceGraphic"/><feMergeNode/></feMerge></filter></defs><path class="bctl-path" filter="url(#sf-bctlRim)" d="M0,0 C7,0 14,7 14,14 L14,26 A16,16 0 0,0 30,42 L177,42 A16,16 0 0,0 193,26 L193,14 C193,7 200,0 207,0 Z"/></svg><button type="button" class="on" data-sf-call="bMode" data-mode="explore">Explore</button><button type="button" data-sf-call="bMode" data-mode="create">Create</button></div></div>
 
     <!-- ===== EXPLORE · full-bleed infinite canvas, sits beneath all chrome ===== -->
     <div class="explore" id="sf-explore">
@@ -34,6 +34,7 @@
           <div class="bpanel">
             <div class="b-main">
               <div class="bfade t"></div>
+              <div class="monitor" hidden><div class="monitor-picture" id="sf-monitorPicture" data-sf-call="selShot" data-value="0" role="button" tabindex="0" aria-label="当前镜头"></div><div class="monitor-info"><span id="sf-monitorTime"></span><span id="sf-monitorName"></span><span id="sf-monitorNote"></span></div></div>
               <div class="bview" id="sf-bview"></div>
               <div class="bfade b"></div>
             </div>
@@ -41,33 +42,34 @@
         </div></div>
 
       <div class="timeline" data-cmp data-nofocus data-live tabindex="0" aria-label="时间线">
-        <div class="tlhead">
-          <div class="tlname" id="sf-tlname" data-sf-call="toggleTlMenu"><span id="sf-tlnameLabel">Timeline A</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div>
-          <div class="tltrack" id="sf-tltrack">
-            <button class="tt" data-track="graphics" data-sf-call="setTrack" data-value="graphics" aria-label="图形轨道"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6.5V5h14v1.5"/><path d="M12 5v14"/><path d="M9.2 19h5.6"/></svg></button>
-            <button class="tt on" data-track="video" data-sf-call="setTrack" data-value="video" aria-label="视频轨道"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="13" rx="2.2"/><path d="M10.5 9.2l4 2.8-4 2.8z" fill="currentColor" stroke="none"/></svg></button>
-            <button class="tt" data-track="audio" data-sf-call="setTrack" data-value="audio" aria-label="音频轨道"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11v2M8 8.5v7M12 5v14M16 8.5v7M20 11v2"/></svg></button>
-          </div>
-        </div>
-        <div class="tlmenu" id="sf-tlmenu"></div>
         <div class="tlctl">
           <div class="seg" id="sf-layerSeg">
             <button type="button" class="on" data-sf-call="setLayer" data-value="script">剧本</button>
-            <button type="button" data-sf-call="setLayer" data-value="storyboard">分镜</button>
-            <button type="button" data-sf-call="setLayer" data-value="movie">影片素材</button>
+            <button type="button" data-sf-call="setLayer" data-value="storyboard">故事板</button>
+            <button type="button" data-sf-call="setLayer" data-value="movie">影片</button>
           </div>
+          <div class="tlhead">
+          <div class="tlname" id="sf-tlname" data-sf-call="toggleTlMenu"><span id="sf-tlnameLabel">Timeline A</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div>
+          <div class="tltrack" id="sf-tltrack">
+            <button class="tt" data-track="graphics" data-sf-call="setTrack" data-value="graphics" aria-label="图形轨道"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6.5V5h14v1.5"/><path d="M12 5v14"/><path d="M9.2 19h5.6"/></svg></button>
+            <button class="tt on" data-track="video" data-sf-call="setTrack" data-value="video" aria-label="视频轨道"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="13" rx="2.2"/><path d="M10.5 9.2l4 2.8-4 2.8z" fill="currentColor" stroke="none"/></svg></button>
+            <button class="tt" data-track="audio" data-sf-call="setTrack" data-value="audio" aria-label="音频轨道"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11v2M8 8.5v7M12 5v14M16 8.5v7M20 11v2"/></svg></button>
+          </div>
+          <button type="button" class="transport" id="sf-transport" data-sf-call="transport" aria-label="播放" aria-pressed="false">▶</button>
+          <div class="tlmenu" id="sf-tlmenu"></div>
+        </div>
           <div class="seg" id="sf-zoomSeg">
             <button type="button" data-sf-call="setZoom" data-value="Film">全片</button>
-            <button type="button" data-sf-call="setZoom" data-value="Act">幕级</button>
-            <button type="button" data-sf-call="setZoom" data-value="Scene">场景级</button>
+            <button type="button" data-sf-call="setZoom" data-value="Act">幕</button>
+            <button type="button" data-sf-call="setZoom" data-value="Scene">场</button>
             <button type="button" data-sf-call="setZoom" data-value="Beat">节拍</button>
-            <button type="button" class="on" data-sf-call="setZoom" data-value="Shot">镜头级</button>
+            <button type="button" class="on" data-sf-call="setZoom" data-value="Shot">镜头</button>
           </div>
         </div>
 
         <div class="tlrow">
           <div class="stripwrap"><div class="filmstrip" id="sf-strip">
-            <div class="filmtrack" id="sf-ftrack">
+            <div class="filmtrack" id="sf-ftrack"><div class="playhead" id="sf-playhead" aria-hidden="true"></div>
               <div class="perfbar top" id="sf-perfTop"></div>
               <div class="frames" id="sf-frames"></div>
               <div class="perfbar bot" id="sf-perfBot"></div>
@@ -79,6 +81,7 @@
       </div>
 
       <div class="copilot" data-cmp data-hold>
+        <div class="history-gap"><button type="button" class="history-toggle" id="sf-historyToggle" aria-label="聊天记录" aria-expanded="false" aria-pressed="false" data-sf-call="toggleHistory"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button></div>
         <div class="ctrace">
           <div class="cglass"></div>
           <div class="ctrace-body" id="sf-ctraceBody" tabindex="-1">
@@ -86,8 +89,8 @@
           </div>
         </div>
         <div class="cbar">
-          <div id="sf-cinput" contenteditable="true" role="textbox" aria-multiline="true" aria-label="告诉 AI 你想要什么"><span contenteditable="false" class="selpill" id="sf-selpill"></span><span contenteditable="false" class="cplaceholder">告诉 AI 你想要什么，其余交给它</span></div>
-          <button class="send" aria-label="发送" data-keep data-sf-call="send"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+          <div id="sf-cinput" contenteditable="true" role="textbox" aria-multiline="true" aria-label="告诉 AI 你想要什么" data-ph="告诉 AI 你想要什么，其余交给它"></div><div class="mention-menu" id="sf-mentions" role="listbox" hidden></div>
+          <button class="send" aria-label="发送" data-keep data-sf-call="send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
         </div>
       </div>
     </div>
@@ -98,9 +101,9 @@
 
   <div class="sub">三种让位的判据 <small>Story Forge 里的真实情况</small></div>
   <div class="grid g3">
-    <div class="card"><div class="b">挤占</div><p class="sm mute" style="margin:calc(2px*var(--y)) 0 calc(4px*var(--y))">两者要同时看、互相对照。</p><p class="xs">上下文面板从 0 长到 360px，阅读列让出空间，整对重新居中，并被 1040px 封顶。选中的音轨从 30 变 46px，其他压到 26px。</p></div>
-    <div class="card"><div class="b">覆盖</div><p class="sm mute" style="margin:calc(2px*var(--y)) 0 calc(4px*var(--y))">临时查看，用完就走。</p><p class="xs">聊天历史是毛玻璃层，盖在内容上。同时给底下内容追加 230px 滚动余量，内容能滚出遮挡；预览素材则把居中范围让到历史上方。</p></div>
-    <div class="card"><div class="b">退场</div><p class="sm mute" style="margin:calc(2px*var(--y)) 0 calc(4px*var(--y))">两者争同一块位置。</p><p class="xs">对话聚焦时，时间线高度收到 0 并下移淡出；Explore 模式时间线完全不出现。</p></div>
+    <div class="card"><div class="b">挤占</div><p class="sm mute sf-giveway-note">两者要同时看、互相对照。</p><p class="xs">上下文面板打开时，阅读列让位；观看时监看视窗放大，侧栏暂时让开。多行输入把时间线上推，轨道行高不随选择改变。</p></div>
+    <div class="card"><div class="b">覆盖</div><p class="sm mute sf-giveway-note">临时查看，用完就走。</p><p class="xs">悬停历史按钮，聊天记录以毛玻璃浮层盖在时间线上；移开即收起。素材预览使用半透明黑色影院背景，不改变正文的滚动余量。</p></div>
+    <div class="card"><div class="b">退场</div><p class="sm mute sf-giveway-note">两者争同一块位置。</p><p class="xs">点击历史按钮固定记录，时间线收起；再次点击恢复。仅聚焦对话不会隐藏时间线，Explore 模式仍不显示时间线。</p></div>
   </div>
 </section>
 

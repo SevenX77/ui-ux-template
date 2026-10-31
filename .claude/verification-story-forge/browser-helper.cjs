@@ -8,7 +8,7 @@ async function open(browser,viewport={width:1440,height:1080},opts={}) {
  await context.route('https://fonts.googleapis.com/**',r=>r.fulfill({status:200,contentType:'text/css',body:''}));
  const page=await context.newPage();const errors=[];
  page.on('pageerror',e=>errors.push({kind:'pageerror',text:e.message}));page.on('console',m=>{if(m.type()==='error')errors.push({kind:'console',text:m.text()})});
- page.setDefaultTimeout(6000);await page.goto('http://127.0.0.1:8793/ui-handbook.html',{waitUntil:'load'});
+ page.setDefaultTimeout(6000);await page.goto('http://127.0.0.1:8793/templates/html/ui-handbook.html',{waitUntil:'load'});
  await page.evaluate(()=>{setDev('web');setLang('en',true)});return {context,page,errors};
 }
 async function click(page,selector){const loc=page.locator(selector).first();await loc.scrollIntoViewIfNeeded();await loc.click();}

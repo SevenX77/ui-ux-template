@@ -6,14 +6,14 @@
     ],
     [
       "^已切换范围：全片$",
-      "Scope: Film"
+      "Scope: Full film"
     ],
     [
-      "^已切换范围：幕级$",
+      "^已切换范围：幕$",
       "Scope: Act"
     ],
     [
-      "^已切换范围：场景级$",
+      "^已切换范围：场$",
       "Scope: Scene"
     ],
     [
@@ -21,7 +21,7 @@
       "Scope: Beat"
     ],
     [
-      "^已切换范围：镜头级$",
+      "^已切换范围：镜头$",
       "Scope: Shot"
     ],
     [
@@ -85,19 +85,20 @@
     "素材筛选": "Material filters",
     "探索": "Explore",
     "剧本": "Script",
-    "分镜": "Storyboard",
-    "影片素材": "Footage",
-    "全片": "Film",
-    "幕级": "Act",
+    "故事板": "Storyboard",
+    "影片": "Film",
+    "全片": "Full film",
+    "幕": "Act",
     "节拍": "Beat",
-    "场景级": "Scene",
-    "镜头级": "Shot",
+    "场": "Scene",
     "全部素材": "All",
     "角色素材": "Characters",
     "情绪板": "Mood Board",
     "视觉参考": "Visual Refs",
     "创意笔记": "Notes",
     "关闭上下文面板": "Close context panel",
+    "当前镜头": "Current shot",
+    "聊天记录": "Chat history",
     "关闭预览": "Close preview",
     "告诉 AI 你想要什么，其余交给它": "Tell AI what you want — leave the rest to it",
     "图形轨道": "Graphics track",
@@ -122,6 +123,7 @@
     "字幕": "Subtitle",
     "图形": "Graphics",
     "点击画面查看提示词和参数": "click the frame for its prompt & settings",
+    "点击监看画面查看提示词和参数": "Click the monitor for the prompt and settings",
     "选择镜头、场景组或剧本文字，查看它的全部素材。": "Select a shot, a scene group, or a script line to see everything it was built from.",
     "输入一个想法…": "Type a thought…",
     "纯白": "Pure",
@@ -425,7 +427,7 @@
     "说明原因，并给一个下一步。": "Say why, and offer a next step.",
     "＋ 新建任务": "＋ New task",
     "05 / WORKSPACE · 复刻 STORY FORGE": "05 / WORKSPACE · STORY FORGE REPRODUCED",
-    "Story Forge 的完整工作台。Explore 里拖动和缩放画布，用左侧按钮筛选素材；Create 里切换剧本、分镜、素材三层和五级缩放，点剧本元素打开右侧面板，切换时间线和音视频轨道，点对话框写提示并发送。": "The complete Story Forge workspace. In Explore, drag and zoom the canvas and filter assets from the left rail. In Create, switch between the script, storyboard and footage layers and the five zoom levels, click a script element to open the side panel, switch timelines and audio and video tracks, and click the chat to write a prompt and send it.",
+    "Story Forge 的完整工作台。Explore 里拖动和缩放画布，用左侧按钮筛选素材；Create 里切换剧本、故事板、影片三层和全片、幕、场、节拍、镜头五级范围，拖动播放头或播放定时静帧预览，在对话框光标处引用多个素材；悬停历史按钮预览，点击固定。": "The complete Story Forge workspace. In Explore, drag and zoom the canvas and filter materials from the left rail. In Create, switch between Script, Storyboard and Film at Full film, Act, Scene, Beat or Shot scope. Drag the playhead or play the timed still preview. Mention multiple materials at the chat caret; hover the history button to peek, or click to pin it.",
     "留白": "Silence",
     "CRT 冷光": "CRT cold light",
     "参数": "Parameters",
@@ -456,11 +458,11 @@
     "三种让位的判据": "How to pick one of three",
     "Story Forge 里的真实情况": "As it works in Story Forge",
     "两者要同时看、互相对照。": "Both must be read and compared.",
-    "上下文面板从 0 长到 360px，阅读列让出空间，整对重新居中，并被 1040px 封顶。选中的音轨从 30 变 46px，其他压到 26px。": "The context panel grows 0 to 360px, the reading column yields, the pair recentres, capped at 1040px. The selected track goes 30 to 46px, others press to 26px.",
+    "上下文面板打开时，阅读列让位；观看时监看视窗放大，侧栏暂时让开。多行输入把时间线上推，轨道行高不随选择改变。": "The reading column yields to an open context panel. While watching, the monitor grows and the side panel gives way. Multiline input pushes the timeline up; selecting a clip never changes lane height.",
     "临时查看，用完就走。": "A temporary look, then gone.",
-    "聊天历史是毛玻璃层，盖在内容上。同时给底下内容追加 230px 滚动余量，内容能滚出遮挡；预览素材则把居中范围让到历史上方。": "Chat history is a glass layer over content. Content gains 230px of scroll room so it can clear the layer; previews recentre above the history.",
+    "悬停历史按钮，聊天记录以毛玻璃浮层盖在时间线上；移开即收起。素材预览使用半透明黑色影院背景，不改变正文的滚动余量。": "Hover the history button to peek at a glass overlay above the timeline; it closes when the pointer leaves. Media previews use a translucent black cinema backdrop without changing content scroll room.",
     "两者争同一块位置。": "Both claim the same place.",
-    "对话聚焦时，时间线高度收到 0 并下移淡出；Explore 模式时间线完全不出现。": "With chat focused the timeline collapses, drops and fades; Explore mode has none.",
+    "点击历史按钮固定记录，时间线收起；再次点击恢复。仅聚焦对话不会隐藏时间线，Explore 模式仍不显示时间线。": "Click the history button to pin history and collapse the timeline; click again to restore it. Chat focus alone does not hide the timeline. Explore still has no timeline.",
     "一样大的格子看不出重点。这里是 Fintech 式总览，以及六种基本布局。": "Equal boxes show no priority. A Fintech-style overview and six base layouts.",
     "收入趋势": "Income trend",
     "7天": "7d",
