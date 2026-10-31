@@ -87,12 +87,15 @@ const UX=(()=>{
   function blur(s){const d=get(s);if(!d.focus)return;const c=d.focus;d.focus=null;d.quiet=false;c.classList.remove('ux-focus');focused.delete(s);paint(s);emit(c,'blur')}
   function focus(c){if(c.hasAttribute('data-passive'))return;const s=scopeOf(c),d=get(s);if(d.focus===c)return;blur(s);d.focus=c;d.quiet=touch()&&!holds(c);c.classList.add('ux-focus');focused.add(s);paint(s);emit(c,'focus')}
   const outside=t=>t.closest&&t.closest('#scrim,.bar,.rail,.pnav,.toast-host');
-  document.addEventListener('pointerdown',e=>{
-    if(outside(e.target))return;
+  const focusFromTap=e=>{
+    if(outside(e.target)||e.button>0)return;
+    const dragged=e.target.closest?.('[data-dragged]');if(e.type==='click'&&dragged){delete dragged.dataset.dragged;return}
     const c=cmpOf(e.target),keep=e.target.closest&&e.target.closest('[data-keep]');
     [...focused].forEach(s=>{const d=get(s);if(d.focus.contains(e.target))return;if(keep&&s.contains(keep))return;if(c&&scopeOf(c)===s&&!c.hasAttribute('data-nofocus')&&lively(c))return;blur(s)});
     if(c&&!c.hasAttribute('data-nofocus')&&lively(c))focus(c);
-  },true);
+  };
+  document.addEventListener('pointerdown',e=>{if(e.pointerType!=='touch')focusFromTap(e)},true);
+  document.addEventListener('click',e=>{if(e.pointerType==='touch'||e.sourceCapabilities?.firesTouchEvents||e.detail===0)focusFromTap(e)},true);
   /* 切走窗口再回来时浏览器会把焦点还给输入框，这不算用户聚焦 */
   let away=false;addEventListener('blur',e=>{if(e.target===window)away=true});['pointerdown','keydown'].forEach(t=>addEventListener(t,()=>{away=false},true));
   document.addEventListener('focusin',e=>{if(away||!e.target.matches(':focus-visible'))return;const c=cmpOf(e.target);if(c&&!c.hasAttribute('data-nofocus')&&!(e.target===c&&c.hasAttribute('data-hold')))focus(c)});
@@ -186,7 +189,7 @@ const UX=(()=>{
   }
   /* 整页转场期间，浏览器把所有点击都交给 <html>。按下时立刻结束转场，抬手时把点击补发给鼠标下的真实元素 */
   const html=document.documentElement;let active=null,eaten=false;
-  function transition(fn){const t=document.startViewTransition(fn);active=t;t.finished.catch(()=>{}).finally(()=>{if(active===t)active=null});return t}
+  function transition(fn){const t=document.startViewTransition(fn);active=t;t.ready.catch(()=>{});t.finished.catch(()=>{}).finally(()=>{if(active===t)active=null});return t}
   document.addEventListener('pointerdown',e=>{if(!active)return;eaten=e.target===html;active.skipTransition()},true);
   document.addEventListener('click',e=>{
     if(!eaten)return;eaten=false;e.stopPropagation();
@@ -205,7 +208,7 @@ const UX=(()=>{
 
 /* ========== 选择器：同一块底滑过去，不闪现。按钮自己在变宽时也跟得上 ========== */
 (function(){
-  const HOST='.seg,.notch,.cv-rail,.cal,.sf .bctl,.sf .tltrack',TAU=85,st=new WeakMap();
+  const HOST='.seg,.notch,.cv-rail,.cal,.sf .bctl,.sf .tltrack,.fan-l,#slots',TAU=85,st=new WeakMap();
   const calm=()=>matchMedia('(prefers-reduced-motion:reduce)').matches;
   const read=b=>({x:b.offsetLeft,y:b.offsetTop,w:b.offsetWidth,h:b.offsetHeight});
   const draw=(i,c)=>{i.style.width=c.w+'px';i.style.height=c.h+'px';i.style.transform=`translate(${c.x}px,${c.y}px)`};

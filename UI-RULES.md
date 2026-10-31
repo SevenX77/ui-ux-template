@@ -5,7 +5,7 @@ Purpose: an agent building any of the owner's interfaces produces a clean surfac
 Words follow `docs/TERMS.md`. Values come from section 15 of `ui-handbook.html`, and a value outside that table is not used. Every rule has a working sample in the handbook.
 
 1. **Choose a theme pair first.** Pure/Neon, Prism/Aurora or Paper/Ember. The light/dark switch moves within the pair. Never pair black with cobalt. A theme is one entry in `src/themes.json`; components read tokens and never name a theme.
-2. **Keep the base neutral.** Only Signal, Volume and Pattern carry colour or material: one Signal per region, at most one Volume per screen, colour on Pattern only for data. In Neon, `#84cc16` is the only colour. Category colours appear in the coloured themes only.
+2. **Keep the base neutral.** Only Signal, Volume and Pattern carry colour or material: one Signal per region, at most one Volume per screen, colour on Pattern only for data. In Neon, `#84cc16` is the only interface colour; images are content and keep their own colour. Category colours appear in the coloured themes only.
 3. **Use the radius tiers by role.** Control 9, card 16, panel 22, capsule 999, joined 0.
 4. **Draw no border by default.** Lines appear only for keyboard focus, active or invalid input, drop targets and a divider between same-coloured regions. Never outline a card with colour or a hand-drawn line.
 5. **Depth states a level.** Flat, lifted (hover), float, recess, raised, volume. Depth never decorates. Shadows come only from the elevation tokens `--e1` to `--e4` and the hover token `--lift`: at most two layers, blur at most 48px. A shadow is never cut by its container: give the clipping parent room or do not clip.

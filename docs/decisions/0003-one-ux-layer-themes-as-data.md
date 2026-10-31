@@ -20,3 +20,7 @@ Status: established on 2026-10-30. Application state: applied to `src/` and `ui-
 For each of the scopes dash, node, bp, work, daily, ai and tiles, checked by script on 2026-10-30: no hover at 60ms; hover by 220ms; a second component stays at rest during the 500ms lock and is admitted after it; focus dims the other component where the component can take focus; a click outside returns to rest. No `data-tool` element is visible at rest. Fan label centre equals its dot centre. Rail click reaches the section.
 
 Not checked: a real phone, and every section in every theme.
+
+## Dated revision
+
+2026-10-30 revision (decisions 0004/0005/0008, details audit 35): Decisions 2 and 4 above describe earlier implementations. Current interactive hover dims peer components; only an expanded `data-hold` component keeps them dim after pointer leave, and `data-dim="none"` opts a surface out. Dashboard focus uses a fixed-height grid with a 68% main column and a usable side column, not `flex-grow`. The shared UX layer is the sole attention/focus owner.

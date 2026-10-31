@@ -1,7 +1,7 @@
 /* ========== AI 与小组件 ========== */
 (function(){
 /* 流式回复 */
-const R=[['Shot 9 建议用缓慢推近：街道先静下来，音乐再回来。这样观众的注意力会被带到窗口，而不是对白。','高','good',['换成手持','再冷一点','生成三个版本']],['可以把推近改到第二拍之后。前两拍保持静止，让磁带上的灰尘先被看见。不过这版节奏更慢，需要配合配乐判断。','中','c3',['对比两版','缩短 1 秒','配乐一起看']]];
+const R=[['Shot 9 建议用缓慢推近：街道先静下来，音乐再回来。这样观众的注意力会被带到窗口，而不是对白。','高','good',['下一条演示']],['可以把推近改到第二拍之后。前两拍保持静止，让磁带上的灰尘先被看见。不过这版节奏更慢，需要配合配乐判断。','中','c3',['下一条演示']]];
 let ri=0,st=null,rt='';document.addEventListener('langchange',()=>{const el=$('#streamT');if(rt&&el.classList.contains('done'))el.textContent=tr(rt)});
 function play(){clearInterval(st);const [t0,c,col,ch]=R[ri%R.length];rt=t0;ri++;const el=$('#streamT');el.setAttribute('data-noi18n','');el.textContent='';el.classList.remove('done');$('#chips').innerHTML='';$('#confTag').innerHTML=`<i class="dotc" style="background:var(--${col})"></i>把握${c}`;let i=0;st=setInterval(()=>{const t=tr(rt);el.textContent=t.slice(0,++i);if(i>=t.length){clearInterval(st);el.classList.add('done');$('#chips').innerHTML=ch.map(x=>`<button class="chip">${x}</button>`).join('');$$('#chips .chip').forEach(b=>b.onclick=play)}},38)}
 $('#regen').onclick=play;
@@ -11,24 +11,24 @@ const EV=[['Low','推荐：日常问题'],['Medium','适合多文件搜索'],['H
 const ef=$('#eff');ef.insertAdjacentHTML('afterbegin','<b></b><b></b><b></b><b></b><b></b>');
 function setE(i){i=Math.max(0,Math.min(4,i));$('#effT').style.transform=`translateX(${i*100}%)`;$('#effV').textContent=EV[i][0];$('#effN').textContent=EV[i][1];ef.setAttribute('aria-valuenow',i)}
 const eAt=e=>{const r=ef.getBoundingClientRect();setE(Math.floor((e.clientX-r.left)/r.width*5))};
-ef.addEventListener('pointerdown',e=>{ef.setPointerCapture(e.pointerId);eAt(e);ef.onpointermove=eAt});ef.addEventListener('pointerup',()=>ef.onpointermove=null);
-ef.addEventListener('keydown',e=>{const v=+ef.getAttribute('aria-valuenow');if(e.key==='ArrowRight')setE(v+1);if(e.key==='ArrowLeft')setE(v-1)});
+ef.addEventListener('pointerdown',e=>{if(e.button!==0)return;ef.setPointerCapture(e.pointerId);eAt(e);ef.onpointermove=eAt});['pointerup','pointercancel','lostpointercapture'].forEach(t=>ef.addEventListener(t,()=>ef.onpointermove=null));
+ef.addEventListener('keydown',e=>{const v=+ef.getAttribute('aria-valuenow');if(e.key==='ArrowRight'){e.preventDefault();setE(v+1)}if(e.key==='ArrowLeft'){e.preventDefault();setE(v-1)}});
 /* 语音 */
-let vt=null,vs=0;$('#vB').onclick=function(){const v=$('#voice');if(vt){clearInterval(vt);vt=null;v.classList.remove('on');this.textContent='●';$('#vS').textContent='已转成文字（示例）';return}v.classList.add('on');this.textContent='■';$('#vS').textContent='正在听…';vs=0;vt=setInterval(()=>{vs++;$('#vT').textContent='00:'+String(vs).padStart(2,'0')},1000)};
+let vt=null,vs=0;$('#vB').onclick=function(){const v=$('#voice');if(vt){clearInterval(vt);vt=null;v.classList.remove('on');this.textContent='●';$('#vS').textContent='演示已结束';return}v.classList.add('on');this.textContent='■';$('#vS').textContent='演示中…';vs=0;vt=setInterval(()=>{vs++;$('#vT').textContent=String(Math.floor(vs/60)).padStart(2,'0')+':'+String(vs%60).padStart(2,'0')},1000)};
 /* 命令面板 */
-const CM=[['新建时间线','Ctrl N'],['切换配色：荧光','S N'],['切换配色：彩光','S P'],['打开上下文面板','Ctrl .'],['问 AI：这一幕节奏对吗？','↵'],['导出 Trailer C','Ctrl E'],['查找素材','Ctrl P']];
-let cq='',ci=0;function cl(){const L=CM.filter(c=>c[0].includes(cq)||tr(c[0]).toLowerCase().includes(cq.toLowerCase()));ci=Math.min(ci,Math.max(0,L.length-1));$('#cmdL').innerHTML=L.length?L.map((c,i)=>`<div class="cmd-r ${i===ci?'on':''}" data-i="${i}"><span>${c[0]}</span><kbd>${c[1]}</kbd></div>`).join(''):`<div class="cmd-r on"><span>问 AI："${cq.replace(/</g,'&lt;')}"</span><kbd>↵</kbd></div>`;$$('#cmdL .cmd-r').forEach(r=>{r.onmouseenter=()=>{ci=+r.dataset.i||0;$$('#cmdL .cmd-r').forEach(x=>x.classList.toggle('on',x===r))};r.onclick=()=>run(r)})}
-function run(r){const t=$('span',r).textContent;if(t.includes('荧光')||t.includes('Neon'))setScheme('neon');if(t.includes('彩光')||t.includes('Prism'))setScheme('prism');toast(tr('已执行：')+t);$('#cmdI').blur()}
-$('#cmdI').oninput=e=>{cq=e.target.value;ci=0;cl()};$('#cmdI').onkeydown=e=>{const n=$$('#cmdL .cmd-r').length;if(e.key==='ArrowDown'){ci=(ci+1)%n;cl();e.preventDefault()}if(e.key==='ArrowUp'){ci=(ci-1+n)%n;cl();e.preventDefault()}if(e.key==='Enter')run($('#cmdL .cmd-r.on'))};cl();addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();$('#cmdI').focus();$('#cmdI').scrollIntoView({block:'center',behavior:'smooth'})}});
-const cmdC=$('#cmd').closest('[data-cmp]'),cmdS=cmdC.closest('[data-scope]'),cmdIn=$('#cmdI');cmdIn.addEventListener('focus',()=>UX.focus(cmdC));cmdIn.addEventListener('blur',()=>{if(cmdC.classList.contains('ux-focus'))UX.blur(cmdS)});cmdIn.addEventListener('keydown',e=>{if(e.key==='Escape')cmdIn.blur()});$('#cmdL').addEventListener('mousedown',e=>e.preventDefault());
+const CM=[['切换配色：荧光','S N',()=>setScheme('neon')],['切换配色：彩光','S P',()=>setScheme('prism')],['查找素材','Ctrl P',()=>{goTo('work');$('#fileQ').focus()}]];
+let cq='',ci=0;function cl(){const L=CM.filter(c=>c[0].includes(cq)||tr(c[0]).toLowerCase().includes(cq.toLowerCase()));ci=Math.min(ci,Math.max(0,L.length-1));$('#cmdL').innerHTML=L.length?L.map((c,i)=>`<button class="cmd-r ${i===ci?'on':''}" data-i="${i}" data-c="${CM.indexOf(c)}"><span>${c[0]}</span><kbd>${c[1]}</kbd></button>`).join(''):'<div class="cmd-empty sm mute">没有匹配的记录</div>';$$('#cmdL .cmd-r').forEach(r=>{r.onmouseenter=()=>{ci=+r.dataset.i;$$('#cmdL .cmd-r').forEach(x=>x.classList.toggle('on',x===r))};r.onclick=()=>run(r)})}
+function run(r){if(!r)return;const c=CM[+r.dataset.c];UX.blur($('#cmd').closest('[data-scope]'));$('#cmdI').blur();c[2]();toast(tr(c[0]))}
+$('#cmdI').oninput=e=>{cq=e.target.value;ci=0;cl()};$('#cmdI').onkeydown=e=>{const n=$$('#cmdL .cmd-r').length;if(e.key==='ArrowDown'&&n){ci=(ci+1)%n;cl();e.preventDefault()}if(e.key==='ArrowUp'&&n){ci=(ci-1+n)%n;cl();e.preventDefault()}if(e.key==='Enter'){e.preventDefault();run($('#cmdL .cmd-r.on'))}};cl();addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();$('#cmdI').focus();$('#cmdI').scrollIntoView({block:'center',behavior:'smooth'})}});
+const cmdC=$('#cmd').closest('[data-cmp]'),cmdS=cmdC.closest('[data-scope]'),cmdIn=$('#cmdI');cmdIn.addEventListener('focus',()=>UX.focus(cmdC));cmdC.addEventListener('ux:focus',e=>{if(e.target===cmdC)cmdIn.setAttribute('aria-expanded','true')});cmdC.addEventListener('ux:blur',e=>{if(e.target===cmdC){cmdIn.setAttribute('aria-expanded','false');cmdIn.blur()}});cmdIn.addEventListener('keydown',e=>{if(e.key==='Escape')UX.blur(cmdS)});$('#cmdL').addEventListener('mousedown',e=>e.preventDefault());
 $$('#cmdRc button').forEach(b=>b.onclick=()=>{const i=$('#cmdI');i.value=b.textContent;cq=i.value;ci=0;cl();i.focus()});
 /* 按住打开 */
 const h=$('#hold'),rd=$('#radar'),pk=$('#pack');let ht=null;
 const hEnd=()=>{h.classList.remove('down');rd.classList.remove('holding')};
-const dn=e=>{if(ht)return;if(e.pointerId!=null)h.setPointerCapture(e.pointerId);h.classList.add('down');rd.classList.add('holding');ht=setTimeout(()=>{ht=null;pk.classList.toggle('open');hEnd();h.textContent=pk.classList.contains('open')?'按住合上':'按住打开'},900)};
+const dn=e=>{if(ht||e.button>0)return;if(e.pointerId!=null)h.setPointerCapture(e.pointerId);h.classList.add('down');rd.classList.add('holding');ht=setTimeout(()=>{ht=null;pk.classList.toggle('open');hEnd();h.textContent=pk.classList.contains('open')?'按住合上':'按住打开'},900)};
 const upf=()=>{clearTimeout(ht);ht=null;hEnd()};
 h.addEventListener('pointerdown',dn);h.addEventListener('pointerup',upf);h.addEventListener('pointercancel',upf);h.addEventListener('blur',upf);h.addEventListener('contextmenu',e=>e.preventDefault());
-h.addEventListener('keydown',e=>{if((e.key===' '||e.key==='Enter')&&!e.repeat)dn(e)});h.addEventListener('keyup',upf);
+h.addEventListener('keydown',e=>{if((e.key===' '||e.key==='Enter')&&!e.repeat){e.preventDefault();dn(e)}});h.addEventListener('keyup',upf);
 /* 时间刻度 */
 const EVT=['第一次演示','图形界面','鼠标普及','网页出现','触屏手机','生成式 AI'];const sb=$('#sB'),N=60;sb.innerHTML=Array.from({length:N},()=>'<i style="height:16%"></i>').join('');const bs=$$('i',sb);
 function sc(k){bs.forEach((b,i)=>{const d=Math.abs(i-k);b.style.height=Math.max(14,100-d*d*2.6)+'%';b.classList.toggle('on',i===k)});$('#sY').textContent=1968+Math.round(k/(N-1)*58);$('#sT').textContent=EVT[Math.floor(k/N*EVT.length)]}
@@ -36,9 +36,10 @@ $('#scrub').addEventListener('pointermove',e=>{const r=sb.getBoundingClientRect(
 /* 参数 */
 $('#params').innerHTML=[['Exposure',60,' EV'],['Bloom',35,''],['Field of view',52,'°'],['Samples',24,'']].map(([n,v,u])=>`<div class="par"><div class="between"><span class="mute">${n}</span><span class="val">${v}${u}</span></div><input class="slider" type="range" value="${v}" aria-label="${n}" style="margin-top:calc(6px*var(--y))" oninput="this.previousElementSibling.lastElementChild.textContent=this.value+'${u}'"></div>`).join('');
 /* 小件 */
-const pl=$('#pillDl'),po=$('#pillOpen');pl.onclick=()=>{pl.style.display='none';po.style.display='flex'};$('#pillCopy').onclick=()=>{toast('已复制');setTimeout(()=>{po.style.display='none';pl.style.display='flex'},600)};
+async function copySampleText(t){try{await navigator.clipboard.writeText(t);return true}catch(_){toast(tr('复制失败，请手动复制'));return false}}
+const pl=$('#pillDl'),po=$('#pillOpen');pl.onclick=()=>{pl.style.display='none';po.style.display='flex';$('#pillCopy').focus()};$('#pillCopy').onclick=async()=>{if(!await copySampleText('LoveTemplate'))return;toast('已复制');setTimeout(()=>{po.style.display='none';pl.style.display='flex';pl.focus()},600)};
 let cnOn=false;$('#cnB').onclick=()=>{cnOn=!cnOn;$('#cn').textContent=cnOn?'4485 0192 8841 7516':'4485 •••• •••• 7516';$('#cnB').setAttribute('aria-label',cnOn?'隐藏卡号':'显示卡号')};
-$('#cpB').onclick=function(){this.textContent='✓';$('#cp').textContent='已复制';setTimeout(()=>{this.textContent='⧉';$('#cp').textContent='复制这段链接'},1400)};
+$('#cpB').onclick=async function(){if(!await copySampleText(location.origin+location.pathname+'#more'))return;this.textContent='✓';$('#cp').textContent='已复制';setTimeout(()=>{this.textContent='⧉';$('#cp').textContent='复制这段链接'},1400)};
 $('#icong').innerHTML='<i></i>'.repeat(20);$('#steps').innerHTML=[30,45,60,75,90,100,85,70,55,40].map(h=>`<i style="height:${h}%"></i>`).join('');
 /* 点云：只在可见时绘制 */
 const cv=$('#dots'),g=cv.getContext('2d');let mx=-999,my=-999,vis=false,raf=0;

@@ -22,3 +22,7 @@ Status: established by default consent unless the owner objects (2026-10-30). Ap
 ## Superseded
 
 `archive/ui-handbook-v0.5-codex.html` and `archive/UI-RULES-v0.5-codex.md`.
+
+## Dated revision
+
+2026-10-30 revision (decision 0008, details audit 35): Decision 5 above records the earlier implementation, not the current focus owner. `UX` owns held component focus through `.ux-focus` and the declared focus scope. DOM `:focus-within` does not hold tools or lists open. Keyboard focus rings remain `:focus-visible`. The history stays inside the chat focus scope.

@@ -1,0 +1,331 @@
+{
+ "purpose": "Sample art for the handbook's image components, generated with Codex's built-in image_gen. It follows the mix of an image platform's explore page, such as Midjourney's: eclectic, witty, every image a different type, from illustration in many styles to film stills, animation frames, craft, photography and design. Styles are the reference; no image on such a page is copied. All subjects are invented; no real brand, title, person, existing franchise or living artist's name appears.",
+ "model": "gpt-5.6-sol",
+ "style": "Quality bar: skilled, confident professional work with a clear subject and a controlled palette. Avoid oversaturation, HDR glow, rainbow colour, ornate fantasy, gold filigree and generic AI gloss. No logos, no watermark, no signature and no real brand. No text unless the prompt asks for it.",
+ "images": [
+  {
+   "title": "Ink Heron",
+   "cat": "插画",
+   "shape": "portrait",
+   "prompt": "Sumi-e ink wash illustration: a heron standing in reeds, a few confident brush strokes on textured rice paper, one small red accent."
+  },
+  {
+   "title": "Corner Cafe",
+   "cat": "插画",
+   "shape": "square",
+   "prompt": "Loose watercolour and pen illustration of a small European corner cafe in the morning, wobbly ink lines, soft washes of ochre and blue, white paper showing through."
+  },
+  {
+   "title": "Moon Ride",
+   "cat": "插画",
+   "shape": "landscape",
+   "prompt": "Risograph-printed illustration in two inks, coral and navy: a girl riding a bicycle over a hill under a big moon, visible grain and slight misregistration."
+  },
+  {
+   "title": "Tiny City",
+   "cat": "插画",
+   "shape": "square",
+   "prompt": "Clean isometric vector illustration of a tiny city block with a laundromat, trees and a bus, soft flat colours and neat geometric shapes."
+  },
+  {
+   "title": "Harbour Wave",
+   "cat": "插画",
+   "shape": "landscape",
+   "prompt": "Illustration in the manner of a traditional Japanese woodblock print: fishing boats in a rolling sea below a distant mountain, flat indigo and cream, carved line quality, paper grain."
+  },
+  {
+   "title": "Night Reader",
+   "cat": "插画",
+   "shape": "portrait",
+   "prompt": "Gouache illustration for a children's book: a bear in pyjamas reading by torchlight in a tent in the woods, matte paint, charming and warm, deep blue night."
+  },
+  {
+   "title": "Detective Panel",
+   "cat": "插画",
+   "shape": "portrait",
+   "prompt": "Black and white ink comic illustration with heavy spot blacks and cross-hatching: a detective in a hat under a street lamp in the rain, one flat red for the scarf."
+  },
+  {
+   "title": "Pixel Harbour",
+   "cat": "插画",
+   "shape": "landscape",
+   "prompt": "Detailed pixel art of a quiet harbour town at dusk, limited palette, glowing windows, reflections in water, crisp pixels."
+  },
+  {
+   "title": "Collage Fish",
+   "cat": "插画",
+   "shape": "square",
+   "prompt": "Paper collage illustration: a big fish built from cut coloured and patterned papers on a pale ground, visible edges and small shadows, playful mid-century feel."
+  },
+  {
+   "title": "Mountain Rail",
+   "cat": "插画",
+   "shape": "portrait",
+   "prompt": "Vintage railway travel poster illustration with flat shapes and strong simple light: a red train crossing a stone viaduct below snowy peaks, limited palette, no text."
+  },
+  {
+   "title": "Botanical Fern",
+   "cat": "插画",
+   "shape": "portrait",
+   "prompt": "Scientific botanical plate illustration of a fern and its spores, fine pen and delicate watercolour on aged paper, precise and calm, no labels."
+  },
+  {
+   "title": "Line Portrait",
+   "cat": "插画",
+   "shape": "portrait",
+   "prompt": "Fashion illustration: a woman in a wide hat drawn in one elegant continuous black line, with a single loose wash of terracotta behind her on white paper."
+  },
+  {
+   "title": "Chalk Fox",
+   "cat": "插画",
+   "shape": "landscape",
+   "prompt": "Coloured pencil and pastel illustration of a fox curled up asleep in autumn leaves, soft grainy texture, warm oranges on dark paper."
+  },
+  {
+   "title": "Robot Friends",
+   "cat": "插画",
+   "shape": "landscape",
+   "prompt": "Bold flat vector character illustration: three quirky robots with thick outlines waving, friendly shapes, a limited palette of teal, cream and tomato."
+  },
+  {
+   "title": "Temple Stairs",
+   "cat": "插画",
+   "shape": "portrait",
+   "prompt": "Atmospheric digital painting with visible brush strokes, concept art for an animated film: a small figure climbing mossy temple stairs in morning mist, muted greens."
+  },
+  {
+   "title": "Linocut Crow",
+   "cat": "插画",
+   "shape": "square",
+   "prompt": "Linocut print illustration: a crow on a fence post, bold carved black shapes on cream paper, with rough ink texture."
+  },
+  {
+   "title": "Night Shift",
+   "cat": "影像",
+   "shape": "portrait",
+   "prompt": "Close-up film portrait: a young female detective in a dark raincoat under a neon-lit awning at night, rain on her face, looking just past the camera, cool blue with one warm light."
+  },
+  {
+   "title": "Chrome Visor",
+   "cat": "影像",
+   "shape": "landscape",
+   "prompt": "Fashion film frame: a model with a sharp white bob and mirrored visor sunglasses in a black structured coat, walking through a motion-blurred crowd at a train station, high-key cool light."
+  },
+  {
+   "title": "Ronin in Rain",
+   "cat": "影像",
+   "shape": "portrait",
+   "prompt": "Film still: a lone masked swordsman standing in a rainy bamboo forest at night, one hand on his sword, cold green-grey grade, mist, tense stillness."
+  },
+  {
+   "title": "Swimmer",
+   "cat": "影像",
+   "shape": "landscape",
+   "prompt": "Editorial photograph: a swimmer's face half above the waterline in a deep teal outdoor pool, eyes closed, wet skin, natural overcast light, 35mm film grain."
+  },
+  {
+   "title": "Cold Brew",
+   "cat": "影像",
+   "shape": "portrait",
+   "prompt": "Premium drink commercial frame: an unbranded tall glass of iced coffee with cream swirling down through it, condensation on the glass, dark background, one crisp rim light."
+  },
+  {
+   "title": "Orange Room",
+   "cat": "影像",
+   "shape": "portrait",
+   "prompt": "Editorial photograph: a woman in a plain white shirt with her back to the camera, standing in an empty room painted one flat burnt orange, one hard rectangle of window light on the wall. Medium format film."
+  },
+  {
+   "title": "Little Robot",
+   "cat": "动画",
+   "shape": "square",
+   "prompt": "Frame from a high-end 3D animated feature: a small round repair robot with big glass eyes holding up a lantern in a dark workshop, warm soft light, appealing character design."
+  },
+  {
+   "title": "Rooftop Girl",
+   "cat": "动画",
+   "shape": "landscape",
+   "prompt": "Frame from a beautifully drawn modern anime film: a schoolgirl with short hair sitting on a rooftop edge at sunset over a dense city, wind in her hair, soft hand-painted clouds."
+  },
+  {
+   "title": "Fox and Lantern",
+   "cat": "动画",
+   "shape": "portrait",
+   "prompt": "Frame from a premium 3D animated film: a small fox in a yellow raincoat carrying a lantern along a forest path at night, fireflies, soft stylised fur, warm and cool contrast."
+  },
+  {
+   "title": "Sky Whale",
+   "cat": "动画",
+   "shape": "landscape",
+   "prompt": "Frame from an animated adventure film: a small airship flying beside a gentle giant whale above a sea of clouds at morning, painterly, soft and clean colours."
+  },
+  {
+   "title": "Paper Boat",
+   "cat": "动画",
+   "shape": "square",
+   "prompt": "Frame from a stylish stop-motion film: a little felt boy in a paper boat on a flooded street, handmade textures, small-scale depth of field, gentle dusk light."
+  },
+  {
+   "title": "Mech Bay",
+   "cat": "动画",
+   "shape": "portrait",
+   "prompt": "Frame from a sleek anime feature: a young mechanic looking up at a huge white mecha in a hangar, clean line art, dramatic scale, cool grey and one red accent."
+  },
+  {
+   "title": "Tiny Knight",
+   "cat": "动画",
+   "shape": "square",
+   "prompt": "Frame from a premium 3D animated film: a tiny knight in tin-can armour facing a huge sleeping cat in a kitchen, dramatic low angle, warm morning light."
+  },
+  {
+   "title": "Chrome Sphere",
+   "cat": "设计",
+   "shape": "square",
+   "prompt": "Minimal 3D still life: one mirror-polished chrome sphere resting on pale pink sand, a soft long shadow, a plain pale background. Quiet studio light."
+  },
+  {
+   "title": "Komorebi",
+   "cat": "设计",
+   "shape": "portrait",
+   "prompt": "Swiss-style typographic poster: off-white paper, one large soft-edged green circle placed off-centre, and a small precise grotesque sans-serif word KOMOREBI in black at the lower left on a strict grid. Plenty of empty paper. Printed texture."
+  },
+  {
+   "title": "Form 07",
+   "cat": "设计",
+   "shape": "portrait",
+   "prompt": "Modernist exhibition poster: a single cobalt blue arch shape on warm grey paper, with the title FORM 07 in a tall condensed sans-serif set small in one corner. Silk-screen ink texture. Nothing else."
+  },
+  {
+   "title": "Slow Cinema",
+   "cat": "设计",
+   "shape": "portrait",
+   "prompt": "Typographic poster: the words SLOW CINEMA in huge tightly set black grotesque type filling the top third of warm white paper, with a small grainy still of an empty road near the bottom. Strict grid."
+  },
+  {
+   "title": "Velvet Riot",
+   "cat": "设计",
+   "shape": "portrait",
+   "prompt": "A rock concert screen-print poster: a snarling panther in two inks, magenta and deep blue, chunky hand-cut lettering reading exactly VELVET RIOT."
+  },
+  {
+   "title": "Burger Riot",
+   "cat": "设计",
+   "shape": "landscape",
+   "prompt": "A playful food brand poster in a retro style: one big burger on a flat cream background with chunky tomato-red lettering reading exactly BURGER RIOT."
+  },
+  {
+   "title": "Open Studio",
+   "cat": "设计",
+   "shape": "landscape",
+   "prompt": "Design school poster: three overlapping flat circles in red, blue and yellow with visible overprint on off-white paper, and the words OPEN STUDIO in small neat sans-serif below."
+  },
+  {
+   "title": "Noir Parfum",
+   "cat": "设计",
+   "shape": "portrait",
+   "prompt": "Luxury fragrance advertisement: a faceted dark glass perfume bottle with no label on wet black stone, a thin stream of water falling beside it, a single streak of light."
+  },
+  {
+   "title": "Otter Crossword",
+   "cat": "插画",
+   "shape": "square",
+   "prompt": "Cosy lo-fi illustration: an otter in a mustard sweater doing a crossword at a kitchen table with a mug of tea, rain on the window, a radiator and slippers, soft muted colours and gentle lines."
+  },
+  {
+   "title": "Accordion Boy",
+   "cat": "插画",
+   "shape": "portrait",
+   "prompt": "Naive hand-painted gouache cartoon: a boy with round glasses, big blush cheeks and a striped shirt playing a tiny red accordion on a plain cream background, wonky charming shapes."
+  },
+  {
+   "title": "Pencil Profile",
+   "cat": "插画",
+   "shape": "landscape",
+   "prompt": "Loose graphite pencil sketch: a man's profile in a few confident searching lines on white paper, unfinished and alive."
+  },
+  {
+   "title": "Monochrome Magnolia",
+   "cat": "设计",
+   "shape": "portrait",
+   "prompt": "High-contrast black and white magnolia blossoms on pure white, like a photographic negative or x-ray, elegant graphic pattern."
+  },
+  {
+   "title": "Acid Gradient",
+   "cat": "设计",
+   "shape": "square",
+   "prompt": "Abstract grainy gradient: liquid shapes of acid lime, pale blue and black melting into one another, heavy print noise, like contemporary music artwork."
+  },
+  {
+   "title": "Bear Sticker",
+   "cat": "插画",
+   "shape": "portrait",
+   "prompt": "Halftone screen-print of a roaring bear's head in black on cream, die-cut like a sticker with a rough cream border, on a flat cobalt blue ground."
+  },
+  {
+   "title": "Felt Patches",
+   "cat": "插画",
+   "shape": "square",
+   "prompt": "Photograph of nine embroidered patches arranged on green felt: a mushroom, a comet, an eye, a cactus and other odd icons, thick satin stitch, playful and tactile."
+  },
+  {
+   "title": "Folk Moth",
+   "cat": "插画",
+   "shape": "portrait",
+   "prompt": "Symmetrical folk-art illustration of an ornate moth surrounded by flowers and leaves, gouache on cream, in rust, teal and mustard, decorative and precise."
+  },
+  {
+   "title": "City Pop",
+   "cat": "动画",
+   "shape": "portrait",
+   "prompt": "Stylish 1980s city-pop anime close-up of a woman's face with sharp eyeliner and long nails at her chin, clean ink line art, flat pastel lilac and pink."
+  },
+  {
+   "title": "Mouse Rider",
+   "cat": "插画",
+   "shape": "square",
+   "prompt": "Dynamic cartoon illustration in ink and colour: a tiny mouse in tin armour riding a fat flying lizard with a telescope, cream ground, comic energy and great character."
+  },
+  {
+   "title": "Glass Blocks",
+   "cat": "设计",
+   "shape": "square",
+   "prompt": "3D render: a hand touching stacked translucent glass cubes and floating interface cards glowing in orange, blue and pink, on a pale peach background, sleek and modern."
+  },
+  {
+   "title": "Pool Party",
+   "cat": "插画",
+   "shape": "portrait",
+   "prompt": "Gouache painting from directly above: tiny figures around a pink swimming pool edged with dense flowering hedges, flat graphic shadows, playful and elegant."
+  },
+  {
+   "title": "Camel Silk",
+   "cat": "影像",
+   "shape": "portrait",
+   "prompt": "Fashion magazine portrait: a woman with slicked-back hair in a billowing camel silk blouse on a rust leather chair, direct gaze, soft studio light, no text."
+  },
+  {
+   "title": "Snow Cabin",
+   "cat": "动画",
+   "shape": "landscape",
+   "prompt": "Miniature model photograph: a cutaway dollhouse cabin in deep snow with tiny furnished rooms glowing warmly, tilt-shift depth of field, cosy and detailed."
+  },
+  {
+   "title": "Quiet Hands",
+   "cat": "影像",
+   "shape": "landscape",
+   "prompt": "Beauty close-up: a hand with glossy nude nails resting on a chunky pink knit sweater, soft window light, clean and tactile."
+  },
+  {
+   "title": "Field Visitor",
+   "cat": "影像",
+   "shape": "portrait",
+   "prompt": "Infrared-toned photograph: a small green alien child skipping through a meadow under a violet sky, playful and strange, like a still from a cult film."
+  },
+  {
+   "title": "Snow Street",
+   "cat": "影像",
+   "shape": "landscape",
+   "prompt": "Black and white street photograph: car headlights in falling snow on a tram-lined avenue, a couple and their dog walking away, grainy and romantic."
+  }
+ ]
+}

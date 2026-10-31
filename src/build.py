@@ -1,4 +1,5 @@
 # Assembles src/ into the single-page handbook at the repository root.
+import base64
 import json
 from pathlib import Path
 
@@ -13,6 +14,13 @@ for t in themes["themes"]:
 theme_css = "\n".join("[data-scheme=%s]{color-scheme:%s;%s}" % (t["id"], t["mode"], ";".join("--%s:%s" % kv for kv in t["tokens"].items())) for t in themes["themes"])
 theme_data = json.dumps(themes, ensure_ascii=False)
 i18n_data = json.dumps(i18n, ensure_ascii=False)
+ASSETS = SRC.parent / "assets"
+data_uri = lambda p: "url(data:image/webp;base64,%s)" % base64.b64encode(p.read_bytes()).decode()
+web = json.loads((ASSETS / "gallery/manifest.json").read_text(encoding="utf-8"))["items"]
+image_css = ":root{%s}" % "".join(
+    ["--sf-%s:%s;" % (p.stem, data_uri(p)) for p in sorted((ASSETS / "sf").glob("*.webp"))]
+    + ["--w%d:%s;" % (i, data_uri(ASSETS / "gallery" / m["file"])) for i, m in enumerate(web)])
+web_data = json.dumps([{"t": m["title"], "c": m["cat"], "r": round(m["h"] / m["w"], 4)} for m in web], ensure_ascii=False)
 
 page = f"""<!doctype html>
 <html lang="zh" data-scheme="neon">
@@ -20,10 +28,12 @@ page = f"""<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>UI/UX Handbook</title>
+<link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 {theme_css}
+{image_css}
 {read("base.css")}
 {read("scenes.css")}
 {read("more.css")}
@@ -49,6 +59,7 @@ page = f"""<!doctype html>
 <script>
 const THEMES={theme_data};
 const I18N={i18n_data};
+const WEB={web_data};
 {read("i18n.js")}
 {read("ux.js")}
 {read("app1.js")}

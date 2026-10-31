@@ -1,0 +1,260 @@
+{
+ "purpose": "Prompts for the Story Forge workspace images, generated with Codex's built-in image_gen. Every image belongs to one short film, STATIC: a teenager, Joe, watches his parents Pete and Donna slowly turn into sheep while a television insists the world is normal.",
+ "model": "gpt-5.6-sol",
+ "style": "Style: cinematic film still from a quiet 1990s-set suburban horror drama, shot on 35mm with subtle grain, restrained muted colour, cold blue television light against dim warm practicals. Wide 16:9 composition. No readable text, no logos, no watermark, no subtitles.",
+ "boardStyle": "Style: a real film pre-production board photographed flat in soft even studio light, with printed stills, pencil sketches, tape and paper tags, in the muted blue and warm grey colours of a quiet suburban horror drama. Wide 16:9 composition. Any handwriting or tags are small illegible marks, with no readable words, no logos and no watermark.",
+ "reference": "character-consistency-board.jpg",
+ "referenceRole": "Reference image: keep the three characters' faces, age, hair and clothing exactly as on this board. Do not copy its layout.",
+ "images": [
+  {
+   "name": "character-consistency-board.jpg",
+   "kind": "board",
+   "prompt": "A character consistency board with three people, each shown front, profile and close-up: Joe, a lanky sixteen-year-old boy with messy dark hair and a washed-out grey T-shirt; Pete, a heavy-set man about fifty with thinning sandy hair and a brown cardigan; Donna, a slim woman about fifty with a pale blonde bob and a pale blue blouse. Plain fully clothed portraits."
+  },
+  {
+   "name": "casting-contact-sheet.jpg",
+   "kind": "board",
+   "refs": true,
+   "prompt": "A black-and-white photographic contact sheet of casting portraits on a light table: rows of small head-and-shoulder frames of the same three people, with red grease-pencil circles around a few frames."
+  },
+  {
+   "name": "shot-joe-crt-closeup.jpg",
+   "kind": "shot",
+   "refs": true,
+   "prompt": "Close-up of Joe's face in a dark room, eyes open and uneasy, blue television static light rippling across his skin like water."
+  },
+  {
+   "name": "shot-parents-living-room.jpg",
+   "kind": "shot",
+   "refs": true,
+   "prompt": "Pete and Donna sit side by side on a floral sofa in a dark living room, hands resting on their knees, staring unblinking at an off-screen television that lights their still faces blue."
+  },
+  {
+   "name": "shot-crt-static.jpg",
+   "kind": "shot",
+   "prompt": "An old CRT television in a dark suburban living room, its screen showing a calm white street full of sheep through heavy static, slightly off centre, the room falling into darkness, lit only by the cold blue screen glow. No people."
+  },
+  {
+   "name": "shot-sheep-morph.jpg",
+   "kind": "shot",
+   "refs": true,
+   "prompt": "Close-up of Pete in his brown cardigan smiling with his mouth closed, the skin along one cheek tightening and dimpling into a pale curled wool texture; practical make-up effect, unsettling and quiet, not gory."
+  },
+  {
+   "name": "shot-hammer-prop.jpg",
+   "kind": "shot",
+   "prompt": "Insert shot of a teenage boy's hand gripping a worn wooden-handled claw hammer beside an old cast-iron radiator, in dim blue light with shallow depth of field. Only the hand and forearm are visible."
+  },
+  {
+   "name": "shot-broken-tv.jpg",
+   "kind": "shot",
+   "prompt": "A CRT television with its glass screen freshly smashed, a last flicker of white light and thin smoke inside the tube, glass on the carpet, in a dark living room. No people."
+  },
+  {
+   "name": "shot-sheep-street.jpg",
+   "kind": "shot",
+   "refs": true,
+   "prompt": "High angle from a suburban apartment balcony at pale dawn: Joe seen from behind at the railing, looking down at a wide empty residential street completely packed with thousands of white sheep, street lamps still on."
+  },
+  {
+   "name": "storyboard-source-sheet.jpg",
+   "kind": "board",
+   "prompt": "One sheet of hand-drawn black pencil storyboard panels on white paper, six by three frames, showing a boy, a television and a sofa in rough loose sketches with arrows for camera moves."
+  },
+  {
+   "name": "storyboard-wall.jpg",
+   "kind": "board",
+   "prompt": "A production office wall covered edge to edge in pinned pencil storyboard panels in long rows, with coloured string linking some panels and a desk lamp lighting it from one side."
+  },
+  {
+   "name": "vfx-breakdown-board.jpg",
+   "kind": "board",
+   "prompt": "A visual effects breakdown: the same suburban street shown in four stages, empty plate, grey wireframe sheep crowd, flat-lit sheep crowd, and final composite in dawn light."
+  },
+  {
+   "name": "final-master-qc-board.jpg",
+   "kind": "board",
+   "prompt": "A colour grading suite at night: a large calibrated monitor showing a frame of white television static, with a vectorscope and waveform glowing on smaller screens and a control surface in the foreground. No people."
+  },
+  {
+   "name": "workflow-overview-board.jpg",
+   "kind": "board",
+   "prompt": "A film workflow overview laid out on a large table: script pages, storyboard sheets, printed stills, a hard drive and a reel, arranged from left to right in a clear line, seen from directly above."
+  },
+  {
+   "name": "story-seed-board.jpg",
+   "kind": "board",
+   "prompt": "An early story idea board: a torn newspaper photo of sheep, a polaroid of an old television, a suburban street photo, and index cards joined by thread on a cork board."
+  },
+  {
+   "name": "props-continuity-board.jpg",
+   "kind": "board",
+   "prompt": "A props continuity layout on grey paper seen from above: a claw hammer, a chunky television remote, a knitted cushion, a tuft of wool and a cardigan button, each with a small paper tag and a ruler."
+  },
+  {
+   "name": "lookbook-camera-board.jpg",
+   "kind": "board",
+   "prompt": "A camera and lighting lookbook: dark moody reference stills of rooms lit only by screens, beside a vintage cinema lens, colour chips and a light meter on black card."
+  },
+  {
+   "name": "location-scout-board.jpg",
+   "kind": "board",
+   "prompt": "Location scouting photographs pinned in a grid: a 1990s suburban apartment block, a narrow balcony, a floral sofa living room, an empty residential street at dawn, with a hand-drawn floor plan beside them."
+  },
+  {
+   "name": "video-takes-grid.jpg",
+   "kind": "board",
+   "refs": true,
+   "prompt": "A monitor wall of nine small video takes of the same shot of Joe by a window, with small differences in framing and light, in a dark edit bay. Timecode areas are small illegible marks."
+  },
+  {
+   "name": "sound-design-board.jpg",
+   "kind": "board",
+   "prompt": "A sound design desk: a large screen of glowing multitrack audio waveforms, a boom microphone in a blimp, headphones and a field recorder on a dark table."
+  },
+  {
+   "name": "shot-list-board.jpg",
+   "kind": "board",
+   "prompt": "A shot list clipboard on a dark table with small thumbnail frames in rows beside columns of illegible pencil marks, a stopwatch and a pencil lying across it."
+  },
+  {
+   "name": "script-breakdown-board.jpg",
+   "kind": "board",
+   "prompt": "Screenplay pages spread across a table and marked up with coloured highlighter stripes for cast, props and sound, the type too small to read, with coloured tabs and a pair of glasses."
+  },
+  {
+   "name": "production-bible-spread.jpg",
+   "kind": "board",
+   "prompt": "An open printed production bible on a table, a two-page spread with a large still of a blue-lit living room on the left and small character and colour swatches on the right."
+  },
+  {
+   "name": "pitch-deck-cover.jpg",
+   "kind": "shot",
+   "prompt": "A striking key art image for a film: an old television glowing on a wide empty suburban road at night, with a single white sheep standing in its light, and a great deal of empty dark sky above."
+  },
+  {
+   "name": "editing-timeline-board.jpg",
+   "kind": "board",
+   "prompt": "An edit suite screen showing a nonlinear video timeline with many coloured clip blocks and audio tracks, and a dim frame of a living room in the viewer window, photographed from a slight angle in a dark room."
+  },
+  {
+   "name": "color-script-strip.jpg",
+   "kind": "board",
+   "prompt": "A colour script: one long horizontal strip of twelve small painted frames of the film's moments, moving from deep blue through grey to blown-out white, on black card."
+  },
+  {
+   "name": "sb-01.jpg",
+   "kind": "panel",
+   "refs": true,
+   "prompt": "Joe lying in bed, eyes opening, blue static light from a door ajar crossing his face"
+  },
+  {
+   "name": "sb-02.jpg",
+   "kind": "panel",
+   "refs": false,
+   "prompt": "Seen from behind the sofa: the backs of a heavy-set balding man in a cardigan and a woman with a blonde bob, sitting side by side, facing a boxy old CRT television that shows only static. No teenager and no faces on the screen."
+  },
+  {
+   "name": "sb-03.jpg",
+   "kind": "panel",
+   "refs": false,
+   "prompt": "Tight on a television screen showing a white street full of sheep through static"
+  },
+  {
+   "name": "sb-04.jpg",
+   "kind": "panel",
+   "refs": true,
+   "prompt": "Close on Joe's face in the doorway, realising something is wrong"
+  },
+  {
+   "name": "sb-05.jpg",
+   "kind": "panel",
+   "refs": true,
+   "prompt": "Close on Pete's cheek beginning to curl into wool while he smiles"
+  },
+  {
+   "name": "sb-06.jpg",
+   "kind": "panel",
+   "refs": false,
+   "prompt": "Joe's hand closing around a hammer beside a radiator"
+  },
+  {
+   "name": "sb-07.jpg",
+   "kind": "panel",
+   "refs": false,
+   "prompt": "A claw hammer striking the curved glass of a boxy old 1990s CRT television in a wooden cabinet, glass bursting outward."
+  },
+  {
+   "name": "sb-08.jpg",
+   "kind": "panel",
+   "refs": true,
+   "prompt": "A heavy-set balding man in a cardigan and a woman with a blonde bob on a sofa, turned towards each other with brief human warmth, a smashed boxy CRT television in the foreground. Only these two people; no teenager."
+  },
+  {
+   "name": "sb-09.jpg",
+   "kind": "panel",
+   "refs": true,
+   "prompt": "Joe on a balcony from behind, looking down at a street filled with sheep"
+  },
+  {
+   "name": "char-joe.jpg",
+   "kind": "portrait",
+   "refs": true,
+   "prompt": "Joe, as on the character board."
+  },
+  {
+   "name": "char-pete.jpg",
+   "kind": "portrait",
+   "refs": true,
+   "prompt": "Pete only: the heavy-set man about fifty with thinning sandy hair and a brown cardigan from the character board. Not the teenage boy."
+  },
+  {
+   "name": "char-donna.jpg",
+   "kind": "portrait",
+   "refs": true,
+   "prompt": "Donna, as on the character board."
+  },
+  {
+   "name": "shot-joe-recognition.jpg",
+   "kind": "shot",
+   "refs": true,
+   "prompt": "Joe standing in a dark hallway doorway, seen in medium close-up, face slowly changing from sleepy to frightened as he watches something off-screen, blue flicker on one side of his face."
+  },
+  {
+   "name": "shot-parents-human.jpg",
+   "kind": "shot",
+   "refs": true,
+   "prompt": "Pete and Donna on the same floral sofa, now turned towards each other with a brief, tired, human warmth, a smashed television dark in the foreground, one warm lamp on."
+  },
+  {
+   "name": "sb-10.jpg",
+   "kind": "panel",
+   "refs": false,
+   "prompt": "A crowd of sheep flooding a street, with arrows and guide lines marking a visual effects composite"
+  },
+  {
+   "name": "sb-11.jpg",
+   "kind": "panel",
+   "refs": true,
+   "prompt": "Joe on an apartment balcony at dawn, seen from inside the dark living room past a smashed boxy CRT television that still flickers with static, the street of sheep beyond him."
+  },
+  {
+   "name": "sb-12.jpg",
+   "kind": "panel",
+   "prompt": "A nearly black panel of dense pencil hatching, with only a faint empty rectangle in the centre for an end card."
+  },
+  {
+   "name": "shot-flock-reveal.jpg",
+   "kind": "shot",
+   "prompt": "High wide view of a suburban street at pale dawn packed with thousands of white sheep, every one of them standing still with its head raised towards the camera, street lamps still on. No people."
+  },
+  {
+   "name": "shot-joe-hold.jpg",
+   "kind": "shot",
+   "refs": true,
+   "prompt": "Joe only, the lanky sixteen-year-old with messy dark hair and a washed-out grey T-shirt, seen from behind on an apartment balcony at pale dawn, framed from inside the dark living room past a smashed boxy CRT television that impossibly still flickers with static in the foreground, the street of sheep blurred beyond him. Not the older man."
+  }
+ ],
+ "panelStyle": "Style: one single hand-drawn storyboard panel in soft black pencil with light grey wash on white paper, loose confident lines, filling the whole image with no border, no panel number and no other panels. Wide 16:9 composition. No readable text, no logos, no watermark.",
+ "portraitStyle": "Style: a plain character portrait for a film casting record, head and shoulders, soft window light against a dark neutral background, photographic with subtle grain. Fully clothed. Portrait composition, no readable text, no logos, no watermark."
+}

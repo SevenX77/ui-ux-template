@@ -1,8 +1,12 @@
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
 const root=document.documentElement;
 function toast(t){const e=document.createElement('div');e.className='toast';e.textContent=t;$('#toasts').append(e);setTimeout(()=>{e.classList.add('out');setTimeout(()=>e.remove(),350)},2600)}
-function scrim(html){$('#scrimIn').innerHTML=html;$('#scrim').classList.add('show')}
-function closeScrim(){$('#scrim').classList.remove('show')}
+let scrimReturn=null;
+const scrimStops=()=>$$('button:not([disabled]),a[href],input:not([disabled]),textarea,[tabindex]:not([tabindex="-1"])',$('#scrimIn')).filter(e=>e.getClientRects().length&&getComputedStyle(e).visibility!=='hidden');
+function scrim(html){const s=$('#scrim'),d=$('#scrimIn');if(!s.classList.contains('show'))scrimReturn=document.activeElement;d.innerHTML=html;d.setAttribute('role','dialog');d.setAttribute('aria-modal','true');d.setAttribute('aria-label',tr('预览'));d.tabIndex=-1;s.classList.add('show');(scrimStops()[0]||d).focus()}
+function closeScrim(){const s=$('#scrim');if(!s.classList.contains('show'))return;s.classList.remove('show');const back=scrimReturn?.isConnected&&!scrimReturn.disabled?scrimReturn:scrimReturn?.closest('[data-cmp]')?.querySelector('button:not([disabled]),input')||$('#barIn button');back?.focus();scrimReturn=null}
+$('#scrim').addEventListener('keydown',e=>{if(e.key!=='Tab')return;const a=scrimStops(),first=a[0]||$('#scrimIn'),last=a.at(-1)||first;if(e.shiftKey&&(document.activeElement===first||!a.includes(document.activeElement))){e.preventDefault();last.focus()}else if(!e.shiftKey&&(document.activeElement===last||!a.includes(document.activeElement))){e.preventDefault();first.focus()}});
+document.addEventListener('focusin',e=>{if($('#scrim').classList.contains('show')&&!$('#scrim').contains(e.target))(scrimStops()[0]||$('#scrimIn')).focus()});
 $('#scrim').addEventListener('mousedown',e=>{if(e.target.id==='scrim')closeScrim()});
 addEventListener('keydown',e=>{if(e.key==='Escape')closeScrim()});
 document.addEventListener('click',e=>{
@@ -12,7 +16,7 @@ document.addEventListener('click',e=>{
   if(t)t.setAttribute('aria-checked',t.getAttribute('aria-checked')!=='true');
   const n=e.target.closest('[data-toast]');
   if(n)toast(n.dataset.toast);
-  if(e.target.closest('[data-confirm]'))scrim(`<div class="float" style="padding:22px 24px;max-width:380px;margin:auto"><b style="font-size:16px">删除所选文件？</b><p class="sm mute" style="margin:calc(6px*var(--y)) 0 calc(16px*var(--y))">删除后可以在 30 天内从回收站恢复。</p><div class="row" style="justify-content:flex-end"><button class="btn ghost" onclick="closeScrim()">保留</button><button class="btn" onclick="closeScrim();toast('已删除，可撤销')">确认删除</button></div></div>`);
+
 });
 
 /* 主题切换：主题全部来自 themes.json */
@@ -28,7 +32,7 @@ setScheme(saved&&THEMES.themes.some(s=>s.id===saved)?saved:THEMES.default);
 const rail=$('#rail'),NAV=[['terms','术语'],['schemes','主题'],['shape','圆角 · 边框 · 层级'],['controls','控件'],['workspace','工作台'],['dash','数据看板'],['canvas','画布与节点'],['maps','关系图'],['agents','多 Agent'],['more','AI · 小组件'],['work','资料 · 任务'],['table','数据表'],['gallery','图片瀑布流'],['daily','日常场景'],['values','数值表'],['refs','参考来源']];
 function goTo(id){document.getElementById(id).scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'})}
 rail.innerHTML=NAV.map(([id,n])=>`<a href="#${id}" data-go="${id}" aria-label="${n}"><span>${n}</span></a>`).join('');
-$('#pnavL').innerHTML=NAV.map(([id,n])=>`<a data-go="${id}">${n}</a>`).join('');
+$('#pnavL').innerHTML=NAV.map(([id,n])=>`<a href="#${id}" data-go="${id}">${n}</a>`).join('');
 document.addEventListener('click',e=>{const a=e.target.closest('#rail [data-go],#pnavL [data-go]');if(a){e.preventDefault();$('#pnav').classList.remove('open');goTo(a.dataset.go)}else if(!e.target.closest('#pnav'))$('#pnav').classList.remove('open')});
 $('#pnavB').onclick=()=>$('#pnav').classList.toggle('open');
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){$$('#rail a,#pnavL a').forEach(a=>a.classList.toggle('on',a.dataset.go===e.target.id));const n=NAV.find(x=>x[0]===e.target.id);$('#pnavT').textContent=n[1]}}),{rootMargin:'-40% 0px -55% 0px'});$$('section[id]').forEach(s=>io.observe(s));
@@ -84,19 +88,27 @@ let stv=2;$('[id="st-"]').onclick=()=>{stv=Math.max(0,stv-1);$('#stv').textConte
 /* ========== 动效卡 ========== */
 const MO=[
  ['悬停抬起','.2s，只加阴影，不移动',`<div class="card lift mo-demo" style="padding:8px 18px;background:var(--card)">移上来</div>`,'hover'],
- ['意图延迟','.15s 后才响应，路过不触发',`<div class="mo-demo" data-d style="padding:8px 16px;border-radius:12px;background:var(--card);transition:box-shadow .35s var(--ease) .15s,transform .35s var(--ease) .15s" onmouseenter="this.style.boxShadow='var(--e3)'" onmouseleave="this.style.boxShadow=''">快速划过我</div>`,'hover'],
- ['工具浮现','.25s 淡入并下落 8px',`<div class="mo-tool"><div class="seg" style="opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .25s,transform .35s var(--ease),visibility 0s;position:absolute;top:6px;left:50%;margin-left:-58px" data-o><button class="on">A</button><button>B</button><button>C</button></div><div style="padding:6px 16px;border-radius:12px;background:var(--card);margin-top:calc(36px*var(--y))">目标</div></div>`,'play'],
+ ['意图延迟','.15s 后才响应，路过不触发',`<div class="mo-demo" data-d style="padding:8px 16px;border-radius:16px;background:var(--card);transition:box-shadow .35s var(--ease) .15s,transform .35s var(--ease) .15s" onmouseenter="this.style.boxShadow='var(--e3)'" onmouseleave="this.style.boxShadow=''">快速划过我</div>`,'hover'],
+ ['工具浮现','.25s 淡入并下落 4px',`<div class="mo-tool"><div class="seg" style="opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .25s,transform .35s var(--ease),visibility 0s;position:absolute;top:6px;left:50%;margin-left:-58px" data-o><button class="on">A</button><button>B</button><button>C</button></div><div style="padding:6px 16px;border-radius:16px;background:var(--card);margin-top:calc(36px*var(--y))">目标</div></div>`,'play'],
  ['挤占','.52s，两者一起重新居中',`<div style="display:flex;width:100%;justify-content:center;gap:0" class="mo-push"><div style="flex:0 1 150px;height:60px;background:var(--card);border-radius:9px"></div><div data-o style="flex:0 0 0;width:0;height:60px;background:var(--signal);border-radius:9px;opacity:0;transition:flex-basis .52s cubic-bezier(.22,1,.3,1),opacity .35s,margin .52s;margin-left:0"></div></div>`,'play'],
- ['覆盖','.35s，底下不动',`<div style="width:100%;height:80px;position:relative"><div class="xs mute" style="padding:6px">正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文</div><div data-o style="position:absolute;left:0;right:0;bottom:0;height:52px;background:var(--glass);backdrop-filter:blur(5px);border-radius:10px;opacity:0;transition:opacity .35s;box-shadow:0 -4px 14px var(--shadow-2)"></div></div>`,'play'],
- ['退场','.35s 高度变 0，下移 20px',`<div style="width:100%"><div data-o style="height:30px;background:var(--card);border-radius:8px;transition:all .35s var(--ease);margin-bottom:calc(6px*var(--y));overflow:hidden"></div><div style="height:30px;background:var(--sunk);border-radius:8px"></div></div>`,'play'],
- ['输入扩展','.5s 宽度 60% → 80%',`<div data-o style="width:60%;height:38px;background:var(--card);border-radius:12px;transition:width .5s var(--ease),box-shadow .5s var(--ease)"></div>`,'play'],
- ['变暗','.3s 降到 .3，仍可点击',`<div class="row" style="flex-wrap:nowrap"><div style="padding:12px 18px;background:var(--card);border-radius:10px" class="sm b">活动</div><div data-o class="sm" style="padding:12px 18px;background:var(--card);border-radius:10px;transition:opacity .3s">其他</div></div>`,'play'],
+ ['覆盖','.35s，底下不动',`<div style="width:100%;height:80px;position:relative"><div class="xs mute" style="padding:6px">正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文</div><div data-o style="position:absolute;left:0;right:0;bottom:0;height:52px;background:var(--glass);backdrop-filter:blur(5px);border-radius:9px;opacity:0;transition:opacity .35s;box-shadow:var(--e2)"></div></div>`,'play'],
+ ['退场','.35s 高度变 0，下移 20px',`<div style="width:100%"><div data-o style="height:30px;background:var(--card);border-radius:9px;transition:all .35s var(--ease);margin-bottom:calc(6px*var(--y));overflow:hidden"></div><div style="height:30px;background:var(--sunk);border-radius:9px"></div></div>`,'play'],
+ ['输入扩展','.5s 宽度 60% → 80%',`<div data-o style="width:60%;height:38px;background:var(--card);border-radius:16px;transition:width .5s var(--ease),box-shadow .5s var(--ease)"></div>`,'play'],
+ ['变暗','.3s 降到 .3，仍可点击',`<div class="row" style="flex-wrap:nowrap"><div style="padding:12px 18px;background:var(--card);border-radius:9px" class="sm b">活动</div><div data-o class="sm" style="padding:12px 18px;background:var(--card);border-radius:9px;transition:opacity .3s">其他</div></div>`,'play'],
  ['通知','.45s 从上滑入，不挤内容',`<div style="width:100%;height:80px;position:relative;overflow:hidden"><div class="xs mute" style="padding-top:28px;text-align:center">内容不动</div><div data-o class="xs" style="position:absolute;left:10%;right:10%;top:6px;padding:6px 10px;background:var(--ink);color:var(--app);border-radius:9px;transform:translateY(-140%);transition:transform .45s var(--ease)">已保存</div></div>`,'play'],
 ];
 const MSP=['s3','s3','s3','s3','s4','s4','s4','s6','s6'];
 $('#motion').innerHTML=MO.map((m,i)=>`<div class="card mo ${MSP[i]}" data-cmp data-live><div class="between"><div><b>${m[0]}</b><div class="xs mute">${m[1]}</div></div>${m[3]==='play'?`<button class="btn sec2 sm" data-mo="${i}">播放</button>`:'<span class="xs faint">悬停</span>'}</div><div class="mo-stage" id="mo${i}">${m[2]}</div></div>`).join('');
-const STATES={2:()=>[{opacity:1,visibility:'visible',transform:'none'},{opacity:0,visibility:'hidden',transform:'translateY(-8px)'}],3:()=>[{flexBasis:'110px',opacity:1,marginLeft:'6px'},{flexBasis:'0px',opacity:0,marginLeft:'0px'}],4:()=>[{opacity:1},{opacity:0}],5:()=>[{height:'0px',opacity:0,transform:'translateY(20px)',marginBottom:'0px'},{height:'30px',opacity:1,transform:'none',marginBottom:'6px'}],6:()=>[{width:'80%',boxShadow:'var(--e3)'},{width:'60%',boxShadow:'none'}],7:()=>[{opacity:.3},{opacity:1}],8:()=>[{transform:'none'},{transform:'translateY(-140%)'}]};
+const STATES={2:()=>[{opacity:1,visibility:'visible',transform:'none'},{opacity:0,visibility:'hidden',transform:'translateY(-4px)'}],3:()=>[{flexBasis:'110px',opacity:1,marginLeft:'6px'},{flexBasis:'0px',opacity:0,marginLeft:'0px'}],4:()=>[{opacity:1},{opacity:0}],5:()=>[{height:'0px',opacity:0,transform:'translateY(20px)',marginBottom:'0px'},{height:'30px',opacity:1,transform:'none',marginBottom:'6px'}],6:()=>[{width:'80%',boxShadow:'var(--e3)'},{width:'60%',boxShadow:'none'}],7:()=>[{opacity:.3},{opacity:1}],8:()=>[{transform:'none'},{transform:'translateY(-140%)'}]};
 document.addEventListener('click',e=>{const b=e.target.closest('[data-mo]');if(!b)return;const i=+b.dataset.mo,o=$('[data-o]',$('#mo'+i)),[a,z]=STATES[i]();Object.assign(o.style,a);setTimeout(()=>Object.assign(o.style,z),1300)});
 
 /* 菜单：点开，选完或点外面就收起 */
-(function(){const p=$('#mPop'),b=$('#mTrig');b.onclick=e=>{e.stopPropagation();p.classList.toggle('show')};$$('div',p).forEach(d=>d.onclick=()=>{p.classList.remove('show');const t=d.childNodes[0].textContent.trim();if(!t.startsWith('＋')){b.textContent=t+' ▾';$$('div',p).forEach(x=>{x.classList.toggle('on',x===d);const s=$('span',x);if(s)s.remove()});d.insertAdjacentHTML('beforeend',' <span>✓</span>')}});document.addEventListener('click',()=>p.classList.remove('show'));addEventListener('keydown',e=>{if(e.key==='Escape')p.classList.remove('show')})})();
+(function(){const p=$('#mPop'),b=$('#mTrig'),owner='handbook-menu',card=b.closest('[data-cmp]');
+const items=$$('div',p);p.setAttribute('role','menu');b.setAttribute('aria-haspopup','menu');b.setAttribute('aria-expanded','false');items.forEach(d=>{d.setAttribute('role','menuitemradio');d.tabIndex=-1;d.setAttribute('aria-checked',d.classList.contains('on'))});
+const close=restore=>{const had=p.classList.contains('show');p.classList.remove('show');b.setAttribute('aria-expanded','false');if(restore&&had)b.focus()};
+const focusItem=i=>requestAnimationFrame(()=>{if(p.classList.contains('show'))items[i]?.focus()});
+b.onclick=e=>{const on=!p.classList.contains('show');if(on)document.dispatchEvent(new CustomEvent('ui:menu-open',{detail:{owner}}));p.classList.toggle('show',on);b.setAttribute('aria-expanded',on);if(on&&e.detail===0)focusItem(0)};
+b.addEventListener('keydown',e=>{if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();if(!p.classList.contains('show'))b.click();focusItem(e.key==='ArrowUp'?items.length-1:0)}});
+items.forEach((d,i)=>{d.onclick=()=>{const t=d.childNodes[0].textContent.trim();b.textContent=t+' ▾';items.forEach(x=>{const on=x===d;x.classList.toggle('on',on);x.setAttribute('aria-checked',on);$('span',x)?.remove()});const mark=document.createElement('span');mark.textContent='✓';d.append(mark);close(true)};d.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();d.click()}if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();items[(i+(e.key==='ArrowDown'?1:-1)+items.length)%items.length].focus()}if(e.key==='Home'){e.preventDefault();items[0].focus()}if(e.key==='End'){e.preventDefault();items.at(-1).focus()}}});
+document.addEventListener('click',e=>{if(!p.contains(e.target)&&!b.contains(e.target))close(false)});document.addEventListener('ui:menu-open',e=>{if(e.detail?.owner!==owner)close(false)});document.addEventListener('ux:rest',e=>{if(e.target===card)close(false)});addEventListener('keydown',e=>{if(e.key==='Escape')close(true)});
+})();

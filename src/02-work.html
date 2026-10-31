@@ -59,8 +59,8 @@
           <div class="seg" id="sf-zoomSeg">
             <button type="button" data-sf-call="setZoom" data-value="Film">全片</button>
             <button type="button" data-sf-call="setZoom" data-value="Act">幕级</button>
-            <button type="button" data-sf-call="setZoom" data-value="Beat">节拍</button>
             <button type="button" data-sf-call="setZoom" data-value="Scene">场景级</button>
+            <button type="button" data-sf-call="setZoom" data-value="Beat">节拍</button>
             <button type="button" class="on" data-sf-call="setZoom" data-value="Shot">镜头级</button>
           </div>
         </div>
@@ -116,15 +116,15 @@
         <div class="inc-side">
           <div><span class="inc-lab">收入来源</span><div id="incSrc"></div></div>
           <div><span class="inc-lab">最近到账</span><div id="incIn"></div></div>
-          <div class="row inc-act"><button class="btn sm" data-toast="已导出 CSV（示例）">导出</button><button class="btn ghost sm" data-toast="已开票（示例）">开票</button></div>
+          <div class="row inc-act"><button class="btn sm" id="incExport">导出</button></div>
         </div>
       </div>
     </div>
     <div class="card d-dial" data-cmp data-nofocus data-keep><span class="tag">now</span><svg data-dial viewBox="0 0 220 220"></svg></div>
     <div class="card d-cats" data-cmp data-nofocus data-keep><span class="b">支出分类</span><div style="margin-top:calc(6px*var(--y))" id="cats"></div><div class="cats-mini"><div class="big num-t">$5,690</div><div class="cats-bar"><i style="flex:42;background:var(--c1)"></i><i style="flex:20;background:var(--c2)"></i><i style="flex:15;background:var(--c3)"></i><i style="flex:23;background:var(--c4)"></i></div></div></div>
     <div class="card d-trend" data-cmp data-nofocus data-keep><div class="between"><span class="b">收入趋势</span><div class="seg" data-seg data-tool><button>7天</button><button class="on">30天</button></div></div><div class="trend-w" id="trendW"><svg id="trend" viewBox="0 0 600 180" preserveAspectRatio="none"></svg><i class="xh" id="xh"><b></b><span></span></i></div></div>
-    <div class="card d-out" data-cmp data-nofocus data-keep><span class="label">本周产出</span><div class="big" style="margin-top:calc(2px*var(--y))" data-count="128">0</div><div class="bars" id="bars"></div></div>
-    <div class="card d-led" data-cmp data-nofocus data-keep><div class="between"><span class="b">最近记录</span><span class="xs mute" data-tool>查看全部 →</span></div><div id="ledger" style="margin-top:calc(4px*var(--y))"></div></div>
+    <div class="card d-out" data-cmp data-live data-nofocus data-keep><span class="label">本周产出</span><div class="big" style="margin-top:calc(2px*var(--y))" data-count="128">0</div><div class="bars" id="bars"></div></div>
+    <div class="card d-led" data-cmp data-nofocus data-keep><div class="between"><span class="b">最近记录</span><button class="btn ghost sm" id="ledgerAll" data-tool>查看全部 →</button></div><div id="ledger" style="margin-top:calc(4px*var(--y))"></div></div>
   </div>
   <p class="note">点 Income：详情在原地展开，其他组件挤到右边，看板总尺寸不变，右边的组件照常可用。点 ✕、点看板外面或按 Esc 收起。</p>
 
@@ -141,7 +141,7 @@
   <p class="note">节点待机只有标题和预览，端口和工具悬停才出现。配置组用握把拖动，也能用键盘 ↑↓ 排序。</p>
 
   <div class="sub">业务蓝图 <small>来源：Puzzle 视频。悬停预览一组的连线，点击后汇总挤进来</small></div>
-  <div class="bp" id="bp" data-scope="bp" data-hold><div class="bp-board" id="bpBoard"></div><aside class="bp-side" id="bpSide" data-keep></aside></div>
+  <div class="bp" id="bp" data-scope="bp" data-hold><div class="bp-board fade-x" id="bpBoard"></div><aside class="bp-side" id="bpSide" data-keep></aside></div>
 </section>
 
 <section class="wrap sec" id="maps">

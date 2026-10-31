@@ -10,7 +10,7 @@ const ob=new MutationObserver(ms=>{if(LANG.cur==='zh')return;writing=true;ms.for
 function applyLang(l){
   LANG.cur=l;root.lang=l;
   ob.disconnect();
-  if(l==='zh'){textOrig.forEach((v,n)=>{if(n.isConnected)n.data=v});textOrig.clear();attrOrig.forEach((o,el)=>{for(const a in o)el.setAttribute(a,o[a])});attrOrig.clear()}
+  if(l==='zh'){textOrig.forEach((v,n)=>{n.data=v});textOrig.clear();attrOrig.forEach((o,el)=>{for(const a in o)el.setAttribute(a,o[a])});attrOrig.clear()}
   else{walk(document.body);ob.observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:ATTRS})}
   $$('#barIn button[data-l]').forEach(b=>b.classList.toggle('on',b.dataset.l===l));
   try{localStorage.setItem('lang',l)}catch(e){}

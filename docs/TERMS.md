@@ -31,7 +31,7 @@ The relation between the two components decides which one applies.
 | Term | English | Applies when | Story Forge case |
 | --- | --- | --- | --- |
 | 挤占 | Push | Both are read together. | Context panel grows from 0 to 360px; reading column yields; the pair re-centres under a 1040px cap. A picked audio lane grows from 30 to 46px and the others shrink to 26px. |
-| 覆盖 | Overlay | The view is temporary. | Chat history covers the text; the text gains 240px of scroll room so it can scroll clear. |
+| 覆盖 | Overlay | The view is temporary. | Chat history covers the text; the text gains 230px of scroll room so it can scroll clear. |
 | 退场 | Retire | Both claim the same place. | Timeline during chat focus; timeline in Explore mode. |
 
 | Term | English | Meaning |
