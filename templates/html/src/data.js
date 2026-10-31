@@ -36,8 +36,9 @@ function draw(){
   tb.replaceChildren(...kids);
  });
  const st=page*PAGE;$('#dtN').textContent=a.length?`${st+1}–${st+shown.length} / ${a.length}`:'0 / 0';
- const P=$('#dtP');P.querySelectorAll('button').forEach(b=>b.remove());
- for(let i=0;i<pages;i++){const b=document.createElement('button');b.textContent=i+1;b.dataset.p=i;P.append(b);if(i===page)b.classList.add('on')}
+ const P=$('#dtP'),pb=[...P.querySelectorAll('button')];pb.splice(pages).forEach(b=>b.remove());
+ for(let i=pb.length;i<pages;i++){const b=document.createElement('button');b.textContent=i+1;b.dataset.p=i;P.append(b);pb.push(b)}
+ pb.forEach((b,i)=>b.classList.toggle('on',i===page));
  $('#dtPrev').disabled=page===0;$('#dtNext').disabled=page>=pages-1;
  const on=shown.filter(r=>sel.has(r.id)).length;const all=$('#dtAll');all.setAttribute('aria-checked',!on?'false':on===shown.length?'true':'mixed');
  $('#dtBn').textContent=`已选 ${sel.size} 个`;$('.dt-foot',dt).classList.toggle('sel',sel.size>0);

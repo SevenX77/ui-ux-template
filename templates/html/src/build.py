@@ -42,17 +42,20 @@ theme_css = core.theme_css(themes)
 theme_data = json.dumps(themes, ensure_ascii=False)
 i18n_data = json.dumps(core.dictionary(themes), ensure_ascii=False)
 ASSETS = CORE / "content" / "assets"
-data_uri = lambda p: "url(data:image/webp;base64,%s)" % base64.b64encode(p.read_bytes()).decode()
+b64 = lambda p: base64.b64encode(p.read_bytes()).decode()
 web = core.gallery()
-image_css = ":root{%s}" % "".join(
-    ["--sf-%s:%s;" % (p.stem, data_uri(p)) for p in sorted((ASSETS / "sf").glob("*.webp"))]
-    + ["--w%d:%s;" % (i, data_uri(ASSETS / "gallery" / m["f"])) for i, m in enumerate(web)])
+# Images reach CSS as short blob URLs. A data URI in a custom property is re-parsed on every element using it,
+# which cost 60-110ms of style work per table redraw and stalled every animation starting in that frame.
+images = {**{"--sf-" + p.stem: b64(p) for p in sorted((ASSETS / "sf").glob("*.webp"))},
+          **{"--w%d" % i: b64(ASSETS / "gallery" / m["f"]) for i, m in enumerate(web)}}
+image_js = "const I=%s,R=document.documentElement.style;for(const k in I){const s=atob(I[k]),a=new Uint8Array(s.length);for(let i=0;i<s.length;i++)a[i]=s.charCodeAt(i);R.setProperty(k,`url(${URL.createObjectURL(new Blob([a],{type:'image/webp'}))})`)}" % json.dumps(images)
 web_data = json.dumps([{k: m[k] for k in ("t", "c", "r")} for m in web], ensure_ascii=False)
 
 page = f"""<!doctype html>
 <html lang="zh" data-scheme="neon">
 <head>
 <meta charset="utf-8">
+<meta name="ui-template-version" content="{core.version()}">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>UI/UX Handbook</title>
 <link rel="icon" href="data:,">
@@ -60,13 +63,13 @@ page = f"""<!doctype html>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 {theme_css}
-{image_css}
 {core_css("base.css")}
 {core_css("scenes.css")}
 {core_css("more.css")}
 {core_css("sf.css")}
 {core_css("data.css")}
 </style>
+<script>{image_js}</script>
 </head>
 <body>
 <script>if(new URLSearchParams(location.hash.slice(1)).get("embed"))document.body.classList.add("embed")</script>

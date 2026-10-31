@@ -11,6 +11,11 @@ DIST = CORE / "dist"
 read = lambda rel: (CORE / rel).read_text(encoding="utf-8")
 
 
+def version():
+    """The one version of the core and of every template output built from it."""
+    return read("VERSION").strip()
+
+
 def themes():
     return json.loads(read("tokens/themes.json"))
 

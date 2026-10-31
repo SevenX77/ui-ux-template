@@ -367,7 +367,7 @@
 .sf .bctl>button{flex:1;font-size:12px;font-weight:600;line-height:1;}
 .sf .seg>button{font-size:11px;line-height:1.3;font-weight:400;text-align:center;}
 .sf .seg>button.on{font-weight:400;}
-.sf :where(.bctl,.seg,.tltrack,.cv-rail)>.seg-ind{position:absolute;left:0;top:0;z-index:1;display:block;background:var(--signal);box-shadow:var(--e1);pointer-events:none;border-radius:9px;transition:opacity .2s;}
+.sf :where(.bctl,.seg,.tltrack,.cv-rail)>.seg-ind{position:absolute;left:0;top:0;z-index:1;display:block;background:var(--signal);box-shadow:var(--e1);pointer-events:none;border-radius:9px;}
 .sf .bctl>.seg-ind{border-radius:9px;}
 .sf .seg>.seg-ind,.sf .tltrack>.seg-ind{border-radius:9px;}
 .sf .cv-rail>.seg-ind{border-radius:9px;box-shadow:none;}

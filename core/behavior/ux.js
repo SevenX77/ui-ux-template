@@ -224,26 +224,29 @@ const UX=(()=>{
 
 /* ========== 选择器：同一块底滑过去，不闪现。按钮自己在变宽时也跟得上 ========== */
 (function(){
-  const HOST='.seg,.notch,.cv-rail,.cal,.sf .bctl,.sf .tltrack,.fan-l,#slots',TAU=85,st=new WeakMap();
-  const calm=()=>matchMedia('(prefers-reduced-motion:reduce)').matches;
+  const HOST='.seg,.notch,.cv-rail,.cal,.sf .bctl,.sf .tltrack,.fan-l,#slots',SETTLE=200,st=new WeakMap();
   const read=b=>({x:b.offsetLeft,y:b.offsetTop,w:b.offsetWidth,h:b.offsetHeight});
+  const same=(a,b)=>a.x===b.x&&a.y===b.y&&a.w===b.w&&a.h===b.h;
   const draw=(i,c)=>{i.style.width=c.w+'px';i.style.height=c.h+'px';i.style.transform=`translate(${c.x}px,${c.y}px)`};
-  function place(s){
-    const i=s.querySelector(':scope>.seg-ind');if(!i)return;
-    const b=s.querySelector(':scope>button.on');let d=st.get(s);if(!d){d={c:null,raf:0};st.set(s,d)}
-    if(!b||!b.offsetWidth){i.style.opacity=0;d.c=null;return}
-    i.style.opacity=1;
-    if(!d.c||calm()){d.c=read(b);draw(i,d.c);return}
-    if(d.raf)return;
-    let t0=performance.now();
+  /* 动画交给 CSS 过渡，transform 在合成线程上跑，主线程忙时滑块也不掉帧。只有选项自己还在变大小时才继续改目标 */
+  function follow(s,d){
+    d.until=performance.now()+SETTLE;if(d.raf)return;
     const step=t=>{
-      const dt=Math.min(t-t0,48);t0=t;
-      const on=s.querySelector(':scope>button.on');if(!on||!on.offsetWidth){d.raf=0;place(s);return}
-      const g=read(on),k=1-Math.exp(-dt/TAU);let far=false;
-      for(const p in g){d.c[p]+=(g[p]-d.c[p])*k;if(Math.abs(g[p]-d.c[p])>.2)far=true}
-      if(far){draw(i,d.c);d.raf=requestAnimationFrame(step)}else{d.c=g;draw(i,g);d.raf=0}
+      d.raf=0;const on=s.querySelector(':scope>button.on');if(!on||!on.offsetWidth){place(s);return}
+      const g=read(on);if(!same(g,d.c)){d.c=g;draw(s.querySelector(':scope>.seg-ind'),g);d.until=t+SETTLE}
+      if(t<d.until)d.raf=requestAnimationFrame(step);
     };
     d.raf=requestAnimationFrame(step);
+  }
+  function place(s){
+    const i=s.querySelector(':scope>.seg-ind');if(!i)return;
+    const b=s.querySelector(':scope>button.on');let d=st.get(s);if(!d){d={c:null,raf:0,until:0};st.set(s,d)}
+    if(!b||!b.offsetWidth){i.style.opacity=0;d.c=null;return}
+    i.style.opacity=1;const g=read(b);
+    /* 第一次出现直接就位，不从左上角滑进来 */
+    if(!d.c){i.style.transition='none';draw(i,g);i.getBoundingClientRect();i.style.transition='';d.c=g;return}
+    if(same(g,d.c))return;
+    d.c=g;draw(i,g);follow(s,d);
   }
   const ro=new ResizeObserver(es=>es.forEach(e=>place(e.target)));
   const init=s=>{if(s.querySelector(':scope>.seg-ind'))return;const i=document.createElement('i');i.className='seg-ind';s.prepend(i);place(s);ro.observe(s)};

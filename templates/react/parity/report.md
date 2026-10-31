@@ -1,9 +1,9 @@
 # HTML / React parity report
 
-Run: 2026-10-31T10-00-46-701Z
-Script SHA-256: `f1ea4d9dc1919888c42f53517c2813a1a459039e35e01d3165936727c5cb5903`
+Run: 2026-10-31T18-22-54-633Z
+Script SHA-256: `6daaf48d9ceb9c7161e63411c7abd2df87a6cb2a5a8dfea667e0175d52aaa09d`
 
-Automated style/DOM-meaning/interaction phase: **attained for the stated finite conditions**. Parent fidelity acceptance still requires review of the reported visual differences.
+Automated style/DOM-meaning/interaction phase: **partially attained; see remaining checks**. Parent fidelity acceptance still requires review of the reported visual differences.
 
 Strict extra diagnostics: allChecksPass=false; exit code remains nonzero for unequal raw pixels or even empty class attributes. These extra diagnostics do not create a user requirement for bit-identical screenshots.
 
@@ -25,69 +25,61 @@ Strict extra diagnostics: allChecksPass=false; exit code remains nonzero for une
 
 | Section | Cases | Style mismatches | DOM/content differences | Max pixel ratio | Max channel delta | Interaction results | Errors |
 |---|---:|---:|---:|---:|---:|---|---:|
-| #schemes | 24/24 | 0 | 0 | 19.3490% | 255 | Not applicable | 0 |
-| #shape | 24/24 | 0 | 0 | 9.7184% | 255 | Not applicable | 0 |
-| #controls | 24/24 | 0 | 0 | 5.0955% | 255 | Not applicable | 0 |
-| #dash | 24/24 | 0 | 0 | 12.9946% | 255 | 48/48 scope checks pass | 0 |
-| #work | 24/24 | 0 | 0 | 2.5309% | 255 | 48/48 scope checks pass; drag 48/48 | 0 |
-| #table | 24/24 | 0 | 0 | 4.2939% | 255 | Not applicable | 0 |
-| #gallery | 24/24 | 0 | 0 | 66.5597% | 255 | Not applicable | 0 |
+| #schemes | 24/24 | 0 | 0 | 19.6280% | 255 | Not applicable | 0 |
+| #shape | 24/24 | 0 | 0 | 9.8061% | 255 | Not applicable | 0 |
+| #controls | 24/24 | 0 | 0 | 5.1323% | 255 | Not applicable | 0 |
+| #dash | 24/24 | 0 | 0 | 7.4404% | 241 | 48/48 scope checks pass | 0 |
+| #work | 24/24 | 0 | 0 | 2.9010% | 255 | 48/48 scope checks pass; drag 48/48 | 0 |
+| #table | 24/24 | 0 | 0 | 9.8307% | 255 | Not applicable | 0 |
+| #gallery | 24/24 | 0 | 0 | 69.7661% | 255 | Not applicable | 0 |
 
 ## Chrome and interactions
 
-Chrome: 72/72 cases; 0 style differences; 400 DOM/content differences.
+Chrome: 72/72 cases; 276 style differences; 480 DOM/content differences.
 Interactions: 48/48 complete configuration/side checks pass (48 expected).
 Theme indicator: 48/48. Language pin: 48/48.
 
-Actual follow-up measurements: all 96 target-local class traces admitted within 151.8–172.3ms. All native event/MO evidence agreed and every forwarding descriptor was restored exactly. All 48 drag, theme, language and paired-scope dim/outside checks passed. Maximum observed language pin delta: 0.4375px. The 18 late legacy callback-sample traces remain in raw results; they are not retimed or used as clock evidence.
-
-
-## Fresh visible-topbar supplement
-
-These images capture .bar-in. Old .bar style/DOM observations and old skipped-image records remain unchanged. Every unequal RGBA pixel is counted with tolerance 0.
-
-| Configuration | Capture | Different pixels | Max channel delta | Evidence |
-|---|---|---:|---:|---|
-| pure-zh-1440x1080 | nonempty paired .bar-in | 0.0000% | 0 | [HTML](out/2026-10-31T10-00-46-701Z/chrome-supplement/pure-zh-1440x1080-visible-topbar-html.png) · [React](out/2026-10-31T10-00-46-701Z/chrome-supplement/pure-zh-1440x1080-visible-topbar-react.png) · [diff](out/2026-10-31T10-00-46-701Z/chrome-supplement/pure-zh-1440x1080-visible-topbar-diff.png) |
-| pure-en-1440x1080 | nonempty paired .bar-in | 0.0000% | 0 | [HTML](out/2026-10-31T10-00-46-701Z/chrome-supplement/pure-en-1440x1080-visible-topbar-html.png) · [React](out/2026-10-31T10-00-46-701Z/chrome-supplement/pure-en-1440x1080-visible-topbar-react.png) · [diff](out/2026-10-31T10-00-46-701Z/chrome-supplement/pure-en-1440x1080-visible-topbar-diff.png) |
-| neon-zh-1440x1080 | nonempty paired .bar-in | 0.0000% | 0 | [HTML](out/2026-10-31T10-00-46-701Z/chrome-supplement/neon-zh-1440x1080-visible-topbar-html.png) · [React](out/2026-10-31T10-00-46-701Z/chrome-supplement/neon-zh-1440x1080-visible-topbar-react.png) · [diff](out/2026-10-31T10-00-46-701Z/chrome-supplement/neon-zh-1440x1080-visible-topbar-diff.png) |
-| neon-en-1440x1080 | nonempty paired .bar-in | 0.0000% | 0 | [HTML](out/2026-10-31T10-00-46-701Z/chrome-supplement/neon-en-1440x1080-visible-topbar-html.png) · [React](out/2026-10-31T10-00-46-701Z/chrome-supplement/neon-en-1440x1080-visible-topbar-react.png) · [diff](out/2026-10-31T10-00-46-701Z/chrome-supplement/neon-en-1440x1080-visible-topbar-diff.png) |
-| prism-zh-1440x1080 | nonempty paired .bar-in | 0.0000% | 0 | [HTML](out/2026-10-31T10-00-46-701Z/chrome-supplement/prism-zh-1440x1080-visible-topbar-html.png) · [React](out/2026-10-31T10-00-46-701Z/chrome-supplement/prism-zh-1440x1080-visible-topbar-react.png) · [diff](out/2026-10-31T10-00-46-701Z/chrome-supplement/prism-zh-1440x1080-visible-topbar-diff.png) |
-| prism-en-1440x1080 | nonempty paired .bar-in | 0.0000% | 0 | [HTML](out/2026-10-31T10-00-46-701Z/chrome-supplement/prism-en-1440x1080-visible-topbar-html.png) · [React](out/2026-10-31T10-00-46-701Z/chrome-supplement/prism-en-1440x1080-visible-topbar-react.png) · [diff](out/2026-10-31T10-00-46-701Z/chrome-supplement/prism-en-1440x1080-visible-topbar-diff.png) |
-| aurora-zh-1440x1080 | nonempty paired .bar-in | 0.0000% | 0 | [HTML](out/2026-10-31T10-00-46-701Z/chrome-supplement/aurora-zh-1440x1080-visible-topbar-html.png) · [React](out/2026-10-31T10-00-46-701Z/chrome-supplement/aurora-zh-1440x1080-visible-topbar-react.png) · [diff](out/2026-10-31T10-00-46-701Z/chrome-supplement/aurora-zh-1440x1080-visible-topbar-diff.png) |
-| aurora-en-1440x1080 | nonempty paired .bar-in | 0.0000% | 0 | [HTML](out/2026-10-31T10-00-46-701Z/chrome-supplement/aurora-en-1440x1080-visible-topbar-html.png) · [React](out/2026-10-31T10-00-46-701Z/chrome-supplement/aurora-en-1440x1080-visible-topbar-react.png) · [diff](out/2026-10-31T10-00-46-701Z/chrome-supplement/aurora-en-1440x1080-visible-topbar-diff.png) |
-| paper-zh-1440x1080 | nonempty paired .bar-in | 0.0000% | 0 | [HTML](out/2026-10-31T10-00-46-701Z/chrome-supplement/paper-zh-1440x1080-visible-topbar-html.png) · [React](out/2026-10-31T10-00-46-701Z/chrome-supplement/paper-zh-1440x1080-visible-topbar-react.png) · [diff](out/2026-10-31T10-00-46-701Z/chrome-supplement/paper-zh-1440x1080-visible-topbar-diff.png) |
-| paper-en-1440x1080 | nonempty paired .bar-in | 0.0000% | 0 | [HTML](out/2026-10-31T10-00-46-701Z/chrome-supplement/paper-en-1440x1080-visible-topbar-html.png) · [React](out/2026-10-31T10-00-46-701Z/chrome-supplement/paper-en-1440x1080-visible-topbar-react.png) · [diff](out/2026-10-31T10-00-46-701Z/chrome-supplement/paper-en-1440x1080-visible-topbar-diff.png) |
-| ember-zh-1440x1080 | nonempty paired .bar-in | 0.0000% | 0 | [HTML](out/2026-10-31T10-00-46-701Z/chrome-supplement/ember-zh-1440x1080-visible-topbar-html.png) · [React](out/2026-10-31T10-00-46-701Z/chrome-supplement/ember-zh-1440x1080-visible-topbar-react.png) · [diff](out/2026-10-31T10-00-46-701Z/chrome-supplement/ember-zh-1440x1080-visible-topbar-diff.png) |
-| ember-en-1440x1080 | nonempty paired .bar-in | 0.0000% | 0 | [HTML](out/2026-10-31T10-00-46-701Z/chrome-supplement/ember-en-1440x1080-visible-topbar-html.png) · [React](out/2026-10-31T10-00-46-701Z/chrome-supplement/ember-en-1440x1080-visible-topbar-react.png) · [diff](out/2026-10-31T10-00-46-701Z/chrome-supplement/ember-en-1440x1080-visible-topbar-diff.png) |
-| pure-zh-390x844 | nonempty paired .bar-in | 0.0000% | 0 | [HTML](out/2026-10-31T10-00-46-701Z/chrome-supplement/pure-zh-390x844-visible-topbar-html.png) · [React](out/2026-10-31T10-00-46-701Z/chrome-supplement/pure-zh-390x844-visible-topbar-react.png) · [diff](out/2026-10-31T10-00-46-701Z/chrome-supplement/pure-zh-390x844-visible-topbar-diff.png) |
-| pure-en-390x844 | nonempty paired .bar-in | 0.0000% | 0 | [HTML](out/2026-10-31T10-00-46-701Z/chrome-supplement/pure-en-390x844-visible-topbar-html.png) · [React](out/2026-10-31T10-00-46-701Z/chrome-supplement/pure-en-390x844-visible-topbar-react.png) · [diff](out/2026-10-31T10-00-46-701Z/chrome-supplement/pure-en-390x844-visible-topbar-diff.png) |
-| neon-zh-390x844 | nonempty paired .bar-in | 0.0000% | 0 | [HTML](out/2026-10-31T10-00-46-701Z/chrome-supplement/neon-zh-390x844-visible-topbar-html.png) · [React](out/2026-10-31T10-00-46-701Z/chrome-supplement/neon-zh-390x844-visible-topbar-react.png) · [diff](out/2026-10-31T10-00-46-701Z/chrome-supplement/neon-zh-390x844-visible-topbar-diff.png) |
-| neon-en-390x844 | nonempty paired .bar-in | 0.0000% | 0 | [HTML](out/2026-10-31T10-00-46-701Z/chrome-supplement/neon-en-390x844-visible-topbar-html.png) · [React](out/2026-10-31T10-00-46-701Z/chrome-supplement/neon-en-390x844-visible-topbar-react.png) · [diff](out/2026-10-31T10-00-46-701Z/chrome-supplement/neon-en-390x844-visible-topbar-diff.png) |
-| prism-zh-390x844 | nonempty paired .bar-in | 0.0000% | 0 | [HTML](out/2026-10-31T10-00-46-701Z/chrome-supplement/prism-zh-390x844-visible-topbar-html.png) · [React](out/2026-10-31T10-00-46-701Z/chrome-supplement/prism-zh-390x844-visible-topbar-react.png) · [diff](out/2026-10-31T10-00-46-701Z/chrome-supplement/prism-zh-390x844-visible-topbar-diff.png) |
-| prism-en-390x844 | nonempty paired .bar-in | 0.0000% | 0 | [HTML](out/2026-10-31T10-00-46-701Z/chrome-supplement/prism-en-390x844-visible-topbar-html.png) · [React](out/2026-10-31T10-00-46-701Z/chrome-supplement/prism-en-390x844-visible-topbar-react.png) · [diff](out/2026-10-31T10-00-46-701Z/chrome-supplement/prism-en-390x844-visible-topbar-diff.png) |
-| aurora-zh-390x844 | nonempty paired .bar-in | 0.0000% | 0 | [HTML](out/2026-10-31T10-00-46-701Z/chrome-supplement/aurora-zh-390x844-visible-topbar-html.png) · [React](out/2026-10-31T10-00-46-701Z/chrome-supplement/aurora-zh-390x844-visible-topbar-react.png) · [diff](out/2026-10-31T10-00-46-701Z/chrome-supplement/aurora-zh-390x844-visible-topbar-diff.png) |
-| aurora-en-390x844 | nonempty paired .bar-in | 0.0000% | 0 | [HTML](out/2026-10-31T10-00-46-701Z/chrome-supplement/aurora-en-390x844-visible-topbar-html.png) · [React](out/2026-10-31T10-00-46-701Z/chrome-supplement/aurora-en-390x844-visible-topbar-react.png) · [diff](out/2026-10-31T10-00-46-701Z/chrome-supplement/aurora-en-390x844-visible-topbar-diff.png) |
-| paper-zh-390x844 | nonempty paired .bar-in | 0.0000% | 0 | [HTML](out/2026-10-31T10-00-46-701Z/chrome-supplement/paper-zh-390x844-visible-topbar-html.png) · [React](out/2026-10-31T10-00-46-701Z/chrome-supplement/paper-zh-390x844-visible-topbar-react.png) · [diff](out/2026-10-31T10-00-46-701Z/chrome-supplement/paper-zh-390x844-visible-topbar-diff.png) |
-| paper-en-390x844 | nonempty paired .bar-in | 0.0000% | 0 | [HTML](out/2026-10-31T10-00-46-701Z/chrome-supplement/paper-en-390x844-visible-topbar-html.png) · [React](out/2026-10-31T10-00-46-701Z/chrome-supplement/paper-en-390x844-visible-topbar-react.png) · [diff](out/2026-10-31T10-00-46-701Z/chrome-supplement/paper-en-390x844-visible-topbar-diff.png) |
-| ember-zh-390x844 | nonempty paired .bar-in | 0.0000% | 0 | [HTML](out/2026-10-31T10-00-46-701Z/chrome-supplement/ember-zh-390x844-visible-topbar-html.png) · [React](out/2026-10-31T10-00-46-701Z/chrome-supplement/ember-zh-390x844-visible-topbar-react.png) · [diff](out/2026-10-31T10-00-46-701Z/chrome-supplement/ember-zh-390x844-visible-topbar-diff.png) |
-| ember-en-390x844 | nonempty paired .bar-in | 0.0000% | 0 | [HTML](out/2026-10-31T10-00-46-701Z/chrome-supplement/ember-en-390x844-visible-topbar-html.png) · [React](out/2026-10-31T10-00-46-701Z/chrome-supplement/ember-en-390x844-visible-topbar-react.png) · [diff](out/2026-10-31T10-00-46-701Z/chrome-supplement/ember-en-390x844-visible-topbar-diff.png) |
 
 ## Remaining differences and explanations
 
-No observed computed-style differences in completed cases. Incomplete cases are not passes.
+Each group below accounts for every occurrence of that exact property/value difference. These are observed differences, not inferred causes. Causes remain unresolved unless a verified diagnosis is added by the acceptance owner. Full per-element evidence is in raw JSON.
 
-DOM attribute diagnostics: 400 total, of which 400 are solely absent versus empty class attributes. Those leave class membership unchanged; listed computed styles are compared independently. All raw differences remain listed in results.json. Other meaningful DOM/content differences: 0.
+- **color**: HTML `rgb(125, 125, 120)`; React `rgb(17, 17, 16)`. 12 occurrence(s). Example: `pure-zh-1440x1080:3`, `pure-zh-1440x1080:3/0`, `pure-zh-1440x1080:0/3`. Cause not yet verified; unresolved.
+- **color**: HTML `rgb(17, 17, 16)`; React `rgb(125, 125, 120)`. 12 occurrence(s). Example: `pure-zh-1440x1080:4`, `pure-zh-1440x1080:4/0`, `pure-zh-1440x1080:0/4`. Cause not yet verified; unresolved.
+- **font-weight**: HTML `400`; React `600`. 24 occurrence(s). Example: `pure-zh-1440x1080:0/3`, `pure-en-1440x1080:0/3`, `neon-zh-1440x1080:0/3`. Cause not yet verified; unresolved.
+- **background-color**: HTML `rgba(0, 0, 0, 0)`; React `rgb(233, 233, 230)`. 4 occurrence(s). Example: `pure-zh-1440x1080:0/3`, `pure-en-1440x1080:0/3`, `pure-zh-390x844:0/3`. Cause not yet verified; unresolved.
+- **font-weight**: HTML `600`; React `400`. 24 occurrence(s). Example: `pure-zh-1440x1080:0/4`, `pure-en-1440x1080:0/4`, `neon-zh-1440x1080:0/4`. Cause not yet verified; unresolved.
+- **background-color**: HTML `rgb(233, 233, 230)`; React `rgba(0, 0, 0, 0)`. 4 occurrence(s). Example: `pure-zh-1440x1080:0/4`, `pure-en-1440x1080:0/4`, `pure-zh-390x844:0/4`. Cause not yet verified; unresolved.
+- **color**: HTML `rgb(155, 154, 160)`; React `rgb(242, 242, 240)`. 12 occurrence(s). Example: `neon-zh-1440x1080:3`, `neon-zh-1440x1080:3/0`, `neon-zh-1440x1080:0/3`. Cause not yet verified; unresolved.
+- **color**: HTML `rgb(242, 242, 240)`; React `rgb(155, 154, 160)`. 12 occurrence(s). Example: `neon-zh-1440x1080:4`, `neon-zh-1440x1080:4/0`, `neon-zh-1440x1080:0/4`. Cause not yet verified; unresolved.
+- **background-color**: HTML `rgba(0, 0, 0, 0)`; React `rgb(48, 48, 53)`. 4 occurrence(s). Example: `neon-zh-1440x1080:0/3`, `neon-en-1440x1080:0/3`, `neon-zh-390x844:0/3`. Cause not yet verified; unresolved.
+- **background-color**: HTML `rgb(48, 48, 53)`; React `rgba(0, 0, 0, 0)`. 4 occurrence(s). Example: `neon-zh-1440x1080:0/4`, `neon-en-1440x1080:0/4`, `neon-zh-390x844:0/4`. Cause not yet verified; unresolved.
+- **color**: HTML `rgb(124, 127, 138)`; React `rgb(20, 21, 26)`. 12 occurrence(s). Example: `prism-zh-1440x1080:3`, `prism-zh-1440x1080:3/0`, `prism-zh-1440x1080:0/3`. Cause not yet verified; unresolved.
+- **color**: HTML `rgb(20, 21, 26)`; React `rgb(124, 127, 138)`. 12 occurrence(s). Example: `prism-zh-1440x1080:4`, `prism-zh-1440x1080:4/0`, `prism-zh-1440x1080:0/4`. Cause not yet verified; unresolved.
+- **background-color**: HTML `rgba(0, 0, 0, 0)`; React `rgb(230, 233, 241)`. 4 occurrence(s). Example: `prism-zh-1440x1080:0/3`, `prism-en-1440x1080:0/3`, `prism-zh-390x844:0/3`. Cause not yet verified; unresolved.
+- **background-color**: HTML `rgb(230, 233, 241)`; React `rgba(0, 0, 0, 0)`. 4 occurrence(s). Example: `prism-zh-1440x1080:0/4`, `prism-en-1440x1080:0/4`, `prism-zh-390x844:0/4`. Cause not yet verified; unresolved.
+- **color**: HTML `rgb(151, 151, 159)`; React `rgb(243, 243, 245)`. 12 occurrence(s). Example: `aurora-zh-1440x1080:3`, `aurora-zh-1440x1080:3/0`, `aurora-zh-1440x1080:0/3`. Cause not yet verified; unresolved.
+- **color**: HTML `rgb(243, 243, 245)`; React `rgb(151, 151, 159)`. 12 occurrence(s). Example: `aurora-zh-1440x1080:4`, `aurora-zh-1440x1080:4/0`, `aurora-zh-1440x1080:0/4`. Cause not yet verified; unresolved.
+- **background-color**: HTML `rgba(0, 0, 0, 0)`; React `rgb(42, 42, 49)`. 4 occurrence(s). Example: `aurora-zh-1440x1080:0/3`, `aurora-en-1440x1080:0/3`, `aurora-zh-390x844:0/3`. Cause not yet verified; unresolved.
+- **background-color**: HTML `rgb(42, 42, 49)`; React `rgba(0, 0, 0, 0)`. 4 occurrence(s). Example: `aurora-zh-1440x1080:0/4`, `aurora-en-1440x1080:0/4`, `aurora-zh-390x844:0/4`. Cause not yet verified; unresolved.
+- **color**: HTML `rgb(119, 115, 108)`; React `rgb(20, 19, 18)`. 12 occurrence(s). Example: `paper-zh-1440x1080:3`, `paper-zh-1440x1080:3/0`, `paper-zh-1440x1080:0/3`. Cause not yet verified; unresolved.
+- **color**: HTML `rgb(20, 19, 18)`; React `rgb(119, 115, 108)`. 12 occurrence(s). Example: `paper-zh-1440x1080:4`, `paper-zh-1440x1080:4/0`, `paper-zh-1440x1080:0/4`. Cause not yet verified; unresolved.
+- **background-color**: HTML `rgba(0, 0, 0, 0)`; React `rgb(223, 221, 215)`. 4 occurrence(s). Example: `paper-zh-1440x1080:0/3`, `paper-en-1440x1080:0/3`, `paper-zh-390x844:0/3`. Cause not yet verified; unresolved.
+- **background-color**: HTML `rgb(223, 221, 215)`; React `rgba(0, 0, 0, 0)`. 4 occurrence(s). Example: `paper-zh-1440x1080:0/4`, `paper-en-1440x1080:0/4`, `paper-zh-390x844:0/4`. Cause not yet verified; unresolved.
+- **color**: HTML `rgb(160, 151, 138)`; React `rgb(241, 236, 228)`. 12 occurrence(s). Example: `ember-zh-1440x1080:3`, `ember-zh-1440x1080:3/0`, `ember-zh-1440x1080:0/3`. Cause not yet verified; unresolved.
+- **color**: HTML `rgb(241, 236, 228)`; React `rgb(160, 151, 138)`. 12 occurrence(s). Example: `ember-zh-1440x1080:4`, `ember-zh-1440x1080:4/0`, `ember-zh-1440x1080:0/4`. Cause not yet verified; unresolved.
+- **background-color**: HTML `rgba(0, 0, 0, 0)`; React `rgb(50, 45, 39)`. 4 occurrence(s). Example: `ember-zh-1440x1080:0/3`, `ember-en-1440x1080:0/3`, `ember-zh-390x844:0/3`. Cause not yet verified; unresolved.
+- **background-color**: HTML `rgb(50, 45, 39)`; React `rgba(0, 0, 0, 0)`. 4 occurrence(s). Example: `ember-zh-1440x1080:0/4`, `ember-en-1440x1080:0/4`, `ember-zh-390x844:0/4`. Cause not yet verified; unresolved.
+- **width**: HTML `91.9688px`; React `79.3125px`. 6 occurrence(s). Example: `pure-zh-390x844:@`, `neon-zh-390x844:@`, `prism-zh-390x844:@`. Cause not yet verified; unresolved.
+- **width**: HTML `59.9688px`; React `47.3125px`. 6 occurrence(s). Example: `pure-zh-390x844:1`, `neon-zh-390x844:1`, `prism-zh-390x844:1`. Cause not yet verified; unresolved.
+- **width**: HTML `37.9688px`; React `25.3125px`. 6 occurrence(s). Example: `pure-zh-390x844:1/1`, `neon-zh-390x844:1/1`, `prism-zh-390x844:1/1`. Cause not yet verified; unresolved.
+- **width**: HTML `122.656px`; React `98.4531px`. 6 occurrence(s). Example: `pure-en-390x844:@`, `neon-en-390x844:@`, `prism-en-390x844:@`. Cause not yet verified; unresolved.
+- **width**: HTML `90.6562px`; React `66.4531px`. 6 occurrence(s). Example: `pure-en-390x844:1`, `neon-en-390x844:1`, `prism-en-390x844:1`. Cause not yet verified; unresolved.
+- **width**: HTML `68.6562px`; React `44.4531px`. 6 occurrence(s). Example: `pure-en-390x844:1/1`, `neon-en-390x844:1/1`, `prism-en-390x844:1/1`. Cause not yet verified; unresolved.
 
-174 screenshot pair(s) contain unequal pixels. Each pair has HTML, React and difference images. Unequal screenshot sizes are compared on the union canvas; absent pixels count as differences. Causes require visual review; no anti-aliasing, alignment or loading explanation is assumed.
+DOM attribute diagnostics: 480 total, of which 360 are solely absent versus empty class attributes. Those leave class membership unchanged; listed computed styles are compared independently. All raw differences remain listed in results.json. Other meaningful DOM/content differences: 120.
 
-## Static evidence reuse
-
-This run reuses exactly 168 section and 72 chrome observations from 2026-10-31T08-51-21-568Z. It does not retake, normalize or rescore their screenshots. Fresh interaction checks are separate observations under the unchanged application/build closure.
-Fresh visible-topbar supplement: 24/24 pairs. This is separately labeled new evidence, not a replacement pixel score for any original row.
-Original results: [bound full run](out/2026-10-31T08-51-21-568Z/results.json) (SHA-256 6f689f79a378a0f19216fc1a6ba99c94575e88c47f211c97cb6034118205f022). Verified unchanged application inputs: 264; immutable static evidence files: 816.
-Reuse plan: /Users/mac/Documents/coding/ui-ux-template/templates/react/parity/out/interaction-reuse-plan-2026-10-31T09-47-43Z/reuse-plan-r2.json (SHA-256 9b2be19237f3dad8cfedd4a7b625a73dae75f3709dce5c74bf34b1c10d93ff0d). Each reused row records its original run, observation time, source results hash and key. All artifact paths are relative to templates/react/parity/, not the new results.json directory.
-Finish verification: passed.
+210 screenshot pair(s) contain unequal pixels. Each pair has HTML, React and difference images. Unequal screenshot sizes are compared on the union canvas; absent pixels count as differences. Causes require visual review; no anti-aliasing, alignment or loading explanation is assumed.
 
 ## Instrument history and qualification
 
@@ -109,9 +101,9 @@ Owned-resource cleanup: `{"browserClosed":true,"previewEnded":true,"staticServer
 
 ## Evidence
 
-- [Full results and all mismatches](out/2026-10-31T10-00-46-701Z/results.json)
-- [Run environment and exact artifact hashes](out/2026-10-31T10-00-46-701Z/results.json#artifacts)
-- [Preview output](out/2026-10-31T10-00-46-701Z/preview.log)
+- [Full results and all mismatches](out/2026-10-31T18-22-54-633Z/results.json)
+- [Run environment and exact artifact hashes](out/2026-10-31T18-22-54-633Z/results.json#artifacts)
+- [Preview output](out/2026-10-31T18-22-54-633Z/preview.log)
 - Per-case raw JSON and screenshot paths are listed in the full results.
 
 A complete command or generated report is not proof of parity. Any unresolved difference, failed interaction or incomplete case blocks an unconditional parity claim.

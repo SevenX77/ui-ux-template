@@ -4,6 +4,8 @@ Purpose: every stack and consuming project uses the same interface design and be
 
 `core/` owns design facts. Stack templates read these files; core does not import template code. See [the architecture](../docs/ARCHITECTURE.md) for change conditions and [decision 0009](../docs/decisions/0009-design-core-and-stack-templates.md) for application progress.
 
+`core/VERSION` is the one version number. The HTML build writes it into `<meta name="ui-template-version">`; the React build writes the same meta tag and fails if `templates/react/package.json` differs.
+
 ## Files
 
 | Path | Contents |
