@@ -1,1 +1,5 @@
 references/video/
+node_modules/
+templates/react/dist/
+templates/react/parity/out/
+.worktrees/

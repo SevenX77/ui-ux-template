@@ -1,0 +1,60 @@
+{
+  "categories": [
+    "插画",
+    "影像",
+    "动画",
+    "设计"
+  ],
+  "gap": 10,
+  "first": 18,
+  "step": 12,
+  "sizes": [
+    {
+      "label": "小图",
+      "width": 170
+    },
+    {
+      "label": "中图",
+      "width": 240
+    },
+    {
+      "label": "大图",
+      "width": 340
+    }
+  ],
+  "defaultTarget": 240,
+  "columnMin": 2,
+  "heightTolerance": 0.5,
+  "loadBaseDelay": 320,
+  "loadStaggerDelay": 70,
+  "rootMargin": "240px 0px",
+  "preloadDistance": 240,
+  "lightboxMaxWidth": 860,
+  "lightboxGutter": 40,
+  "lightboxHeightRatio": 0.74,
+  "animation": {
+    "duration": 350,
+    "easing": "cubic-bezier(.16,1,.3,1)"
+  },
+  "styles": {
+    "flex": {
+      "flex": 1
+    }
+  },
+  "transformOrigin": "0 0",
+  "backgroundSuffix": " center/cover",
+  "cssUnit": "px",
+  "text": {
+    "t0": "13 / GALLERY",
+    "t1": "图片瀑布流",
+    "t2": "每张图放进当前最短的一列。筛选和换图大小时图片滑到新位置；往下滚动自动加载，占位先按真实比例占好，页面不会跳。",
+    "t3": "小图",
+    "t4": "中图",
+    "t5": "大图",
+    "t6": "按类别筛选",
+    "t7": "图片大小"
+  },
+  "target170": 170,
+  "target240": 240,
+  "target340": 340
+}

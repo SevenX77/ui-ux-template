@@ -1,0 +1,326 @@
+[
+ {
+  "t": "Ink Heron",
+  "c": "插画",
+  "r": 1.5,
+  "f": "ink-heron.webp"
+ },
+ {
+  "t": "Corner Cafe",
+  "c": "插画",
+  "r": 1.0,
+  "f": "corner-cafe.webp"
+ },
+ {
+  "t": "Moon Ride",
+  "c": "插画",
+  "r": 0.6667,
+  "f": "moon-ride.webp"
+ },
+ {
+  "t": "Tiny City",
+  "c": "插画",
+  "r": 1.0,
+  "f": "tiny-city.webp"
+ },
+ {
+  "t": "Harbour Wave",
+  "c": "插画",
+  "r": 0.5,
+  "f": "harbour-wave.webp"
+ },
+ {
+  "t": "Night Reader",
+  "c": "插画",
+  "r": 1.5,
+  "f": "night-reader.webp"
+ },
+ {
+  "t": "Detective Panel",
+  "c": "插画",
+  "r": 1.5,
+  "f": "detective-panel.webp"
+ },
+ {
+  "t": "Pixel Harbour",
+  "c": "插画",
+  "r": 0.5,
+  "f": "pixel-harbour.webp"
+ },
+ {
+  "t": "Collage Fish",
+  "c": "插画",
+  "r": 1.0,
+  "f": "collage-fish.webp"
+ },
+ {
+  "t": "Mountain Rail",
+  "c": "插画",
+  "r": 1.5,
+  "f": "mountain-rail.webp"
+ },
+ {
+  "t": "Botanical Fern",
+  "c": "插画",
+  "r": 1.5,
+  "f": "botanical-fern.webp"
+ },
+ {
+  "t": "Line Portrait",
+  "c": "插画",
+  "r": 1.5,
+  "f": "line-portrait.webp"
+ },
+ {
+  "t": "Chalk Fox",
+  "c": "插画",
+  "r": 0.5633,
+  "f": "chalk-fox.webp"
+ },
+ {
+  "t": "Robot Friends",
+  "c": "插画",
+  "r": 0.5,
+  "f": "robot-friends.webp"
+ },
+ {
+  "t": "Temple Stairs",
+  "c": "插画",
+  "r": 1.5,
+  "f": "temple-stairs.webp"
+ },
+ {
+  "t": "Linocut Crow",
+  "c": "插画",
+  "r": 1.0,
+  "f": "linocut-crow.webp"
+ },
+ {
+  "t": "Night Shift",
+  "c": "影像",
+  "r": 1.5,
+  "f": "night-shift.webp"
+ },
+ {
+  "t": "Chrome Visor",
+  "c": "影像",
+  "r": 0.4289,
+  "f": "chrome-visor.webp"
+ },
+ {
+  "t": "Ronin in Rain",
+  "c": "影像",
+  "r": 1.5,
+  "f": "ronin-in-rain.webp"
+ },
+ {
+  "t": "Swimmer",
+  "c": "影像",
+  "r": 0.6667,
+  "f": "swimmer.webp"
+ },
+ {
+  "t": "Cold Brew",
+  "c": "影像",
+  "r": 1.5,
+  "f": "cold-brew.webp"
+ },
+ {
+  "t": "Orange Room",
+  "c": "影像",
+  "r": 1.5,
+  "f": "orange-room.webp"
+ },
+ {
+  "t": "Little Robot",
+  "c": "动画",
+  "r": 1.0,
+  "f": "little-robot.webp"
+ },
+ {
+  "t": "Rooftop Girl",
+  "c": "动画",
+  "r": 0.5,
+  "f": "rooftop-girl.webp"
+ },
+ {
+  "t": "Fox and Lantern",
+  "c": "动画",
+  "r": 1.5,
+  "f": "fox-and-lantern.webp"
+ },
+ {
+  "t": "Sky Whale",
+  "c": "动画",
+  "r": 0.5,
+  "f": "sky-whale.webp"
+ },
+ {
+  "t": "Paper Boat",
+  "c": "动画",
+  "r": 1.0,
+  "f": "paper-boat.webp"
+ },
+ {
+  "t": "Mech Bay",
+  "c": "动画",
+  "r": 1.5,
+  "f": "mech-bay.webp"
+ },
+ {
+  "t": "Tiny Knight",
+  "c": "动画",
+  "r": 1.0,
+  "f": "tiny-knight.webp"
+ },
+ {
+  "t": "Chrome Sphere",
+  "c": "设计",
+  "r": 1.0,
+  "f": "chrome-sphere.webp"
+ },
+ {
+  "t": "Komorebi",
+  "c": "设计",
+  "r": 1.5,
+  "f": "komorebi.webp"
+ },
+ {
+  "t": "Form 07",
+  "c": "设计",
+  "r": 1.5,
+  "f": "form-07.webp"
+ },
+ {
+  "t": "Slow Cinema",
+  "c": "设计",
+  "r": 1.5,
+  "f": "slow-cinema.webp"
+ },
+ {
+  "t": "Velvet Riot",
+  "c": "设计",
+  "r": 1.5,
+  "f": "velvet-riot.webp"
+ },
+ {
+  "t": "Burger Riot",
+  "c": "设计",
+  "r": 0.6667,
+  "f": "burger-riot.webp"
+ },
+ {
+  "t": "Open Studio",
+  "c": "设计",
+  "r": 0.6667,
+  "f": "open-studio.webp"
+ },
+ {
+  "t": "Noir Parfum",
+  "c": "设计",
+  "r": 1.5,
+  "f": "noir-parfum.webp"
+ },
+ {
+  "t": "Otter Crossword",
+  "c": "插画",
+  "r": 1.0,
+  "f": "otter-crossword.webp"
+ },
+ {
+  "t": "Accordion Boy",
+  "c": "插画",
+  "r": 1.5,
+  "f": "accordion-boy.webp"
+ },
+ {
+  "t": "Pencil Profile",
+  "c": "插画",
+  "r": 0.5633,
+  "f": "pencil-profile.webp"
+ },
+ {
+  "t": "Monochrome Magnolia",
+  "c": "设计",
+  "r": 1.7751,
+  "f": "monochrome-magnolia.webp"
+ },
+ {
+  "t": "Acid Gradient",
+  "c": "设计",
+  "r": 1.0,
+  "f": "acid-gradient.webp"
+ },
+ {
+  "t": "Bear Sticker",
+  "c": "插画",
+  "r": 1.5,
+  "f": "bear-sticker.webp"
+ },
+ {
+  "t": "Felt Patches",
+  "c": "插画",
+  "r": 1.0,
+  "f": "felt-patches.webp"
+ },
+ {
+  "t": "Folk Moth",
+  "c": "插画",
+  "r": 1.5,
+  "f": "folk-moth.webp"
+ },
+ {
+  "t": "City Pop",
+  "c": "动画",
+  "r": 1.5,
+  "f": "city-pop.webp"
+ },
+ {
+  "t": "Mouse Rider",
+  "c": "插画",
+  "r": 1.0,
+  "f": "mouse-rider.webp"
+ },
+ {
+  "t": "Glass Blocks",
+  "c": "设计",
+  "r": 1.0,
+  "f": "glass-blocks.webp"
+ },
+ {
+  "t": "Pool Party",
+  "c": "插画",
+  "r": 1.5,
+  "f": "pool-party.webp"
+ },
+ {
+  "t": "Camel Silk",
+  "c": "影像",
+  "r": 1.5,
+  "f": "camel-silk.webp"
+ },
+ {
+  "t": "Snow Cabin",
+  "c": "动画",
+  "r": 0.6667,
+  "f": "snow-cabin.webp"
+ },
+ {
+  "t": "Quiet Hands",
+  "c": "影像",
+  "r": 0.4567,
+  "f": "quiet-hands.webp"
+ },
+ {
+  "t": "Field Visitor",
+  "c": "影像",
+  "r": 1.5,
+  "f": "field-visitor.webp"
+ },
+ {
+  "t": "Snow Street",
+  "c": "影像",
+  "r": 0.5633,
+  "f": "snow-street.webp"
+ }
+]

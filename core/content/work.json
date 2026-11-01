@@ -1,0 +1,222 @@
+{
+  "text": {
+    "t0": "11 / FILES · TASKS · ACTIVITY",
+    "t1": "资料、任务、活动",
+    "t2": "日常工作台：文件拖放和多选、看板拖动、日历联动、活动流。",
+    "t3": "文件资料",
+    "t4": "＋ 上传",
+    "t5": "把文件拖到这里，或点击选择",
+    "t6": "归档",
+    "t7": "删除",
+    "t8": "2026 年 10 月",
+    "t9": "选一天查看任务",
+    "t10": "任务看板 · 拖动卡片排序和换列",
+    "t11": "活动流"
+  },
+  "styles": {
+    "s0": {
+      "position": "relative"
+    },
+    "s1": {
+      "gap": "6px",
+      "flexWrap": "nowrap"
+    },
+    "s2": {
+      "flex": "1"
+    },
+    "s3": {
+      "marginTop": "calc(8px*var(--y))"
+    },
+    "s4": {
+      "height": "calc(100% - 26px)"
+    },
+    "fileEmpty": {
+      "padding": "18px",
+      "textAlign": "center"
+    },
+    "task": {
+      "marginTop": "calc(2px*var(--y))"
+    },
+    "taskRow": {
+      "padding": "3px 0"
+    },
+    "taskDot": {
+      "background": "var(--c1)"
+    },
+    "kanDot": {
+      "marginRight": "6px"
+    },
+    "avatar": {
+      "width": "24px",
+      "height": "24px"
+    },
+    "modal": {
+      "padding": "16px"
+    },
+    "deleteModal": {
+      "padding": "22px 24px",
+      "maxWidth": "380px",
+      "margin": "auto"
+    },
+    "deleteTitle": {
+      "fontSize": "16px"
+    },
+    "deleteRow": {
+      "justifyContent": "flex-end",
+      "marginTop": "16px"
+    },
+    "taskModalNote": {
+      "marginTop": "8px"
+    }
+  },
+  "attrs": {
+    "a0": "搜索文件",
+    "a1": "button",
+    "a2": "file"
+  },
+  "files": [
+    [
+      "PDF",
+      "发布计划.pdf",
+      "2.4 MB",
+      "今天"
+    ],
+    [
+      "MP4",
+      "Trailer_C.mp4",
+      "184 MB",
+      "今天"
+    ],
+    [
+      "PNG",
+      "Moodboard.png",
+      "8.1 MB",
+      "昨天"
+    ],
+    [
+      "DOC",
+      "剧本第三稿.docx",
+      "96 KB",
+      "10/26"
+    ],
+    [
+      "XLS",
+      "预算.xlsx",
+      "48 KB",
+      "10/24"
+    ]
+  ],
+  "tasks": {
+    "6": [
+      "交剧本第三稿"
+    ],
+    "13": [
+      "选角确认",
+      "样片审核"
+    ],
+    "18": [
+      "场地预约"
+    ],
+    "27": [
+      "下单道具"
+    ],
+    "30": [
+      "Trailer C 交付",
+      "配乐定稿"
+    ]
+  },
+  "weekdays": {
+    "zh": "一二三四五六日",
+    "en": "MTWTFSS"
+  },
+  "days": 31,
+  "leadingDays": 3,
+  "picked": 30,
+  "hasTasks": [
+    6,
+    13,
+    18,
+    27,
+    30
+  ],
+  "columns": [
+    {
+      "name": "待办",
+      "color": "var(--c1)",
+      "tasks": [
+        "确认片头字体",
+        "整理参考图",
+        "写发布文案"
+      ]
+    },
+    {
+      "name": "进行中",
+      "color": "var(--c2)",
+      "tasks": [
+        "Scene 04 粗剪",
+        "配乐方向"
+      ]
+    },
+    {
+      "name": "审核",
+      "color": "var(--c3)",
+      "tasks": [
+        "Trailer C"
+      ]
+    },
+    {
+      "name": "完成",
+      "color": "var(--c4)",
+      "tasks": [
+        "剧本第三稿",
+        "选角"
+      ]
+    }
+  ],
+  "activity": [
+    [
+      "M",
+      "Mara 更新了 <b>Scene 04</b>",
+      "2 分钟前"
+    ],
+    [
+      "A",
+      "Agent 生成了 <b>Trailer C</b>",
+      "18 分钟前"
+    ],
+    [
+      "J",
+      "Jun 评论了 <b>Shot 9</b>：再慢一点",
+      "1 小时前"
+    ],
+    [
+      "S",
+      "系统完成 <b>214 张照片</b>备份",
+      "昨天"
+    ]
+  ],
+  "labels": {
+    "choose": "选择",
+    "rename": "重命名",
+    "archive": "归档",
+    "archived": "已归档",
+    "deleted": "已删除",
+    "emptyFiles": "没有找到匹配的文件",
+    "nothing": "这一天没有任务",
+    "open": "打开",
+    "now": "刚刚",
+    "deleteQuestion": "删除所选文件？",
+    "keep": "保留",
+    "confirmDelete": "确认删除",
+    "close": "关闭",
+    "activity": "活动流",
+    "projectName": "项目名称",
+    "selected": "已选 {n} 个",
+    "day": "10月{d}日",
+    "newType": "NEW",
+    "sizeSuffix": " MB"
+  },
+  "uploadBytes": 1048576,
+  "taskDateBase": 10,
+  "taskMonth": "Oct "
+}

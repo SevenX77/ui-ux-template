@@ -1,0 +1,20 @@
+<section class="wrap sec" id="agents">
+  <div class="sec-h"><div><div class="k">09 / AGENTS</div><h2>多 Agent 运行</h2></div><p>来源：X 上的 Android Agent 控制台。播放时只有当前角色亮，其他变暗；点一个角色，日志只看它的。</p></div>
+  <div class="ag tools-on" id="ag">
+    <div class="ag-top"><div class="ag-kpis"><div class="ag-k"><span class="label">任务</span><div class="big" id="kTask">0<small>/42</small></div></div><div class="ag-k"><span class="label">点击</span><div class="big" id="kTap">0</div></div><div class="ag-k"><span class="label">应用</span><div class="big" id="kApp">0<small>/8</small></div></div><div class="ag-k" id="kErrC"><span class="label">拦截错误</span><div class="big" id="kErr">0</div></div></div><div class="ag-crew" id="crew" data-scope="crew" data-hold></div></div>
+    <div class="ag-main">
+      <div class="ag-left"><div class="ag-log mono" id="agLog"></div><div class="ag-queue" id="agQueue"></div></div>
+      <div class="phone"><div class="phone-in" id="phone"></div></div>
+    </div>
+    <div class="ag-foot"><button class="btn" id="agRun">▶ 播放</button><button class="btn sec2" id="agReset" data-tool>重置</button><div class="ag-prog"><i id="agBar"></i></div><span class="xs mute mono" id="agTime">00:00</span></div>
+  </div>
+  <div class="sub">手机端看板 <small>来源：X 上的 Bot 看板。KPI、切换、通知从顶部滑入，主界面继续更新</small></div>
+  <div class="grid" style="grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:14px" id="mob-grid">
+    <div class="mob" id="mob"></div>
+    <div class="grid" style="align-content:start">
+      <div class="card"><div class="b">一致的结构</div><p class="sm mute" style="margin-top:calc(6px*var(--y))">手机上只改变排列，不改变语言：同样的圆角、卡片和信号。悬停在手机上不存在，所以工具常驻，聚焦改由点击触发。</p></div>
+      <div class="vol" style="min-height:130px;display:flex;flex-direction:column;justify-content:space-between"><div class="between"><span class="b">Session complete</span><span class="tag" style="background:rgba(255,255,255,.2);color:#fff">0 errors</span></div><div><div class="huge">42 tasks</div><div class="sm" style="opacity:.85;margin-top:calc(6px*var(--y))">while charging · 03:12</div></div></div>
+    </div>
+  </div>
+</section>
+

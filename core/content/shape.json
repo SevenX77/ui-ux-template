@@ -1,0 +1,229 @@
+{
+  "text": {
+    "t0": "03 / SHAPE · EDGE · DEPTH",
+    "t1": "圆角、边框、层级",
+    "t2": "每一档都写明用在哪。不在表里的值不能用。",
+    "t3": "圆角五档",
+    "t4": "切换器的立体做法 · 一块面板被挖开，露出更低的一层",
+    "t5": "Explore",
+    "t6": "Create",
+    "t7": "边框 ",
+    "t8": "少用，每条线都有职责。分块先靠底色和阴影，只有下面这些情况才画线。",
+    "t9": "① 键盘焦点",
+    "t10": "按 Tab 聚焦",
+    "t11": "② 正在输入、出错",
+    "t12": "③ 拖放目标",
+    "t13": "把文件放到这里",
+    "t14": "④ 同色区域之间的细线",
+    "t15": "Camera",
+    "t16": "35mm",
+    "t17": "Grade",
+    "t18": "Cool",
+    "t19": "六层高度 ",
+    "t20": "高度只表示状态或层级，不是装饰",
+    "t21": "平面",
+    "t22": "只有底色差",
+    "t23": "抬起",
+    "t24": "悬停只加阴影",
+    "t25": "浮层",
+    "t26": "菜单、面板",
+    "t27": "凹槽",
+    "t28": "切换器底座",
+    "t29": "凸起",
+    "t30": "体积",
+    "t31": "每屏一张",
+    "t32": "字号与疏密 ",
+    "t33": "大字负责被看到，小字贴紧成组",
+    "t34": "128",
+    "t35": "46 / 30 数字，字距收紧",
+    "t36": "18 小标题",
+    "t37": "13 正文，用于阅读和操作",
+    "t38": "12 辅助说明",
+    "t39": "标签和单位",
+    "t40": "mono 11 日志与代码",
+    "t41": "间距四档：4 / 8 贴紧成组 · 10 卡片之间 · 44 分区之间"
+  },
+  "styles": {
+    "s0": {
+      "display": "flex",
+      "justifyContent": "center",
+      "padding": "0 0 18px",
+      "background": "var(--app)",
+      "borderRadius": "var(--r-panel)",
+      "overflow": "hidden",
+      "height": "calc(100% - 26px)"
+    },
+    "s1": {
+      "flexWrap": "nowrap"
+    },
+    "s2": {
+      "boxShadow": "inset 0 0 0 1.5px var(--signal)",
+      "padding": "5px 9px"
+    },
+    "s3": {
+      "padding": "5px 9px"
+    },
+    "s4": {
+      "border": "1.5px dashed var(--ink3)",
+      "borderRadius": "9px",
+      "padding": "5px",
+      "textAlign": "center",
+      "fontSize": "12px"
+    },
+    "s5": {
+      "borderTop": "1px solid var(--line)",
+      "marginTop": "calc(3px*var(--y))",
+      "paddingTop": "3px"
+    },
+    "s6": {
+      "boxShadow": "var(--e3)"
+    },
+    "s7": {
+      "padding": "12px 14px"
+    },
+    "s8": {
+      "padding": "12px 14px",
+      "borderRadius": "var(--r-card)"
+    },
+    "s9": {
+      "display": "flex",
+      "alignItems": "center",
+      "justifyContent": "center"
+    },
+    "s10": {
+      "padding": "7px 16px",
+      "fontWeight": "600",
+      "fontSize": "12.5px"
+    },
+    "s11": {
+      "borderRadius": "var(--r-card)"
+    },
+    "s12": {
+      "opacity": ".8"
+    },
+    "s13": {
+      "display": "flex",
+      "flexDirection": "column",
+      "justifyContent": "space-between"
+    },
+    "s14": {
+      "fontSize": "18px",
+      "fontWeight": "600"
+    },
+    "s15": {
+      "fontSize": "13px",
+      "marginTop": "calc(2px*var(--y))"
+    },
+    "s16": {
+      "fontSize": "12px"
+    },
+    "s17": {
+      "marginTop": "calc(2px*var(--y))"
+    },
+    "s18": {
+      "fontSize": "11px",
+      "marginTop": "calc(2px*var(--y))"
+    },
+    "s19": {
+      "marginBottom": "calc(6px*var(--y))"
+    },
+    "s20": {
+      "alignItems": "flex-end",
+      "gap": "10px"
+    },
+    "s21": {
+      "width": "4px",
+      "height": "30px",
+      "background": "var(--signal)",
+      "display": "block"
+    },
+    "s22": {
+      "width": "8px",
+      "height": "30px",
+      "background": "var(--signal)",
+      "display": "block"
+    },
+    "s23": {
+      "width": "10px",
+      "height": "30px",
+      "background": "var(--signal)",
+      "display": "block"
+    },
+    "s24": {
+      "width": "44px",
+      "height": "30px",
+      "background": "var(--signal)",
+      "display": "block"
+    },
+    "radiusCard": {
+      "padding": "8px 10px"
+    },
+    "radiusDemo": {
+      "height": "36px",
+      "background": "var(--app)",
+      "boxShadow": "var(--e1)"
+    },
+    "radiusLabel": {
+      "marginTop": "calc(6px*var(--y))"
+    },
+    "radiusNote": {
+      "lineHeight": "var(--lh-t)"
+    }
+  },
+  "attrs": {
+    "a0": "0 0 207 42",
+    "a1": "none",
+    "a2": "true",
+    "a3": "-40%",
+    "a4": "180%",
+    "a5": "sRGB",
+    "a6": "SourceAlpha",
+    "a7": "table",
+    "a8": "1 0",
+    "a9": "4",
+    "a10": "-5",
+    "a11": "o",
+    "a12": "#000",
+    "a13": "in",
+    "a14": "SourceGraphic",
+    "a15": "url(#rim)",
+    "a16": "M0,0 C7,0 14,7 14,14 L14,26 A16,16 0 0,0 30,42 L177,42 A16,16 0 0,0 193,26 L193,14 C193,7 200,0 207,0 Z",
+    "a17": "正在输入",
+    "a18": "格式不对"
+  },
+  "radii": [
+    [
+      "9",
+      "控件",
+      "按钮、输入框、标签",
+      "var(--r-ctl)"
+    ],
+    [
+      "16",
+      "卡片",
+      "卡片、菜单、节点",
+      "var(--r-card)"
+    ],
+    [
+      "22",
+      "面板",
+      "工作台、体积卡、大浮层",
+      "var(--r-panel)"
+    ],
+    [
+      "999",
+      "胶囊",
+      "开关、头像、圆点",
+      "999px"
+    ],
+    [
+      "0",
+      "拼接",
+      "胶片帧之间、表格行",
+      "0"
+    ]
+  ],
+  "segments": [
+    0
+  ]
+}

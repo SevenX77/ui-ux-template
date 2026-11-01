@@ -1,0 +1,184 @@
+{
+  "text": {
+    "t0": "04 / CONTROLS",
+    "t1": "控件",
+    "t2": "按钮、输入、选择、反馈。可操作控件与样式示例。",
+    "t3": "按钮",
+    "t4": "主操作",
+    "t5": "次操作",
+    "t6": "文字",
+    "t7": "删除",
+    "t8": "禁用",
+    "t9": "分段切换",
+    "t10": "LOG",
+    "t11": "COPY",
+    "t12": "TOP",
+    "t13": "TREND",
+    "t14": "日",
+    "t15": "周",
+    "t16": "月",
+    "t17": "输入框",
+    "t18": "要填数字",
+    "t19": "开关与勾选",
+    "t20": "自动更新",
+    "t21": "夜间备份",
+    "t22": "已读",
+    "t23": "未读",
+    "t24": "滑块",
+    "t25": "Field of view",
+    "t26": "35°",
+    "t27": "−",
+    "t28": "2",
+    "t29": "＋",
+    "t30": "步进器",
+    "t31": "标签与状态",
+    "t32": "当前",
+    "t33": "默认",
+    "t34": "Live",
+    "t35": "失败",
+    "t36": "等待",
+    "t37": "悬停提示",
+    "t38": "通知",
+    "t39": "菜单 · 点开，选完或点外面就收起",
+    "t40": "Main cut ▾",
+    "t41": "Main cut ",
+    "t42": "✓",
+    "t43": "Director's cut",
+    "t44": "Trailer C",
+    "t45": "进度",
+    "t46": "备份 137 / 214",
+    "t47": "64%",
+    "t48": "加载占位",
+    "t49": "空状态",
+    "t50": "这一天没有任务",
+    "t51": "说明原因，并给一个下一步。",
+    "t52": "＋ 新建任务"
+  },
+  "styles": {
+    "s0": {
+      "cursor": "default"
+    },
+    "s1": {
+      "marginTop": "calc(10px*var(--y))"
+    },
+    "s2": {
+      "marginTop": "calc(8px*var(--y))",
+      "flexWrap": "nowrap"
+    },
+    "s3": {
+      "flex": "1"
+    },
+    "s4": {
+      "color": "var(--bad)"
+    },
+    "s5": {
+      "padding": "4px 0"
+    },
+    "s6": {
+      "marginTop": "calc(6px*var(--y))"
+    },
+    "s7": {
+      "marginLeft": "8px"
+    },
+    "s8": {
+      "marginTop": "calc(14px*var(--y))"
+    },
+    "s9": {
+      "background": "var(--good)"
+    },
+    "s10": {
+      "background": "var(--bad)"
+    },
+    "s11": {
+      "background": "var(--c3)"
+    },
+    "s12": {
+      "marginTop": "calc(12px*var(--y))"
+    },
+    "s13": {
+      "height": "6px",
+      "borderRadius": "9px",
+      "background": "var(--sunk)",
+      "margin": "calc(8px*var(--y)) 0 calc(16px*var(--y))",
+      "overflow": "hidden"
+    },
+    "s14": {
+      "display": "block",
+      "height": "100%",
+      "width": "64%",
+      "background": "var(--signal)",
+      "borderRadius": "9px"
+    },
+    "s15": {
+      "marginBottom": "calc(8px*var(--y))"
+    },
+    "s16": {
+      "height": "12px",
+      "width": "70%"
+    },
+    "s17": {
+      "height": "12px",
+      "width": "92%",
+      "marginTop": "calc(7px*var(--y))"
+    },
+    "s18": {
+      "height": "12px",
+      "width": "50%",
+      "marginTop": "calc(7px*var(--y))"
+    },
+    "s19": {
+      "textAlign": "center",
+      "display": "flex",
+      "flexDirection": "column",
+      "justifyContent": "center",
+      "alignItems": "center"
+    },
+    "s20": {
+      "marginTop": "calc(2px*var(--y))"
+    },
+    "s21": {
+      "margin": "calc(4px*var(--y)) 0 calc(10px*var(--y))"
+    }
+  },
+  "attrs": {
+    "a0": "主操作：一块区域只放一个",
+    "a1": "项目名称",
+    "a2": "abc",
+    "a3": "switch",
+    "a4": "true",
+    "a5": "自动更新",
+    "a6": "false",
+    "a7": "夜间备份",
+    "a8": "checkbox",
+    "a9": "已读",
+    "a10": "未读",
+    "a11": "range",
+    "a12": "Field of view",
+    "a13": "10",
+    "a14": "90",
+    "a15": "35",
+    "a16": "减少",
+    "a17": "增加",
+    "a18": "提示：短句，悬停 .15s 后出现",
+    "a19": "通知从上方滑入，不挤正文"
+  },
+  "menu": [
+    "Main cut",
+    "Director's cut",
+    "Trailer C"
+  ],
+  "stepper": 2,
+  "fov": 35,
+  "menuMark": "✓",
+  "menuSuffix": " ▾",
+  "initialToggles": [
+    true,
+    false,
+    true,
+    false
+  ],
+  "segments": [
+    0,
+    0
+  ]
+}
