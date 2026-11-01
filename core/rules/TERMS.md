@@ -37,6 +37,7 @@ The relation between the two components decides which one applies.
 | Term | English | Meaning |
 | --- | --- | --- |
 | 聚焦范围 | Focus scope | Every region that still counts as inside a component; only a click outside ends focus. The chat's scope includes input, send and history. |
+| 隐藏周围 | Dim others | The switch that decides whether the components around the focused one fade. Off: they stay at full opacity and only the focused component rises. |
 | 持有聚焦 | Held focus | A click has expanded content or taken space. Others stay dim after the pointer leaves, until a click outside or Esc. Example: the chat with its history open. |
 | 注意力锁 | Attention lock | Between components that claim the whole surface, the next is admitted 500ms after the previous one leaves. Example: the workspace timeline and chat. |
 | 意图延迟 | Intent delay | The wait before responding to entry, so a passing pointer triggers nothing: .15s for hover, 0 for a deliberate click. |

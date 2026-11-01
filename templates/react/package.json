@@ -1,12 +1,12 @@
 {
   "name": "ui-ux-template-react",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "predev": "python3 ../../core/build.py --check",
+    "predev": "python3 ../../core/build.py --check || python ../../core/build.py --check",
     "dev": "vite",
-    "prebuild": "python3 ../../core/build.py --check",
+    "prebuild": "python3 ../../core/build.py --check || python ../../core/build.py --check",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "parity": "npm run build && node parity/check.mjs"

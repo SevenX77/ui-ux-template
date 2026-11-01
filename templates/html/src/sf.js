@@ -111,7 +111,7 @@ let ver='A',sel=0,vi=0,layer='script',zoomLevel='Shot',track='video',selClip=nul
 const SLOT_W=design('slot-width'),PX_PER_SEC=design('lane-px-per-second'),EDGE=design('drag-edge'),GUTTER=design('lane-gutter'),ROW_H=design('lane-row-height'),VIDEO_PAD=design('video-pad'),SCALE=design('magnifier-height')/design('slot-height');
 const LANE_ROWS=Object.fromEntries(['voice','sound','music','subtitles','graphics'].map(id=>[id,design('lane-'+id+'-rows')]));
 const LANE_HEIGHTS=Object.fromEntries(Object.entries(LANE_ROWS).map(([id,rows])=>[id,rows*ROW_H]));
-let padX=VIDEO_PAD,playback={running:false,time:0,last:0,raf:0},drag=null,hoverBlock=-1,pointerX=0,bindT=0,viewKey='',hoverWatch=false,keyWatch=false,watchTimer=0;
+let padX=VIDEO_PAD,playback={running:false,time:0,last:0,raf:0},drag=null,hoverBlock=-1,pointerX=0,bindT=0,viewKey='';
 const strip=sf.querySelector('#sf-strip'),hero=sf.querySelector('#sf-hero');
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 function currentShot(t=playback.time){const shots=recordShots();return shots.find(s=>t<s.start+s.dur)||shots[shots.length-1];}
@@ -160,9 +160,9 @@ function endDrag(e){if(!drag||e.pointerId!==drag.id)return;const d=drag;drag=nul
 strip.addEventListener('pointerup',endDrag);strip.addEventListener('pointercancel',endDrag);strip.addEventListener('lostpointercapture',endDrag);
 function paintPosition(){sel=derivedSel();sf.querySelector('#sf-playhead').style.left=timeToX(playback.time)+'px';sf.querySelectorAll('.frame').forEach(el=>el.classList.toggle('current',Number(el.dataset.value)===sel));paintMonitor();highlightScript();}
 function setTime(t){const previous=sel;playback.time=clamp(t,0,duration(cutShots()));paintPosition();if(sel!==previous&&!sf.classList.contains('is-watching')){clearTimeout(bindT);bindT=setTimeout(()=>renderView(),design('unit-debounce'));}}
-function updateWatching(){const on=sf.classList.contains('mode-create')&&((historyState!=='pinned'&&(hoverWatch||keyWatch))||!!drag||playback.running),was=sf.classList.contains('is-watching');sf.classList.toggle('is-watching',on);if(was&&!on){clearTimeout(bindT);bindT=setTimeout(()=>renderView(),design('unit-debounce'));}measureMonitor();}
+function updateWatching(){const on=sf.classList.contains('mode-create')&&((historyState!=='pinned'&&sf.querySelector('.timeline').classList.contains('ux-focus'))||!!drag||playback.running),was=sf.classList.contains('is-watching');sf.classList.toggle('is-watching',on);if(was&&!on){clearTimeout(bindT);bindT=setTimeout(()=>renderView(),design('unit-debounce'));}measureMonitor();}
 function stopPlayback(){playback.running=false;cancelAnimationFrame(playback.raf);playback.raf=0;const b=sf.querySelector('#sf-transport');b.textContent='▶';b.setAttribute('aria-label','播放');b.setAttribute('aria-pressed','false');updateWatching();}
-function transport(){if(playback.running){stopPlayback();return;}if(playback.time>=duration(cutShots()))setTime(0);playback.running=true;playback.last=performance.now();const b=sf.querySelector('#sf-transport');b.textContent='Ⅱ';b.setAttribute('aria-label','暂停');b.setAttribute('aria-pressed','true');updateWatching();updateHero();
+function transport(){if(playback.running){stopPlayback();return;}if(playback.time>=duration(cutShots()))setTime(0);playback.running=true;playback.last=performance.now();const b=sf.querySelector('#sf-transport');b.innerHTML='<i class="ic-pause"></i>';b.setAttribute('aria-label','暂停');b.setAttribute('aria-pressed','true');updateWatching();updateHero();
  const tick=now=>{if(!playback.running)return;setTime(playback.time+(now-playback.last)/1000);playback.last=now;keepPlayhead();if(playback.time>=duration(cutShots())){stopPlayback();return;}playback.raf=requestAnimationFrame(tick);};playback.raf=requestAnimationFrame(tick);}
 function setLayer(l,el){if(layer!==l)cpClose();layer=l;viewKey='';sf.querySelectorAll('#sf-layerSeg button').forEach(d=>d.classList.toggle('on',d===el));buildStrip();renderView();}
 function setZoom(z,el){zoomLevel=z;sel=derivedSel();viewKey='';sf.querySelectorAll('#sf-zoomSeg button').forEach(d=>d.classList.toggle('on',d===el));cpClose();buildStrip();renderView();flash('已切换范围：'+({Film:'全片',Act:'幕',Scene:'场',Beat:'节拍',Shot:'镜头'}[z]||z));}
@@ -383,7 +383,7 @@ cinputEl.addEventListener('input',()=>{checkInputText();updateMention();});
 cinputEl.addEventListener('focus',()=>{cinputEl.querySelectorAll('.selpill[data-tentative]').forEach(p=>delete p.dataset.tentative);saveCaret();});
 cinputEl.addEventListener('keydown',e=>{if(!mentionMenu.hidden&&['Enter','Escape','ArrowDown','ArrowUp'].includes(e.key)){e.preventDefault();e.stopPropagation();if(e.key==='Escape')closeMention();else if(e.key==='Enter')insertMention(mentionIndex);else{mentionIndex=(mentionIndex+(e.key==='ArrowDown'?1:-1)+mentionItems.length)%mentionItems.length;paintMentions();}return;}
  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}else if(e.key==='Tab'&&!e.shiftKey){e.preventDefault();sf.querySelector('.cbar .send').focus();}});
-function setHistory(state){historyState=state;sf.classList.toggle('history-peek',state==='peek');sf.classList.toggle('history-pinned',state==='pinned');const b=sf.querySelector('#sf-historyToggle');b.setAttribute('aria-expanded',String(state!=='closed'));b.setAttribute('aria-pressed',String(state==='pinned'));if(state!=='closed')renderChat(false);if(state==='pinned'){hoverWatch=false;keyWatch=false;}updateWatching();}
+function setHistory(state){historyState=state;sf.classList.toggle('history-peek',state==='peek');sf.classList.toggle('history-pinned',state==='pinned');const b=sf.querySelector('#sf-historyToggle');b.setAttribute('aria-expanded',String(state!=='closed'));b.setAttribute('aria-pressed',String(state==='pinned'));if(state!=='closed')renderChat(false);updateWatching();}
 function toggleHistory(){clearTimeout(historyTimer);setHistory(historyState==='pinned'?'closed':'pinned');}
 function peekHistory(){clearTimeout(historyTimer);if(historyState!=='pinned')setHistory('peek');}
 function leaveHistory(){clearTimeout(historyTimer);historyTimer=setTimeout(()=>{if(historyState==='peek')setHistory('closed');},design('history-grace'));}
@@ -705,16 +705,20 @@ const timeline=sf.querySelector('.timeline'),copilot=sf.querySelector('.copilot'
 // Attention uses stable visible bounds, never the bounds of tools that are appearing.
 UX.hitRegion(timeline,{enter:()=>[timeline],exit:()=>[timeline,sf.querySelector('.tlmenu.show')],enabled:()=>!cvFocusId&&sf.classList.contains('mode-create')&&historyState!=='pinned'});
 UX.hitRegion(copilot,{enter:()=>[sf.querySelector('.cbar'),sf.querySelector('#sf-historyToggle'),sf.querySelector('.ctrace')],exit:()=>[sf.querySelector('.cbar'),sf.querySelector('#sf-historyToggle'),sf.querySelector('.ctrace')]});
-timeline.addEventListener('ux:hover',()=>{clearTimeout(watchTimer);hoverWatch=true;updateWatching();});
-timeline.addEventListener('ux:rest',()=>{clearTimeout(watchTimer);watchTimer=setTimeout(()=>{hoverWatch=false;updateWatching();},design('watch-grace'));});
-timeline.addEventListener('focusin',()=>{if(timeline.matches(':focus-visible')||timeline.querySelector(':focus-visible')){keyWatch=true;updateWatching();}});
-timeline.addEventListener('focusout',()=>{requestAnimationFrame(()=>{keyWatch=timeline.contains(document.activeElement);updateWatching();});});
+// Hover only shows the tools; a press or keyboard entry holds focus, and that focus is what enlarges the monitor (0014).
+timeline.addEventListener('ux:focus',updateWatching);
+timeline.addEventListener('ux:blur',updateWatching);
+// Esc leaves one layer: ending the timeline's focus restores the panel rather than closing it.
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&timeline.classList.contains('ux-focus')&&!cvFocusId&&!sf.querySelector('.tlmenu.show')){e.stopPropagation();UX.blur(sf);}},true);
+timeline.addEventListener('pointerdown',e=>{if(!e.button&&!chatFocused()&&!cvFocusId)UX.focus(timeline);});
+timeline.addEventListener('focusin',()=>{if((timeline.matches(':focus-visible')||timeline.querySelector(':focus-visible'))&&!chatFocused())UX.focus(timeline);});
+timeline.addEventListener('focusout',e=>{const to=e.relatedTarget;if(to&&!timeline.contains(to)&&!to.closest('[data-keep]')&&timeline.classList.contains('ux-focus'))UX.blur(sf);});
 timeline.addEventListener('keydown',e=>{if(e.code==='Space'&&!e.target.matches('button,[contenteditable]')){e.preventDefault();e.stopPropagation();transport();}});
 cinputEl.addEventListener('focus',()=>UX.focus(copilot));
 copilot.addEventListener('ux:focus',()=>{cinputEl.querySelectorAll('.selpill[data-tentative]').forEach(p=>delete p.dataset.tentative);});
 copilot.addEventListener('ux:blur',()=>{if(copilot.contains(document.activeElement))document.activeElement.blur();closeMention();if(historyState==='peek')setHistory('closed');});
 copilot.addEventListener('keydown',e=>{if(e.key==='Escape'){UX.blur(sf);if(cvFocusId)cvUnfocus();}});
-timeline.setAttribute('data-keep','');sf.querySelector('.cpanel').setAttribute('data-keep','');sf.querySelector('.cv-focus-stage').setAttribute('data-keep','');
+timeline.setAttribute('data-keep','');sf.querySelector('.monitor').setAttribute('data-keep','');sf.querySelector('.cv-focus').setAttribute('data-keep','');sf.querySelector('.cpanel').setAttribute('data-keep','');sf.querySelector('.cv-focus-stage').setAttribute('data-keep','');
 sf.querySelector('#sf-monitorPicture').addEventListener('pointerdown',e=>{if(chatFocused())e.preventDefault();});
 const overflowObserver=new ResizeObserver(()=>{measureOverflow();measureMonitor();});[cinputEl,sf.querySelector('#sf-bview'),sf.querySelector('#sf-cpBody'),sf.querySelector('#sf-browser')].forEach(el=>overflowObserver.observe(el));
 // Keyboard can reach every material without requiring a pointer or a hover.

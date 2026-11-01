@@ -10,6 +10,9 @@
    data-live             组件没有控件，但指针或点击会让它变化（拖动、悬停演示、点击切换）
    data-tool             组件的工具：静息隐藏，悬停或聚焦时出现
    data-keep             点到这里不算离开聚焦范围
+   data-canvas           无限画布的舞台：拖空白处平移，点空白处才算离开。用 UX.canvas 接管视图
+   UX.canvas(stage, {world,panel,root})  组件坐标只属于 world；视图可以让开，坐标不变（规则 26）
+   UX.dimOthers()/UX.dimOthers(on)  读写全局开关：关掉后别的组件不变暗，被关注的组件照常浮起（规则 27）
    UX.hitRegion(c, {enter,exit,bounds,enabled})  可见实体组成的命中范围；enter/exit 返回元素；bounds 使用包围框。返回清理函数
    没有 data-hold 的组件点不点都一样：鼠标在它上面时别人变暗，移走就恢复。
    纯展示组件（没有控件，也没有 data-live）只出阴影，别人不变暗，也没有聚焦。
@@ -25,6 +28,14 @@ const UX=(()=>{
   const holds=c=>!!c.closest('[data-hold]'),locked=s=>s.hasAttribute('data-lock');
   const typing=c=>{const a=document.activeElement;return !!a&&c.contains(a)&&a.matches('input:not([type=range]),textarea,[contenteditable]')};
   const emit=(c,t)=>c.dispatchEvent(new CustomEvent('ux:'+t,{bubbles:true}));
+  const root=document.documentElement,dimming=()=>root.dataset.attention!=='raise';
+  try{if(localStorage.getItem('dimOthers')==='0')root.dataset.attention='raise'}catch(e){}
+  function dimOthers(on){
+    if(on===undefined)return dimming();
+    if(on)delete root.dataset.attention;else root.dataset.attention='raise';
+    try{localStorage.setItem('dimOthers',on?'1':'0')}catch(e){}
+    document.querySelectorAll('[data-scope]').forEach(paint);paint(document.body);
+  }
   function paint(s){
     const d=get(s),mode=s.dataset.dim;
     s.classList.toggle('ux-busy',!!d.hover);s.classList.toggle('ux-active',!!d.focus);
@@ -32,7 +43,7 @@ const UX=(()=>{
       if(scopeOf(c)!==s)return;
       let st='rest';
       if(c===d.focus)st='focus';else if(c===d.hover)st='hover';
-      else if(mode!=='none'&&((d.focus&&!d.quiet)||(d.hover&&lively(d.hover))))st='dim';
+      else if(mode!=='none'&&dimming()&&((d.focus&&!d.quiet)||(d.hover&&lively(d.hover))))st='dim';
       /* 每次都按状态重写全部类名：框架重渲染改写 className 后，状态不会丢 */
       c.dataset.state=st;c.classList.toggle('ux-dim',st==='dim');c.classList.toggle('ux-hover',c===d.hover);c.classList.toggle('ux-focus',c===d.focus);
     });
@@ -95,8 +106,10 @@ const UX=(()=>{
     [...focused].forEach(s=>{const d=get(s);if(d.focus.contains(e.target))return;if(keep&&s.contains(keep))return;if(c&&scopeOf(c)===s&&!c.hasAttribute('data-nofocus')&&lively(c))return;blur(s)});
     if(c&&!c.hasAttribute('data-nofocus')&&lively(c))focus(c);
   };
-  document.addEventListener('pointerdown',e=>{if(e.pointerType!=='touch')focusFromTap(e)},true);
-  document.addEventListener('click',e=>{if(e.pointerType==='touch'||e.sourceCapabilities?.firesTouchEvents||e.detail===0)focusFromTap(e)},true);
+  /* 画布空白处可能是平移的开始，要等 click 才算点到空白 */
+  const blank=e=>!!e.target.closest?.('[data-canvas]')&&!e.target.closest('[data-cmp],[data-keep],button');
+  document.addEventListener('pointerdown',e=>{if(e.pointerType!=='touch'&&!blank(e))focusFromTap(e)},true);
+  document.addEventListener('click',e=>{if(blank(e)||e.pointerType==='touch'||e.sourceCapabilities?.firesTouchEvents||e.detail===0)focusFromTap(e)},true);
   /* 切走窗口再回来时浏览器会把焦点还给输入框，这不算用户聚焦 */
   let away=false;addEventListener('blur',e=>{if(e.target===window)away=true});['pointerdown','keydown'].forEach(t=>addEventListener(t,()=>{away=false},true));
   document.addEventListener('focusin',e=>{if(away||!e.target.matches(':focus-visible'))return;const c=cmpOf(e.target);if(c&&!c.hasAttribute('data-nofocus')&&!(e.target===c&&c.hasAttribute('data-hold')))focus(c)});
@@ -219,7 +232,35 @@ const UX=(()=>{
       el.dispatchEvent(new MouseEvent('click',o));
     });
   },true);
-  return {intent,flip,sortable,blur:s=>blur(s),focus,paint,transition,hitRegion};
+  /* 无限画布：平移缩放只改世界层的一个变换，从不改组件坐标。叠层打开时放不下才缩小视图，关闭后回到原视图 */
+  const CANVAS={min:.4,max:2,fitMax:1.25,step:1.25,wheel:.002,margin:24,gap:12,pan:4,ms:520};
+  function canvas(stage,{world,panel,root}){
+    const v={x:0,y:0,z:1},grid=parseFloat(getComputedStyle(stage).backgroundSize)||0,label=root.querySelector('[data-cv=z]');
+    let auto=true,moved=false,saved=null,timer=0,held=false,pending=false;
+    const clamp=(n,a,b)=>Math.max(a,Math.min(b,n)),calm=()=>matchMedia('(prefers-reduced-motion:reduce)').matches,open=()=>root.classList.contains('ux-active');
+    const apply=anim=>{clearTimeout(timer);const on=!!anim&&!calm();stage.classList.toggle('cv-anim',on);if(on)timer=setTimeout(()=>stage.classList.remove('cv-anim'),CANVAS.ms);world.style.transform=`translate(${v.x}px,${v.y}px) scale(${v.z})`;if(grid){stage.style.backgroundSize=`${grid*v.z}px ${grid*v.z}px`;stage.style.backgroundPosition=`${v.x}px ${v.y}px`}if(label)label.textContent=Math.round(v.z*100)+'%'};
+    const bounds=()=>{const c=[...world.querySelectorAll('[data-cmp]')];return{l:Math.min(...c.map(e=>e.offsetLeft)),t:Math.min(...c.map(e=>e.offsetTop)),r:Math.max(...c.map(e=>e.offsetLeft+e.offsetWidth)),b:Math.max(...c.map(e=>e.offsetTop+e.offsetHeight))}};
+    /* 叠层没盖住的区域。宽到占满舞台的是底部抽屉，否则在右侧 */
+    const area=()=>{const w=stage.clientWidth,h=stage.clientHeight,sheet=panel.offsetWidth>=w-2*CANVAS.margin,on=open();return{w:w-(on&&!sheet?panel.offsetWidth+CANVAS.gap:0),h:h-(on&&sheet?panel.offsetHeight+CANVAS.gap:0),pad:parseFloat(getComputedStyle(root).getPropertyValue('--cv-pad-b'))||0}};
+    const frame=(a,b,cap)=>{const m=CANVAS.margin,bw=b.r-b.l,bh=b.b-b.t,z=clamp(Math.min((a.w-2*m)/bw,(a.h-2*m-a.pad)/bh),CANVAS.min,cap);v.z=z;v.x=(a.w-bw*z)/2-b.l*z;v.y=(a.h-a.pad-bh*z)/2-b.t*z};
+    const fit=anim=>{if(!stage.clientWidth)return;frame(area(),bounds(),CANVAS.fitMax);apply(anim)};
+    const zoom=(k,px,py)=>{const z=clamp(v.z*k,CANVAS.min,CANVAS.max);v.x=px-(px-v.x)*z/v.z;v.y=py-(py-v.y)*z/v.z;v.z=z;auto=false;moved=true;apply()};
+    /* 视图让开放到指针抬起后：按住节点拖动时，视图不能在指针下面变 */
+    const settle=()=>{if(!open()){if(saved&&!moved){Object.assign(v,saved);apply(true)}saved=null;return}if(!saved){saved={...v};moved=false}const a=area(),b=bounds(),m=CANVAS.margin,fits=v.x+b.l*v.z>=m&&v.x+b.r*v.z<=a.w-m&&v.y+b.t*v.z>=m&&v.y+b.b*v.z<=a.h-m;if(fits)return;frame(a,b,v.z);apply(true)};
+    const sync=e=>{if(!stage.contains(e.target))return;if(held)pending=true;else settle()};
+    root.addEventListener('ux:focus',sync);root.addEventListener('ux:blur',sync);
+    addEventListener('pointerdown',()=>{held=true},true);
+    ['pointerup','pointercancel'].forEach(t=>addEventListener(t,()=>{held=false;if(pending){pending=false;settle()}},true));
+    stage.addEventListener('pointerdown',e=>{delete stage.dataset.dragged;if(e.button||e.target.closest('[data-cmp],[data-keep],button'))return;const sx=e.clientX,sy=e.clientY,ox=v.x,oy=v.y;let far=false;stage.setPointerCapture(e.pointerId);stage.classList.add('cv-grabbing');
+      const mv=ev=>{if(!far&&Math.hypot(ev.clientX-sx,ev.clientY-sy)<CANVAS.pan)return;far=true;auto=false;moved=true;v.x=ox+ev.clientX-sx;v.y=oy+ev.clientY-sy;apply()};
+      const end=()=>{stage.classList.remove('cv-grabbing');stage.removeEventListener('pointermove',mv);stage.removeEventListener('pointerup',end);stage.removeEventListener('pointercancel',end);if(far)stage.dataset.dragged='true'};
+      stage.addEventListener('pointermove',mv);stage.addEventListener('pointerup',end);stage.addEventListener('pointercancel',end)});
+    stage.addEventListener('wheel',e=>{if(!e.ctrlKey&&!e.metaKey)return;e.preventDefault();const r=stage.getBoundingClientRect();zoom(Math.exp(-e.deltaY*CANVAS.wheel),e.clientX-r.left,e.clientY-r.top)},{passive:false});
+    root.querySelectorAll('[data-cv]').forEach(b=>{if(b.dataset.cv==='z')return;b.addEventListener('click',()=>{const a=area();if(b.dataset.cv==='fit'){auto=!open();moved=true;fit(true)}else zoom(b.dataset.cv==='in'?CANVAS.step:1/CANVAS.step,a.w/2,a.h/2)})});
+    new ResizeObserver(()=>{if(auto&&!open())fit()}).observe(stage);fit();
+    return{fit,scale:()=>v.z,view:()=>({...v})};
+  }
+  return {intent,flip,sortable,blur:s=>blur(s),focus,paint,transition,hitRegion,canvas,dimOthers};
 })();
 
 /* ========== 选择器：同一块底滑过去，不闪现。按钮自己在变宽时也跟得上 ========== */

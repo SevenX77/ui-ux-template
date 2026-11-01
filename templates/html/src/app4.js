@@ -30,13 +30,13 @@ sep();const gl=group();mk('中','l','zh',()=>setLang('zh'),gl);mk('EN','l','en',
 const params=new URLSearchParams(location.hash.slice(1)),embed=!!params.get('embed');
 const frame=$('#devFrame'),shell=$('#devShell');
 function size(){shell.style.height=Math.min(864,innerHeight-80)+'px'}
-window.syncDevice=()=>{if(frame.contentWindow&&frame.src)frame.contentWindow.postMessage({scheme:root.dataset.scheme,lang:LANG.cur},'*')};
-function setDev(d){document.body.classList.toggle('phone-mode',d==='phone');$$('#barIn button[data-dev]:not([data-dev=notes])').forEach(b=>b.classList.toggle('on',b.dataset.dev===d));if(d==='phone'){size();if(!frame.src)frame.src=`${location.protocol==='data:'?location.href.split('#')[0]:location.href.split(/[?#]/)[0]+'?embed=1'}#embed=1&scheme=${root.dataset.scheme}&lang=${LANG.cur}`;else syncDevice()}try{localStorage.setItem('device',d)}catch(e){}}
+window.syncDevice=()=>{if(frame.contentWindow&&frame.src)frame.contentWindow.postMessage({scheme:root.dataset.scheme,lang:LANG.cur,dim:UX.dimOthers()},'*')};frame.addEventListener('load',()=>syncDevice());
+function setDev(d){document.body.classList.toggle('phone-mode',d==='phone');$$('#barIn button[data-dev]:not([data-dev=notes],[data-dev=dim])').forEach(b=>b.classList.toggle('on',b.dataset.dev===d));if(d==='phone'){size();if(!frame.src)frame.src=`${location.protocol==='data:'?location.href.split('#')[0]:location.href.split(/[?#]/)[0]+'?embed=1'}#embed=1&scheme=${root.dataset.scheme}&lang=${LANG.cur}`;else syncDevice()}try{localStorage.setItem('device',d)}catch(e){}}
 window.setDev=setDev;
-if(!embed){sep(true);const gd=group(true);mk('Web','dev','web',()=>setDev('web'),gd);mk('手机','dev','phone',()=>setDev('phone'),gd);addEventListener('resize',size);sep(true);const nb=mk('标注','dev','notes',()=>{const on=document.body.classList.toggle('ux-notes');nb.classList.toggle('on',on)})}
+if(!embed){sep(true);const gd=group(true);mk('Web','dev','web',()=>setDev('web'),gd);mk('手机','dev','phone',()=>setDev('phone'),gd);addEventListener('resize',size);sep(true);const nb=mk('标注','dev','notes',()=>{const on=document.body.classList.toggle('ux-notes');nb.classList.toggle('on',on)});const db=mk('隐藏周围','dev','dim',()=>{UX.dimOthers(!UX.dimOthers());db.classList.toggle('on',UX.dimOthers());syncDevice()});db.classList.toggle('on',UX.dimOthers())}
 $('#devNav').innerHTML='<div class="xs mute">390 × 844</div>'+$$('#rail a').map(a=>`<a data-go="${a.dataset.go}">${a.textContent}</a>`).join('');
 $('#devNav').addEventListener('click',e=>{const a=e.target.closest('[data-go]');if(a)frame.contentWindow.postMessage({go:a.dataset.go},'*')});
-addEventListener('message',e=>{if(e.source!==parent||!embed)return;const m=e.data||{};if(m.scheme)setScheme(m.scheme);if(m.lang&&m.lang!==LANG.cur)setLang(m.lang);if(m.go)goTo(m.go)});
+addEventListener('message',e=>{if(e.source!==parent||!embed)return;const m=e.data||{};if(m.scheme)setScheme(m.scheme);if(m.lang&&m.lang!==LANG.cur)setLang(m.lang);if(m.dim!==undefined&&m.dim!==UX.dimOthers())UX.dimOthers(m.dim);if(m.go)goTo(m.go)});
 
 let sl=params.get('lang');try{sl=sl||localStorage.getItem('lang')}catch(e){}
 setLang(sl==='en'?'en':'zh',true);

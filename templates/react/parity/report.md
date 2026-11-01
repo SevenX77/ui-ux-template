@@ -1,6 +1,6 @@
 # HTML / React parity report
 
-Run: 2026-10-31T18-22-54-633Z
+Run: 2026-11-01T03-59-56-054Z
 Script SHA-256: `6daaf48d9ceb9c7161e63411c7abd2df87a6cb2a5a8dfea667e0175d52aaa09d`
 
 Automated style/DOM-meaning/interaction phase: **partially attained; see remaining checks**. Parent fidelity acceptance still requires review of the reported visual differences.
@@ -26,12 +26,12 @@ Strict extra diagnostics: allChecksPass=false; exit code remains nonzero for une
 | Section | Cases | Style mismatches | DOM/content differences | Max pixel ratio | Max channel delta | Interaction results | Errors |
 |---|---:|---:|---:|---:|---:|---|---:|
 | #schemes | 24/24 | 0 | 0 | 19.6280% | 255 | Not applicable | 0 |
-| #shape | 24/24 | 0 | 0 | 9.8061% | 255 | Not applicable | 0 |
-| #controls | 24/24 | 0 | 0 | 5.1323% | 255 | Not applicable | 0 |
-| #dash | 24/24 | 0 | 0 | 7.4404% | 241 | 48/48 scope checks pass | 0 |
-| #work | 24/24 | 0 | 0 | 2.9010% | 255 | 48/48 scope checks pass; drag 48/48 | 0 |
-| #table | 24/24 | 0 | 0 | 9.8307% | 255 | Not applicable | 0 |
-| #gallery | 24/24 | 0 | 0 | 69.7661% | 255 | Not applicable | 0 |
+| #shape | 24/24 | 0 | 0 | 9.8208% | 255 | Not applicable | 0 |
+| #controls | 24/24 | 0 | 0 | 5.4534% | 255 | Not applicable | 0 |
+| #dash | 24/24 | 0 | 0 | 7.1346% | 241 | 48/48 scope checks pass | 0 |
+| #work | 24/24 | 0 | 0 | 5.0576% | 255 | 48/48 scope checks pass; drag 48/48 | 0 |
+| #table | 24/24 | 0 | 0 | 10.5914% | 255 | Not applicable | 0 |
+| #gallery | 24/24 | 0 | 0 | 69.9208% | 255 | Not applicable | 0 |
 
 ## Chrome and interactions
 
@@ -79,7 +79,7 @@ Each group below accounts for every occurrence of that exact property/value diff
 
 DOM attribute diagnostics: 480 total, of which 360 are solely absent versus empty class attributes. Those leave class membership unchanged; listed computed styles are compared independently. All raw differences remain listed in results.json. Other meaningful DOM/content differences: 120.
 
-210 screenshot pair(s) contain unequal pixels. Each pair has HTML, React and difference images. Unequal screenshot sizes are compared on the union canvas; absent pixels count as differences. Causes require visual review; no anti-aliasing, alignment or loading explanation is assumed.
+211 screenshot pair(s) contain unequal pixels. Each pair has HTML, React and difference images. Unequal screenshot sizes are compared on the union canvas; absent pixels count as differences. Causes require visual review; no anti-aliasing, alignment or loading explanation is assumed.
 
 ## Instrument history and qualification
 
@@ -101,9 +101,9 @@ Owned-resource cleanup: `{"browserClosed":true,"previewEnded":true,"staticServer
 
 ## Evidence
 
-- [Full results and all mismatches](out/2026-10-31T18-22-54-633Z/results.json)
-- [Run environment and exact artifact hashes](out/2026-10-31T18-22-54-633Z/results.json#artifacts)
-- [Preview output](out/2026-10-31T18-22-54-633Z/preview.log)
+- [Full results and all mismatches](out/2026-11-01T03-59-56-054Z/results.json)
+- [Run environment and exact artifact hashes](out/2026-11-01T03-59-56-054Z/results.json#artifacts)
+- [Preview output](out/2026-11-01T03-59-56-054Z/preview.log)
 - Per-case raw JSON and screenshot paths are listed in the full results.
 
 A complete command or generated report is not proof of parity. Any unresolved difference, failed interaction or incomplete case blocks an unconditional parity claim.

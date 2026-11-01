@@ -41,7 +41,7 @@
           </div>
         </div></div>
 
-      <div class="timeline" data-cmp data-nofocus data-live tabindex="0" aria-label="时间线">
+      <div class="timeline" data-cmp data-nofocus data-hold data-live tabindex="0" aria-label="时间线">
         <div class="tlctl">
           <div class="seg" id="sf-layerSeg">
             <button type="button" class="on" data-sf-call="setLayer" data-value="script">剧本</button>
@@ -137,13 +137,13 @@
 <section class="wrap sec" id="canvas">
   <div class="sec-h"><div><div class="k">07 / CANVAS · NODES</div><h2>画布与节点</h2></div><p>节点图可拖动节点、连接跟随；右侧配置项能折叠、能拖动排序。下面的业务蓝图来自 Puzzle：框选区域、看汇总。</p></div>
   <div class="node-app" id="nodeApp" data-scope="node" data-hold>
-    <div class="node-stage" id="nodeStage"><svg class="node-wires" id="wires"></svg><div class="nd-hint xs faint">点一个节点：配置面板挤进来，无关节点变暗。点空白处退出。</div><button class="btn run-f" id="runBtn" data-keep>▶ 运行流程</button></div>
+    <div class="node-stage" id="nodeStage" data-canvas><div class="cv-world" id="nodeWorld"><svg class="node-wires" id="wires"></svg></div><div class="nd-hint xs faint">点一个节点：配置面板叠在画布上，无关节点变暗。拖空白处平移，Ctrl + 滚轮缩放，点空白处退出。</div><button class="btn run-f" id="runBtn" data-keep>▶ 运行流程</button></div><div class="cvz" data-keep role="group" aria-label="画布视图"><button data-cv="out" aria-label="缩小画布">−</button><output data-cv="z">100%</output><button data-cv="in" aria-label="放大画布">+</button><button data-cv="fit">适合画布</button></div>
     <aside class="node-side" id="nodeSide" data-keep><div class="side-in"><div class="between"><b>配置</b><span class="xs mute" id="nodeName">Camera</span></div><div id="cfg" style="margin-top:calc(10px*var(--y))"></div></div></aside>
   </div>
   <p class="note">节点待机只有标题和预览，端口和工具悬停才出现。配置组用握把拖动，也能用键盘 ↑↓ 排序。</p>
 
-  <div class="sub">业务蓝图 <small>来源：Puzzle 视频。悬停预览一组的连线，点击后汇总挤进来</small></div>
-  <div class="bp" id="bp" data-scope="bp" data-hold><div class="bp-board fade-x" id="bpBoard"></div><aside class="bp-side" id="bpSide" data-keep></aside></div>
+  <div class="sub">业务蓝图 <small>来源：Puzzle 视频。悬停预览一组的连线，点击后汇总面板叠在画布上</small></div>
+  <div class="bp" id="bp" data-scope="bp" data-hold><div class="bp-board" id="bpBoard" data-canvas></div><div class="cvz" data-keep role="group" aria-label="画布视图"><button data-cv="out" aria-label="缩小画布">−</button><output data-cv="z">100%</output><button data-cv="in" aria-label="放大画布">+</button><button data-cv="fit">适合画布</button></div><aside class="bp-side" id="bpSide" data-keep></aside></div>
 </section>
 
 <section class="wrap sec" id="maps">

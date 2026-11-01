@@ -12,6 +12,11 @@ html[lang=en]{--font:Inter,-apple-system,"Segoe UI",sans-serif;--lh:1.45;--lh-t:
 .big,.huge,.num-t{font-family:Inter,-apple-system,"Segoe UI",sans-serif}
 .num-t{font-variant-numeric:tabular-nums}
 html body :focus-visible:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+/* 暂停是画出来的两条竖线，不随字体变化 */
+.ic-pause{display:inline-block;box-sizing:border-box;width:.75em;height:.85em;border-inline:.26em solid currentColor;vertical-align:-.06em}
+.ic-pause:not(:last-child){margin-right:.4em}
+/* 输入框自己的内线就是焦点提示，外面不再加第二层 */
+html body .input:focus-visible:focus-visible{outline:none}
 @media (prefers-reduced-motion:reduce){*{transition-duration:0s!important;transition-delay:0s!important;animation-duration:.01ms!important;scroll-behavior:auto!important}}
 
 /* ============ 页面框架 ============ */
@@ -51,7 +56,7 @@ body.phone-mode{overflow:hidden}
 .rail{position:fixed;left:10px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;padding:10px 6px;border-radius:16px;opacity:.7;transition:background .25s,box-shadow .35s var(--ease),opacity .3s;max-height:90vh;overflow:hidden;z-index:801}
 .rail.ux-hover,.rail:has(:focus-visible){opacity:1;background:color-mix(in srgb,var(--glass) 76%,transparent);backdrop-filter:blur(16px) saturate(1.1);box-shadow:var(--e3)}
 #page{transition:opacity .3s}
-body:has(.rail.ux-hover) #page,body:has(.rail :focus-visible) #page,body:has(.pnav.open) #page{opacity:.3}
+:root:not([data-attention=raise]) body:has(.rail.ux-hover) #page,:root:not([data-attention=raise]) body:has(.rail :focus-visible) #page,:root:not([data-attention=raise]) body:has(.pnav.open) #page{opacity:.3}
 .rail a{display:flex;align-items:center;height:22px;padding:0 4px;border-radius:9px;font-size:12px;color:var(--ink2);text-decoration:none;white-space:nowrap;cursor:pointer}
 .rail a::before{content:'';width:10px;height:2px;border-radius:9px;background:var(--dot);flex:none;transition:width .35s var(--ease),background .2s}
 .rail a.on::before{width:16px;background:var(--signal)}

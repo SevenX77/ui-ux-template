@@ -2,6 +2,7 @@ import {useEffect, useLayoutEffect, useRef, useState} from 'react';
 import chrome from '@core/content/chrome.json';
 import htmlReference from '../../html/ui-handbook.html?url';
 import {useLanguage, useTheme, useIndicators} from './ui';
+import {UX} from './ui/core';
 
 export function PageChrome() {
   const {t, lang, setLanguage} = useLanguage();
@@ -10,6 +11,7 @@ export function PageChrome() {
   const [open, setOpen] = useState(false);
   const [phone, setPhone] = useState(false);
   const [notes, setNotes] = useState(false);
+  const [dim, setDim] = useState<boolean>(() => !!UX.dimOthers());
   const bar = useRef<HTMLDivElement>(null);
   const shell = useRef<HTMLDivElement>(null);
   const frame = useRef<HTMLIFrameElement>(null);
@@ -20,7 +22,8 @@ export function PageChrome() {
     if (section) section.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion:reduce)').matches ? 'auto' : 'smooth'});
     else location.href = htmlReference + '#' + id;
   };
-  useIndicators(bar, [scheme, lang, phone, notes]);
+  useIndicators(bar, [scheme, lang, phone, notes, dim]);
+  const toggleDim = () => {UX.dimOthers(!dim); setDim(!dim);};
   useEffect(() => {document.body.classList.toggle('embed', embed);}, [embed]);
   useEffect(() => {document.body.classList.toggle('phone-mode', phone); document.body.classList.toggle('ux-notes', notes); return () => {document.body.classList.remove('phone-mode', 'ux-notes');};}, [phone, notes]);
   useEffect(() => {
@@ -34,10 +37,10 @@ export function PageChrome() {
     const resize = () => {if (shell.current) shell.current.style.height = Math.min(chrome.phone.heightCap, innerHeight - chrome.phone.heightInset) + 'px';};
     resize(); addEventListener('resize', resize); return () => removeEventListener('resize', resize);
   }, [phone]);
-  useEffect(() => {frame.current?.contentWindow?.postMessage({scheme, lang}, location.origin);}, [scheme, lang, phone]);
+  useEffect(() => {frame.current?.contentWindow?.postMessage({scheme, lang, dim}, location.origin);}, [scheme, lang, phone, dim]);
   useEffect(() => {
     if (!embed) return;
-    const receive = (event: MessageEvent) => {if (event.source !== parent || event.origin !== location.origin) return; const message = event.data || {}; if (message.scheme) setScheme(message.scheme); if (message.lang) setLanguage(message.lang, true); if (message.go) goTo(message.go);};
+    const receive = (event: MessageEvent) => {if (event.source !== parent || event.origin !== location.origin) return; const message = event.data || {}; if (message.scheme) setScheme(message.scheme); if (message.lang) setLanguage(message.lang, true); if (message.dim !== undefined && message.dim !== UX.dimOthers()) {UX.dimOthers(message.dim); setDim(message.dim);} if (message.go) goTo(message.go);};
     addEventListener('message', receive); return () => removeEventListener('message', receive);
   }, [embed, setScheme, setLanguage]);
   const links = (rail: boolean) => chrome.nav.map(([id, name]) => <a key={id} href={'#' + id} data-go={id} className={active === id ? 'on' : ''} aria-label={rail ? t(name) : undefined} onClick={event => {event.preventDefault(); goTo(id);}}>{rail ? <span>{t(name)}</span> : t(name)}</a>);
@@ -45,10 +48,10 @@ export function PageChrome() {
     <div className="bar"><div className="bar-in" id="barIn" role="group" aria-label={t('配色方案')} data-scope="bar" data-dim="none" data-cmp="" data-nofocus="" ref={bar}>
       <div className="seg" id="barT"><i className="seg-ind" />{themes.map(theme => <button key={theme.id} data-s={theme.id} aria-label={t(theme.name.zh)} className={scheme === theme.id ? 'on' : undefined} onClick={event => setScheme(theme.id, event)}><i style={{background: theme.swatch}} /><span>{t(theme.name.zh)}</span></button>)}</div>
       <span className="sep" /><div className="seg quiet"><i className="seg-ind" /><button data-l="zh" className={lang === 'zh' ? 'on' : undefined} onClick={() => setLanguage('zh')}>中</button><button data-l="en" className={lang === 'en' ? 'on' : undefined} onClick={() => setLanguage('en')}>EN</button></div>
-      {!embed && <><span className="sep" data-dev="" /><div className="seg quiet" data-dev=""><i className="seg-ind" /><button data-dev="web" className={!phone ? 'on' : undefined} onClick={() => setPhone(false)}>Web</button><button data-dev="phone" className={phone ? 'on' : undefined} onClick={() => setPhone(true)}>{t('手机')}</button></div><span className="sep" data-dev="" /><button data-dev="notes" className={notes ? 'on' : undefined} onClick={() => setNotes(!notes)}>{t('标注')}</button></>}
+      {!embed && <><span className="sep" data-dev="" /><div className="seg quiet" data-dev=""><i className="seg-ind" /><button data-dev="web" className={!phone ? 'on' : undefined} onClick={() => setPhone(false)}>Web</button><button data-dev="phone" className={phone ? 'on' : undefined} onClick={() => setPhone(true)}>{t('手机')}</button></div><span className="sep" data-dev="" /><button data-dev="notes" className={notes ? 'on' : undefined} onClick={() => setNotes(!notes)}>{t('标注')}</button><button data-dev="dim" className={dim ? 'on' : undefined} onClick={toggleDim}>{t('隐藏周围')}</button></>}
     </div></div>
     <nav className="rail" id="rail" aria-label={t('目录')} data-scope="chrome" data-dim="none" data-cmp="" data-nofocus="">{links(true)}</nav>
     <div className={'pnav' + (open ? ' open' : '')} id="pnav"><div className="pnav-list" id="pnavL">{links(false)}</div><button className="pnav-b" id="pnavB" onClick={() => setOpen(!open)}><i /><span id="pnavT">{t(chrome.nav.find(([id]) => id === active)?.[1] || '目录')}</span></button></div>
-    <div className="device" id="device"><nav className="device-nav" id="devNav" aria-label={t('目录')}><div className="xs mute">390 × 844</div>{chrome.nav.map(([id, name]) => <a key={id} data-go={id} onClick={() => frame.current?.contentWindow?.postMessage({go: id}, location.origin)}>{t(name)}</a>)}</nav><div className="device-shell" id="devShell" ref={shell}>{phone && <iframe id="devFrame" ref={frame} title="Phone view" src={`./index.html#embed=1&scheme=${scheme}&lang=${lang}`} />}</div></div>
+    <div className="device" id="device"><nav className="device-nav" id="devNav" aria-label={t('目录')}><div className="xs mute">390 × 844</div>{chrome.nav.map(([id, name]) => <a key={id} data-go={id} onClick={() => frame.current?.contentWindow?.postMessage({go: id}, location.origin)}>{t(name)}</a>)}</nav><div className="device-shell" id="devShell" ref={shell}>{phone && <iframe id="devFrame" ref={frame} title="Phone view" onLoad={() => frame.current?.contentWindow?.postMessage({scheme, lang, dim}, location.origin)} src={`./index.html#embed=1&scheme=${scheme}&lang=${lang}`} />}</div></div>
   </>;
 }

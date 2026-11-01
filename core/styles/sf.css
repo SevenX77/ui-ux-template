@@ -78,11 +78,11 @@
 .sf .shot-stage{min-height:440px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;}
 .sf .unit-view{padding:26px 30px 44px;max-width:640px;margin:0 auto;}
 .sf .timeline{flex:none;position:relative;z-index:5;max-height:420px;min-height:0;margin:0;pointer-events:none;transition:max-height .35s var(--ease),margin-bottom .35s var(--ease);}
-.sf .timeline.ux-hover{z-index:150;}
+.sf .timeline.ux-hover,.sf .timeline.ux-focus{z-index:150;}
 .sf .tlctl{position:relative;display:grid;grid-template-columns:1fr auto 1fr;align-items:end;gap:12px;width:100%;max-width:var(--mid-max);min-height:34px;margin:0 auto 8px;opacity:0;visibility:hidden;pointer-events:none;z-index:12;transition:opacity .25s ease;}
 .sf .tlctl>#sf-layerSeg{justify-self:start;}
 .sf .tlctl>#sf-zoomSeg{justify-self:end;}
-.sf .timeline.ux-hover .tlctl,.sf .timeline:has(:focus-visible) .tlctl,.sf .timeline:focus-visible .tlctl{opacity:1;visibility:visible;pointer-events:auto;}
+.sf .timeline.ux-hover .tlctl,.sf .timeline.ux-focus .tlctl,.sf .timeline:has(:focus-visible) .tlctl,.sf .timeline:focus-visible .tlctl{opacity:1;visibility:visible;pointer-events:auto;}
 .sf .seg{display:flex;gap:2px;background:var(--glass);border-radius:9px;padding:3px;backdrop-filter:blur(6px);box-shadow:var(--e1);}
 .sf .seg>button{font-size:11px;padding:4px 11px;border-radius:9px;color:var(--ink2);cursor:pointer;transition:color .12s;letter-spacing:.2px;}
 .sf .seg>button.on{color:var(--on-signal);}
@@ -112,7 +112,7 @@
 .sf .tlmenu .add b{font-size:15px;line-height:1;}
 .sf .stripwrap{flex:1;min-width:0;position:relative;-webkit-mask-image:linear-gradient(to right,transparent,#000 24px,#000 calc(100% - 24px),transparent);mask-image:linear-gradient(to right,transparent,#000 24px,#000 calc(100% - 24px),transparent);}
 .sf .filmstrip{height:var(--strip-height,96px);position:relative;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;border-radius:16px;overscroll-behavior-x:none;touch-action:pan-y;background:var(--strip);color:var(--strip-ink);box-shadow:var(--e2);pointer-events:auto;transition:height .35s var(--ease),box-shadow .35s var(--ease);}
-.sf .timeline.ux-hover .filmstrip{box-shadow:var(--lift);}
+.sf .timeline.ux-hover .filmstrip,.sf .timeline.ux-focus .filmstrip{box-shadow:var(--lift);}
 .sf .filmstrip::-webkit-scrollbar{display:none;}
 .sf .filmtrack{position:relative;height:100%;width:max-content;min-width:100%;background:var(--strip);}
 .sf .frames{height:100%;display:flex;align-items:center;padding:0 var(--pad,24px);}
@@ -520,7 +520,7 @@
   --sf-video-pad:24px;--sf-lane-pad:12px;
   --sf-strip-video-height:96px;--sf-strip-audio-height:136px;--sf-strip-graphics-height:80px;
   --sf-drag-edge:72px;--sf-drag-speed:14;--sf-pick-distance:4px;--sf-playhead-inset:.15;
-  --sf-unit-debounce:160ms;--sf-watch-grace:200ms;--sf-history-grace:200ms;
+  --sf-unit-debounce:160ms;--sf-history-grace:200ms;
   --sf-perf-width:15px;--sf-perf-gap:11px;--sf-monitor-clearance:12px;--sf-script-clearance:24px;
   --sf-mention-width:240px;--sf-mention-inset:20px;--sf-mention-gap:8px;--sf-mention-limit:8;
   --sf-wave-count:10;--sf-wave-detail-count:45;--sf-wave-min:22;--sf-wave-range:58;
