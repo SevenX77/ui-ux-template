@@ -1,0 +1,441 @@
+{
+  "text": {
+    "t0": "10 / AI · MICRO",
+    "t1": "AI 界面与细节组件",
+    "t2": "来自站外新参考：AI 产品常用模式，以及一批有记忆点的小组件。全部用本规范的变量重做，切配色都会跟着变。",
+    "t3": "AI 对话的细节 ",
+    "t4": "同样的规则：鼠标移上一个，工具出现，别的组件变暗，移走就恢复",
+    "t5": "流式回复演示",
+    "t6": "把握高",
+    "t7": "↻ 下一条演示",
+    "t8": "Effort",
+    "t9": "Low",
+    "t10": "?",
+    "t11": "Faster",
+    "t12": "Smarter",
+    "t13": "推荐：日常问题",
+    "t14": "点按演示语音状态",
+    "t15": "Agent (auto)",
+    "t16": "00:00",
+    "t17": "●",
+    "t18": "命令面板 · Ctrl K 或点一下，列表盖在内容上",
+    "t19": "最近使用",
+    "t20": "切换配色：荧光",
+    "t21": "查找素材",
+    "t22": "EDITION 01",
+    "t23": "static.",
+    "t24": "按住打开",
+    "t25": "时间刻度",
+    "t26": "移动鼠标",
+    "t27": "1968",
+    "t28": "第一次演示",
+    "t29": "参数面板 · 悬停才亮数值",
+    "t30": "你的邀请已就绪",
+    "t31": "↓",
+    "t32": "你的邀请码",
+    "t33": "LoveTemplate",
+    "t34": "复制",
+    "t35": "按下去",
+    "t36": "敏感信息默认隐藏",
+    "t37": "4485 •••• •••• 7516",
+    "t38": "◉",
+    "t39": "复制这段链接",
+    "t40": "⧉",
+    "t41": "点云",
+    "t42": "视觉和动效的新想法 ",
+    "t43": "来自 recent.design 和视频，全部用本规范的变量重做",
+    "t44": "光栅体积 · 数字滚动",
+    "t45": "点一下",
+    "t46": "$",
+    "t47": "像素热力",
+    "t48": "7 天 × 24 小时",
+    "t49": "Static",
+    "t50": "27 Oct",
+    "t51": "Studio B",
+    "t52": "环",
+    "t53": "阶",
+    "t54": "素",
+    "t55": "EDITION",
+    "t56": "MORE",
+    "t57": "点阵变形：环 → 波 → 鱼 → 球",
+    "t58": "圆环球：分类色旋转，悬停加速",
+    "t59": "切片转场：整图 → 竖条 → 点阵 → 整图",
+    "t60": "文字模糊入场",
+    "t61": "重播",
+    "t62": "图标波浪",
+    "t63": "悬停：明暗扫过",
+    "t64": "素材格 ",
+    "t65": "不同形状的内容放在同样的底上，悬停出现阴影",
+    "t66": "文件夹",
+    "t67": "图标集",
+    "t68": "堆叠",
+    "t69": "材质",
+    "t70": "像素图表"
+  },
+  "styles": {
+    "s0": {
+      "gap": "6px"
+    },
+    "s1": {
+      "background": "var(--good)"
+    },
+    "s2": {
+      "marginTop": "calc(8px*var(--y))",
+      "gap": "6px"
+    },
+    "s3": {
+      "margin": "calc(10px*var(--y)) 0 calc(5px*var(--y))"
+    },
+    "s4": {
+      "marginTop": "calc(6px*var(--y))"
+    },
+    "s5": {
+      "flexWrap": "nowrap"
+    },
+    "s6": {
+      "background": "var(--sel)"
+    },
+    "s7": {
+      "flex": "1"
+    },
+    "s8": {
+      "zIndex": "5"
+    },
+    "s9": {
+      "padding": "0 14px",
+      "margin": "0"
+    },
+    "s10": {
+      "opacity": ".75"
+    },
+    "s11": {
+      "display": "flex",
+      "flexDirection": "column",
+      "alignItems": "center",
+      "justifyContent": "center",
+      "gap": "12px"
+    },
+    "s12": {
+      "display": "flex",
+      "flexDirection": "column",
+      "justifyContent": "center",
+      "gap": "8px"
+    },
+    "s13": {
+      "padding": "0",
+      "overflow": "hidden",
+      "position": "relative",
+      "minHeight": "130px"
+    },
+    "s14": {
+      "position": "absolute",
+      "inset": "0",
+      "width": "100%",
+      "height": "100%"
+    },
+    "s15": {
+      "position": "absolute",
+      "left": "8px",
+      "top": "8px"
+    },
+    "s16": {
+      "minHeight": "150px",
+      "display": "flex",
+      "flexDirection": "column",
+      "justifyContent": "space-between",
+      "cursor": "pointer"
+    },
+    "s17": {
+      "padding": "2px 12px 0"
+    },
+    "s18": {
+      "letterSpacing": ".12em"
+    },
+    "s19": {
+      "padding": "0 12px 4px"
+    },
+    "s20": {
+      "color": "var(--ink)",
+      "fontSize": "11px"
+    },
+    "s21": {
+      "padding": "8px"
+    },
+    "s22": {
+      "padding": "5px 4px 0"
+    },
+    "s23": {
+      "display": "flex",
+      "flexDirection": "column"
+    },
+    "s24": {
+      "fontSize": "18px",
+      "fontWeight": "600",
+      "flex": "1",
+      "marginTop": "calc(6px*var(--y))",
+      "lineHeight": "var(--lh-t)"
+    },
+    "s25": {
+      "alignSelf": "flex-start"
+    },
+    "s26": {
+      "display": "flex",
+      "flexDirection": "column",
+      "justifyContent": "space-between",
+      "gap": "8px"
+    },
+    "s27": {
+      "justifyContent": "center",
+      "gridTemplateColumns": "repeat(8,1fr)"
+    },
+    "s28": {
+      "width": "100%",
+      "height": "72px",
+      "borderRadius": "16px",
+      "padding": "0"
+    }
+  },
+  "attrs": {
+    "a0": "越高越慢，也越准",
+    "a1": "0",
+    "a2": "Effort",
+    "a3": "4",
+    "a4": "演示语音状态",
+    "a5": "输入命令…",
+    "a6": "命令",
+    "a7": "cmdL",
+    "a8": "false",
+    "a9": "显示卡号",
+    "a10": "复制",
+    "a11": "0 0 60 48",
+    "a12": "84",
+    "a13": "M2 8a5 5 0 0 1 5-5h14l6 6h26a5 5 0 0 1 5 5v27a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5Z",
+    "a14": "var(--c1)"
+  },
+  "replies": [
+    [
+      "Shot 9 建议用缓慢推近：街道先静下来，音乐再回来。这样观众的注意力会被带到窗口，而不是对白。",
+      "高",
+      "good",
+      [
+        "下一条演示"
+      ]
+    ],
+    [
+      "可以把推近改到第二拍之后。前两拍保持静止，让磁带上的灰尘先被看见。不过这版节奏更慢，需要配合配乐判断。",
+      "中",
+      "c3",
+      [
+        "下一条演示"
+      ]
+    ]
+  ],
+  "efforts": [
+    [
+      "Low",
+      "推荐：日常问题"
+    ],
+    [
+      "Medium",
+      "适合多文件搜索"
+    ],
+    [
+      "High",
+      "适合实现和审查"
+    ],
+    [
+      "Extra",
+      "适合设计取舍"
+    ],
+    [
+      "Max",
+      "最慢，也最彻底"
+    ]
+  ],
+  "events": [
+    "第一次演示",
+    "图形界面",
+    "鼠标普及",
+    "网页出现",
+    "触屏手机",
+    "生成式 AI"
+  ],
+  "ticketBackgrounds": {
+    "1": "repeating-radial-gradient(circle at 42% 52%,var(--c2) 0 10px,var(--c3) 10px 20px,var(--c1) 20px 30px,var(--c4) 30px 40px)",
+    "2": "repeating-linear-gradient(0deg,var(--c1) 0 16px,var(--c5) 16px 32px,var(--c2) 32px 48px,var(--c3) 48px 64px)",
+    "3": "linear-gradient(135deg,var(--sunk),var(--sel))"
+  },
+  "commands": [
+    {
+      "label": "切换配色：荧光",
+      "keys": "S N",
+      "action": "scheme",
+      "value": "neon"
+    },
+    {
+      "label": "切换配色：彩光",
+      "keys": "S P",
+      "action": "scheme",
+      "value": "prism"
+    },
+    {
+      "label": "查找素材",
+      "keys": "Ctrl P",
+      "action": "find",
+      "value": "work"
+    }
+  ],
+  "params": [
+    {
+      "name": "Exposure",
+      "value": 60,
+      "unit": " EV"
+    },
+    {
+      "name": "Bloom",
+      "value": 35,
+      "unit": ""
+    },
+    {
+      "name": "Field of view",
+      "value": 52,
+      "unit": "°"
+    },
+    {
+      "name": "Samples",
+      "value": 24,
+      "unit": ""
+    }
+  ],
+  "timing": {
+    "stream": 38,
+    "voice": 1000,
+    "hold": 900,
+    "pill": 600,
+    "copy": 1400,
+    "odometer": 400
+  },
+  "odometer": {
+    "initial": 10000,
+    "next": 32023,
+    "randomBase": 10000,
+    "randomRange": 80000,
+    "digits": "0123456789"
+  },
+  "steps": [
+    30,
+    45,
+    60,
+    75,
+    90,
+    100,
+    85,
+    70,
+    55,
+    40
+  ],
+  "counts": {
+    "icons": 20,
+    "waveIcons": 24,
+    "scrub": 60,
+    "slices": 84
+  },
+  "defaults": {
+    "scrub": 4,
+    "effort": 0,
+    "pointer": -999
+  },
+  "labels": {
+    "noCommands": "没有匹配的记录",
+    "holdingOpen": "按住打开",
+    "holdingClose": "按住合上",
+    "copyFailed": "复制失败，请手动复制",
+    "copied": "已复制",
+    "cardHidden": "4485 •••• •••• 7516",
+    "cardShown": "4485 0192 8841 7516",
+    "cardShow": "显示卡号",
+    "cardHide": "隐藏卡号",
+    "copyLink": "复制这段链接",
+    "copyIcon": "⧉",
+    "copySuccess": "✓",
+    "invitation": "LoveTemplate",
+    "blur": "每个动作都交代它从哪里来。",
+    "voiceStart": "演示中…",
+    "voiceEnd": "演示已结束",
+    "voiceOn": "■",
+    "voiceOff": "●",
+    "heat": "7 天 × 24 小时",
+    "confidence": "把握",
+    "effort": "Effort",
+    "voiceAria": "演示语音状态",
+    "voiceInitial": "点按演示语音状态",
+    "commandPlaceholder": "输入命令…",
+    "commandAria": "命令",
+    "recent": "最近使用",
+    "invitationReady": "你的邀请已就绪",
+    "downloadIcon": "↓",
+    "invitationCode": "你的邀请码",
+    "copy": "复制",
+    "revealIcon": "◉",
+    "heatTotal": " / 40"
+  },
+  "stylesExtra": {
+    "paramSlider": {
+      "marginTop": "calc(6px*var(--y))"
+    },
+    "scrubInitial": {
+      "height": "16%"
+    },
+    "hidden": {
+      "display": "none"
+    },
+    "shown": {
+      "display": "flex"
+    },
+    "ink": "var(--ink2)",
+    "primary": "var(--c1)",
+    "copyHidden": {
+      "display": "none"
+    },
+    "copyShown": {
+      "display": "flex"
+    },
+    "noTransform": {
+      "transform": "none"
+    }
+  },
+  "svg": {
+    "folderPath": "M2 8a5 5 0 0 1 5-5h14l6 6h26a5 5 0 0 1 5 5v27a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5Z"
+  },
+  "drawing": {
+    "colorNames": [
+      "c1",
+      "c2",
+      "c3",
+      "c4",
+      "c5",
+      "ink2",
+      "dot"
+    ],
+    "morphModes": 4,
+    "sliceModes": 3
+  },
+  "recentCommands": [
+    "切换配色：荧光",
+    "查找素材"
+  ],
+  "ticketTabs": [
+    {
+      "value": "1",
+      "label": "环"
+    },
+    {
+      "value": "2",
+      "label": "阶"
+    },
+    {
+      "value": "3",
+      "label": "素"
+    }
+  ]
+}

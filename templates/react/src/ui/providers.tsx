@@ -41,7 +41,11 @@ export function useTheme() {const value = useContext(ThemeContext); if (!value) 
 type LanguageValue = {lang: Language; t: (text: string) => string; setLanguage: (language: Language, now?: boolean) => void};
 const LanguageContext = createContext<LanguageValue | null>(null);
 export function LanguageProvider({children}: {children: ReactNode}) {
-  const [lang, update] = useState<Language>(() => read('lang') === 'en' ? 'en' : 'zh');
+  const requested = useRef<Language>(read('lang') === 'en' ? 'en' : 'zh');
+  // HTML measures the source-language layout before applying the saved locale.
+  // Keep both phases in React state, including native first-layout quirks.
+  const [lang, update] = useState<Language>('zh');
+  useLayoutEffect(() => {if (requested.current !== 'zh') update(requested.current);}, []);
   const current = useRef(lang); current.current = lang;
   LANG.cur = lang; document.documentElement.lang = lang;
   const setLanguage = useCallback((next: Language, now = false) => {

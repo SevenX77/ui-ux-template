@@ -1,6 +1,5 @@
 import {useEffect, useLayoutEffect, useRef, useState} from 'react';
 import chrome from '@core/content/chrome.json';
-import htmlReference from '../../html/ui-handbook.html?url';
 import {useLanguage, useTheme, useIndicators} from './ui';
 import {UX} from './ui/core';
 
@@ -20,7 +19,6 @@ export function PageChrome() {
     setOpen(false);
     const section = document.getElementById(id);
     if (section) section.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion:reduce)').matches ? 'auto' : 'smooth'});
-    else location.href = htmlReference + '#' + id;
   };
   useIndicators(bar, [scheme, lang, phone, notes, dim]);
   const toggleDim = () => {UX.dimOthers(!dim); setDim(!dim);};

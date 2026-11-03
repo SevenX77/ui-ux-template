@@ -1,0 +1,141 @@
+{
+  "text": {
+    "t0": "16 / REFERENCES",
+    "t1": "参考来源",
+    "t2": "每个来源取什么，不取什么。原始抽帧在 references/frames。"
+  },
+  "styles": {
+    "s0": {
+      "paddingBottom": "60px"
+    },
+    "source": {
+      "margin": "calc(2px*var(--y)) 0 calc(8px*var(--y))",
+      "wordBreak": "break-all"
+    },
+    "note": {
+      "marginTop": "calc(4px*var(--y))"
+    },
+    "link": {
+      "color": "var(--ink2)",
+      "display": "inline-block",
+      "marginTop": "calc(4px*var(--y))"
+    }
+  },
+  "items": [
+    {
+      "title": "Story Forge v5",
+      "source": "D:/coding/story-forge-master/prototype/sfm_ui_draft_v5.html",
+      "description": "显隐、注意力锁、挤占/覆盖/退场、凹槽切换器、胶片、无限画布、暗色荧光绿。",
+      "note": "交互和数值的主要依据。",
+      "key": "story",
+      "href": ""
+    },
+    {
+      "title": "AI Fintech 案例",
+      "source": "behance.net/gallery/257293617",
+      "description": "彩色玻璃卡、疏密对比、点阵图案、黑白胶囊导航。",
+      "note": "不取：整页大面积彩色。",
+      "key": "frames",
+      "href": ""
+    },
+    {
+      "title": "Figma UI Design System",
+      "source": "behance.net/gallery/143223587",
+      "description": "规范册的版式：大标题、整页长卷、样张成组。",
+      "note": "",
+      "key": "frames",
+      "href": ""
+    },
+    {
+      "title": "Dashboard 布局视频",
+      "source": "抖音 7694506689243942179",
+      "description": "六种布局：主区、横带、侧栏、全幅浮动、看板、泳道。",
+      "note": "不取：五颜六色的便签色块。",
+      "key": "dash",
+      "href": "references/frames/dash.jpg"
+    },
+    {
+      "title": "节点工作流视频",
+      "source": "抖音 7679094166424407348",
+      "description": "节点卡片内嵌媒体预览、相机参数、连线端口。",
+      "note": "",
+      "key": "node",
+      "href": "references/frames/node.jpg"
+    },
+    {
+      "title": "Puzzle 业务蓝图",
+      "source": "抖音 7680855543648461425（本轮已下载）",
+      "description": "大型流程画布、分组、框选、侧栏成本汇总、状态菜单。",
+      "note": "",
+      "key": "new",
+      "href": "references/frames/new.jpg"
+    },
+    {
+      "title": "Grok 角色地图",
+      "source": "x.com/maestrooth",
+      "description": "类别 → 角色发光连线、详情卡联动、提问框。",
+      "note": "",
+      "key": "x2",
+      "href": "references/frames/x2.png"
+    },
+    {
+      "title": "Android Agent 控制台",
+      "source": "x.com/alucardiox",
+      "description": "KPI、角色、日志、设备预览、错误拦截、完成卡。",
+      "note": "",
+      "key": "x3",
+      "href": "references/frames/x3.png"
+    },
+    {
+      "title": "Bot 手机看板",
+      "source": "x.com/crbpite8",
+      "description": "手机 KPI、切换内容、顶部通知。",
+      "note": "",
+      "key": "x1",
+      "href": "references/frames/x1.png"
+    },
+    {
+      "title": "Recent.design Interface",
+      "source": "recent.design/?category=interface",
+      "description": "Effort 滑块、语音光晕、按住打开、时间刻度、点云、素材格、触感按钮。这批都是小而有记忆点的组件。",
+      "note": "不取：3D 商品和人像这类依赖素材的画面。",
+      "key": "recent-1",
+      "href": "references/frames/recent-1.jpg"
+    },
+    {
+      "title": "UX of AI",
+      "source": "uxofai.design",
+      "description": "AI 模式清单：流式文字、建议词、把握提示、重新生成、命令面板、语音输入。",
+      "note": "模式库尚未完成，只取清单。",
+      "key": "",
+      "href": ""
+    },
+    {
+      "title": "Harness 启动动画",
+      "source": "抖音 7692849508137509497",
+      "description": "纸本主题：暖灰纸面、黑字、一点橙；启动面板的刻度和小标签。",
+      "note": "",
+      "key": "harness",
+      "href": "references/frames/harness.jpg"
+    },
+    {
+      "title": "Recent.design 动效",
+      "source": "recent.design/?category=motion",
+      "description": "icon grid、圆环球、点阵金鱼、整图切片、票根卡、邀请胶囊。",
+      "note": "不取：卡通角色和人像素材。",
+      "key": "motion",
+      "href": "references/frames/motion/motion.jpg"
+    },
+    {
+      "title": "Obsidian 创作面板",
+      "source": "抖音 7692472574495755561 · 7696129340245078874",
+      "description": "发光核心、扇形展开、右侧详情；余烬主题的暖黑和骨白细线。",
+      "note": "不取：粒子爆炸当常驻背景。",
+      "key": "panel",
+      "href": "references/frames/panel.jpg"
+    }
+  ],
+  "labels": {
+    "frames": "查看抽帧 →"
+  }
+}

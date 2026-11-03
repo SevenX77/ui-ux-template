@@ -154,7 +154,9 @@ Create `templates/<stack>/` as a reader of core. Ship all four required results:
 
 A parity check fixes theme, language and viewport on both renderings. It checks computed styles, section screenshots and interaction timings. Decision 0009's acceptance specifies all six themes, both languages, 1440×1080 and 390×844, size tolerance within 1px, per-section pixel-difference reporting and the required interaction checks. A successful build alone is not parity evidence.
 
-The first templates are HTML and React 18 + TypeScript + Vite. React version 1 covers page chrome, `#schemes`, `#shape`, `#controls`, `#dash`, `#work`, `#table` and `#gallery`. Its README identifies the unported samples listed in decision 0009. A real-phone check and ports of those samples are outside this version's acceptance.
+The templates are HTML and React 18 + TypeScript + Vite. The current React handbook renders page chrome and all 16 sections, in the HTML order. Navigation and phone embedding stay in React; no HTML fallback remains. Decision 0017 extends the historical seven-section version-1 boundary in decision 0009. Its dated record separates implementation from the actual full384 parity, HTML-preservation results and remaining limits. A real-phone check remains outside acceptance.
+
+Pure sample policies, arithmetic, geometry and stack-neutral drawing live in `core/behavior/` (`story-forge.js`, `canvas.js`, `maps.js`, `agents.js`, `more.js`, `daily.js`). Both stacks read these and `core/content/`. Adapters own DOM/input, React state or HTML rendering, measurements, canvas/RAF/interval lifetimes and cleanup, using timings from core. The React locale bootstrap preserves the source-language first layout before committing the requested locale; it does not normalize native quirks.
 
 ## Build and check commands
 
