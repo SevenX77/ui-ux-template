@@ -10,8 +10,9 @@ import path from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {createHash} from 'node:crypto';
 import {chromium} from 'playwright-core';
+import {requireBrowser} from './browser.mjs';
 
-const CHROME='C:/Users/test/AppData/Local/ms-playwright/chromium-1217/chrome-win64/chrome.exe';
+
 const THEMES=['pure','neon','prism','aurora','paper','ember'];
 const LANGUAGES=['zh','en'];
 const failText=e=>e?.stack||String(e);
@@ -74,7 +75,7 @@ async function cli(){
   const options={url:a.url,expectedDocumentSha256:a['expected-document-sha256'],theme:a.theme,language:a.language};inputs(options);
   if(typeof a.report!=='string'||!a.report.length)throw Error('--report NEW_PATH required');
   try{await stat(a.report);throw Error('Refusing to overwrite existing evidence: '+a.report);}catch(e){if(e.code!=='ENOENT')throw e;}
-  const chrome=a.chrome||CHROME;await stat(chrome);let browser,context,report={profile:'story-forge-panel-chat-focus/v1',url:a.url,cases:[],fatal:null,allSelectedChecksPass:false};const lifecycle={context:'not-created',browser:'not-created',errors:[]};
+  const chrome=await requireBrowser(a.chrome);let browser,context,report={profile:'story-forge-panel-chat-focus/v1',url:a.url,cases:[],fatal:null,allSelectedChecksPass:false};const lifecycle={context:'not-created',browser:'not-created',errors:[]};
   try{browser=await chromium.launch({headless:true,executablePath:chrome,args:['--no-sandbox']});lifecycle.browser='open';context=await browser.newContext({viewport:{width:1440,height:900}});lifecycle.context='open';report=await runPanelChatFocus(await context.newPage(),options);report.environment={node:process.version,chrome,browserVersion:browser.version(),runnerSha256:createHash('sha256').update(await readFile(fileURLToPath(import.meta.url))).digest('hex')};}
   catch(e){report.fatal=failText(e);report.allSelectedChecksPass=false;}
   finally{if(context)try{await context.close();lifecycle.context='closed';}catch(e){lifecycle.errors.push({resource:'context',error:failText(e)});}if(browser)try{await browser.close();lifecycle.browser='closed';}catch(e){lifecycle.errors.push({resource:'browser',error:failText(e)});}report.lifecycle=lifecycle;if(lifecycle.errors.length)report.allSelectedChecksPass=false;}

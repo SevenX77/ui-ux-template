@@ -7,9 +7,10 @@ import {createHash} from 'node:crypto';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import path from 'node:path';
 import {chromium} from 'playwright-core';
+import {requireBrowser} from './browser.mjs';
 const HERE=path.dirname(fileURLToPath(import.meta.url));
 const FROZEN='ccb47a5b584d7fcdb3a4a4b5abac54920eedec1d4fdc9a1ce0150bb43d2e3f8b';
-const CHROME='C:/Users/test/AppData/Local/ms-playwright/chromium-1217/chrome-win64/chrome.exe';
+
 const sha=b=>createHash('sha256').update(b).digest('hex');
 const sleep=(page,ms)=>page.waitForTimeout(ms); // Observation intervals, not application timing values.
 async function centre(page,selector){const r=await page.locator(selector).first().boundingBox();if(!r)throw new Error('No visible box: '+selector);return {x:r.x+r.width/2,y:r.y+r.height/2};}
@@ -51,5 +52,5 @@ export async function runFirstLineTrace(page,{url,expectedDocumentSha256,reportP
   }catch(e){report.errors.push(e?.stack||String(e));}
   finally{report.finishedAt=new Date().toISOString();await save();}return report;
 }
-async function cli(){const args={};for(let i=2;i<process.argv.length;i+=2){if(!process.argv[i+1])throw new Error('Missing value');args[process.argv[i].replace(/^--/,'')]=process.argv[i+1];}if(!args.url||!args.report||!args['expected-document-sha256'])throw new Error('--url --report --expected-document-sha256 required');const chrome=process.env.CHROME_EXECUTABLE||CHROME;await stat(chrome);let browser;try{browser=await chromium.launch({executablePath:chrome,headless:true,args:['--no-sandbox']});const context=await browser.newContext(),page=await context.newPage(),r=await runFirstLineTrace(page,{url:args.url,reportPath:args.report,expectedDocumentSha256:args['expected-document-sha256']});r.environment={chromeExecutable:chrome,browserVersion:browser.version(),companionSha256:sha(await readFile(fileURLToPath(import.meta.url)))};await writeFile(args.report,JSON.stringify(r,null,2)+'\n');console.log(JSON.stringify({report:args.report,registrationCoverage:r.registrationCoverage,observation:r.observation,errors:r.errors}));if(r.errors.length||r.registrationCoverage!=='pre-click frames verified')process.exitCode=1;await context.close();}finally{await browser?.close();}}
+async function cli(){const args={};for(let i=2;i<process.argv.length;i+=2){if(!process.argv[i+1])throw new Error('Missing value');args[process.argv[i].replace(/^--/,'')]=process.argv[i+1];}if(!args.url||!args.report||!args['expected-document-sha256'])throw new Error('--url --report --expected-document-sha256 required');const chrome=await requireBrowser();let browser;try{browser=await chromium.launch({executablePath:chrome,headless:true,args:['--no-sandbox']});const context=await browser.newContext(),page=await context.newPage(),r=await runFirstLineTrace(page,{url:args.url,reportPath:args.report,expectedDocumentSha256:args['expected-document-sha256']});r.environment={chromeExecutable:chrome,browserVersion:browser.version(),companionSha256:sha(await readFile(fileURLToPath(import.meta.url)))};await writeFile(args.report,JSON.stringify(r,null,2)+'\n');console.log(JSON.stringify({report:args.report,registrationCoverage:r.registrationCoverage,observation:r.observation,errors:r.errors}));if(r.errors.length||r.registrationCoverage!=='pre-click frames verified')process.exitCode=1;await context.close();}finally{await browser?.close();}}
 if(process.argv[1]&&pathToFileURL(path.resolve(process.argv[1])).href===import.meta.url)cli().catch(e=>{console.error(e?.stack||String(e));process.exitCode=1;});

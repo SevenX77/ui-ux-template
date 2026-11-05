@@ -174,12 +174,13 @@ Inside `templates/react`, the React template provides:
 
 ```sh
 npm install
+npx playwright-core install chromium
 npm run dev
 npm run build
 npm run parity
 ```
 
-These React commands are the required template interface. `npm run parity` writes `templates/react/parity/report.md`.
+These React commands are the required template interface. `npm run parity` writes `templates/react/parity/report.md`. The parity browser is Playwright's pinned Chromium build, installed once per machine (decision 0018).
 
 ## Protected rules and prohibited changes
 

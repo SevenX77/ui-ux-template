@@ -67,12 +67,13 @@ Implementation is complete; final whole-handbook acceptance is recorded separate
 
 ## Check parity
 
-Install Google Chrome in its normal system location. Do not download a Playwright browser.
+Install the Chromium build that matches `playwright-core` once per machine; every parity script measures with that build, so runs on any machine compare (decision 0018).
 
 ```sh
+npx playwright-core install chromium
 npm run parity
 ```
 
-The command builds React, then starts a repository-root static server and Vite preview. It uses `playwright-core` with the system Chrome executable. It compares all 16 sections (384 cases) under six themes, Chinese/English, and desktop/phone viewports. It pairs every element by DOM path, compares the specified computed styles (size tolerance: one pixel), saves section screenshots, reports pixel differences, and checks hover/dim/outside-click, live kanban drag, selector movement and language scroll pinning.
+The command builds React, then starts a repository-root static server and Vite preview. It uses `playwright-core` with that pinned Chromium build, resolved by `parity/browser.mjs`; `CHROME_EXECUTABLE` overrides it for one run, and `results.json` records the browser used. It compares all 16 sections (384 cases) under six themes, Chinese/English, and desktop/phone viewports. It pairs every element by DOM path, compares the specified computed styles (size tolerance: one pixel), saves section screenshots, reports pixel differences, and checks hover/dim/outside-click, live kanban drag, selector movement and language scroll pinning.
 
 Read `parity/report.md` first. Zero style mismatches is the target. A reported exception is not an equivalent pass: read its explanation and effect. Screenshot differences and interaction failures are separate evidence. Raw results and screenshots are under `parity/out/` and are gitignored. A passing build alone does not establish parity. These checks do not cover a real phone. Section-own results, raw unequal pairs and remaining limits are recorded in decision 0017.

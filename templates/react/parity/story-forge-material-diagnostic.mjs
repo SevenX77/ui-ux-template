@@ -1,10 +1,11 @@
 /** Bounded read-only material-resource diagnosis. No application/clock/style/state writes. */
 import {chromium} from 'playwright-core';
+import {requireBrowser} from './browser.mjs';
 import {mkdir,writeFile,readFile} from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
-const [url,expected,reportPath,chrome]=process.argv.slice(2);if(!url||!expected||!reportPath||!chrome)throw Error('URL expectedSHA reportPath Chrome required');
+const [url,expected,reportPath,chromeArg]=process.argv.slice(2);if(!url||!expected||!reportPath)throw Error('URL expectedSHA reportPath required; Chrome path optional');const chrome=await requireBrowser(chromeArg);
 const dir=reportPath.replace(/\.json$/,'-files');await mkdir(dir,{recursive:true});const sha=b=>createHash('sha256').update(b).digest('hex');
 const report={kind:'One bounded read-only native-pointer material diagnostic, not parity acceptance',url,expectedDocumentSha256:expected,viewport:{width:1440,height:900},theme:'pure',language:'zh',startedAt:new Date().toISOString(),actions:[],materials:[],errors:[],cleanup:{browserClosed:false},limits:['No original572 runner/report edits.','Raw URL identity is not image-byte identity.','OffscreenCanvas is private observer memory, never attached to application DOM.','Two unmasked native screenshot captures per open preview; no animations disabled, masks or global tolerance.']};let browser;
 const act=(name,detail={})=>report.actions.push({name,...detail});

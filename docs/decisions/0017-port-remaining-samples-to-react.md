@@ -2,7 +2,7 @@
 
 Purpose: a project built on React gets every sample of the handbook, with the same design and behaviour as the HTML handbook, and a change to any sample can be checked on both stacks.
 
-Status: established on 2026-11-01. Application state: applied on 2026-11-03 and accepted by the caller with the named exceptions in the last record entry; nothing is committed.
+Status: established on 2026-11-01. Application state: applied on 2026-11-03 and accepted by the caller with the named exceptions in the last record entry; merged into main on 2026-11-05 as pull request 3. Decision 0018 later replaced the browser these runs used.
 
 This extends decision 0009, decision 8, which limited React version 1 to page chrome and seven samples. The other nine navigation entries of the React page currently leave for the HTML handbook through the fallback at `templates/react/src/chrome.tsx:23`. For example, a click on 画布与节点 (gloss: "canvas and nodes") opens `http://localhost:5179/@fs/D:/coding/ui-ux-template/templates/html/ui-handbook.html#canvas`, with nothing to show that the page changed stack and no link back.
 
