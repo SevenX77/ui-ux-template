@@ -5,6 +5,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 import {chromium} from 'playwright-core';
+import {requireBrowser} from './browser.mjs';
 import {PNG} from 'pngjs';
 import {SPEC,REPO,HERE,CHROME,report,pageReady,observe,revealSection,snapshot,compareSnapshots,capturePair,pixelDifference,network} from './check.mjs';
 
@@ -35,7 +36,7 @@ async function aboveVariation(pair,control,temporal=null){
 }
 try{
   await mkdir(out,{recursive:true});
-  for(const file of [CHROME,options.baseline,path.join(REPO,'templates/html/ui-handbook.html')])await stat(file);
+  for(const file of [await requireBrowser(CHROME),options.baseline,path.join(REPO,'templates/html/ui-handbook.html')])await stat(file);
   results.artifacts={script:sha(await readFile(fileURLToPath(import.meta.url))),parityScript:sha(await readFile(path.join(HERE,'check.mjs'))),baseline:{path:options.baseline,sha256:sha(await readFile(options.baseline))},current:{path:path.join(REPO,'templates/html/ui-handbook.html'),sha256:sha(await readFile(path.join(REPO,'templates/html/ui-handbook.html')))}};
   report.environment.initialKanbanCounts=JSON.parse(await readFile(path.join(REPO,'core/content/work.json'),'utf8')).columns.map(c=>c.tasks.length);
   report.environment.galleryCount=JSON.parse(await readFile(path.join(REPO,'core/dist/gallery.json'),'utf8')).length;

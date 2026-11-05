@@ -1,7 +1,7 @@
 # HTML / React parity report
 
-Run: 2026-11-02T22-50-23-497Z
-Script SHA-256: `a2dd453ae0c93bbef79c6977bd15178a6163f162d9ecfe18eb94262ee458283f`
+Run: 2026-11-05T11-08-57-571Z
+Script SHA-256: `8d0f2eb898863ce50fa475958f37535629cf9d0a2db80385c48f986d23df0c11`
 
 Automated style/DOM-meaning/interaction phase: **attained for the stated finite conditions**. Parent fidelity acceptance still requires review of the reported visual differences.
 
@@ -34,16 +34,16 @@ Strict verdict: allChecksPass=false. A screenshot pair passes when its pixels ar
 | #schemes | 24/24 | 0 | 0 | 0.0000% | 0 | Not applicable | 0 |
 | #shape | 24/24 | 0 | 0 | 0.1713% | 242 | Not applicable | 0 |
 | #controls | 24/24 | 0 | 0 | 0.0000% | 0 | Not applicable | 0 |
-| #workspace | 24/24 | 0 | 0 | 0.0064% | 1 | motion 864/864; Story Forge A7 separate raw/reference reports, not inferred | 0 |
+| #workspace | 24/24 | 0 | 0 | 0.0032% | 1 | motion 864/864; Story Forge A7 separate raw/reference reports, not inferred | 0 |
 | #dash | 24/24 | 0 | 0 | 0.0000% | 0 | 48/48 scope checks pass | 0 |
 | #canvas | 24/24 | 0 | 0 | 0.1776% | 65 | Not applicable | 0 |
 | #maps | 24/24 | 0 | 0 | 0.0000% | 0 | Not applicable | 0 |
-| #agents | 24/24 | 0 | 0 | 2.1762% | 239 | Not applicable | 0 |
-| #more | 24/24 | 0 | 0 | 1.6744% | 239 | Not applicable | 0 |
+| #agents | 24/24 | 0 | 0 | 2.2666% | 235 | Not applicable | 0 |
+| #more | 24/24 | 0 | 0 | 1.6751% | 238 | Not applicable | 0 |
 | #work | 24/24 | 0 | 0 | 0.0000% | 0 | 48/48 scope checks pass; drag 48/48 | 0 |
-| #table | 24/24 | 0 | 0 | 0.2443% | 68 | Not applicable | 0 |
-| #gallery | 24/24 | 0 | 0 | 0.9474% | 9 | Not applicable | 0 |
-| #daily | 24/24 | 0 | 0 | 0.0000% | 0 | Not applicable | 0 |
+| #table | 24/24 | 0 | 0 | 0.0000% | 0 | Not applicable | 0 |
+| #gallery | 24/24 | 0 | 0 | 0.9481% | 9 | Not applicable | 0 |
+| #daily | 24/24 | 0 | 0 | 0.1277% | 2 | Not applicable | 0 |
 | #values | 24/24 | 0 | 0 | 0.0000% | 0 | Not applicable | 0 |
 | #refs | 24/24 | 0 | 0 | 0.0000% | 0 | Not applicable | 0 |
 
@@ -58,7 +58,7 @@ Theme indicator: 48/48. Language pin: 48/48.
 
 No observed computed-style differences in completed cases. Incomplete cases are not passes.
 
-78 screenshot pair(s) contain unequal raw pixels; 73 stay unequal under nearest-neighbour sampling. Each pair has HTML, React and difference images.
+79 screenshot pair(s) contain unequal raw pixels; 77 stay unequal under nearest-neighbour sampling. Each pair has HTML, React and difference images.
 
 ## Instrument history and qualification
 
@@ -80,9 +80,9 @@ Owned-resource cleanup: `{"browserClosed":true,"previewEnded":true,"staticServer
 
 ## Evidence
 
-- [Full results and all mismatches](out/2026-11-02T22-50-23-497Z/results.json)
-- [Run environment and exact artifact hashes](out/2026-11-02T22-50-23-497Z/results.json#artifacts)
-- [Preview output](out/2026-11-02T22-50-23-497Z/preview.log)
+- [Full results and all mismatches](out/2026-11-05T11-08-57-571Z/results.json)
+- [Run environment and exact artifact hashes](out/2026-11-05T11-08-57-571Z/results.json#artifacts)
+- [Preview output](out/2026-11-05T11-08-57-571Z/preview.log)
 - Per-case raw JSON and screenshot paths are listed in the full results.
 
 A complete command or generated report is not proof of parity. Any unresolved difference, failed interaction or incomplete case blocks an unconditional parity claim.

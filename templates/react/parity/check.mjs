@@ -1,4 +1,5 @@
-/** Deterministic HTML/React acceptance checks. No browser download is used. */
+/** Deterministic HTML/React acceptance checks. The browser is Playwright's pinned Chromium build,
+ * installed once per machine (decision 0018). */
 import {createServer} from 'node:http';
 import {createServer as createNetServer} from 'node:net';
 import {spawn} from 'node:child_process';
@@ -9,6 +10,7 @@ import {createHash} from 'node:crypto';
 import {setTimeout as delay} from 'node:timers/promises';
 import {chromium} from 'playwright-core';
 import {PNG} from 'pngjs';
+import {browserPath,requireBrowser} from './browser.mjs';
 import {measureHoverTrace,analyzeHoverTrace,settleIndicator} from './timeline.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -41,7 +43,7 @@ const SPEC = Object.freeze({
 });
 const runId = new Date().toISOString().replace(/[:.]/g, '-');
 const OUT = path.join(HERE, 'out', runId);
-const CHROME = process.env.CHROME_EXECUTABLE || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+const CHROME = browserPath();
 const report = {runId, startedAt: new Date().toISOString(), spec: SPEC,
   environment: {chromeExecutable: CHROME, node:process.version},
   artifacts: {}, cases: [], chrome: [], chromeSupplement: [], interactions: [], diagnostics: [], fatal: null};
@@ -71,7 +73,8 @@ async function freePort() {
 async function startServers() {
   // Verify targets before starting owned resources. No arbitrary existing server
   // is trusted; Vite uses strictPort and both ports are loopback-only.
-  for (const file of [CHROME, path.join(TEMPLATE,'dist/index.html'),
+  await requireBrowser(CHROME);
+  for (const file of [path.join(TEMPLATE,'dist/index.html'),
     path.join(TEMPLATE,'node_modules/vite/bin/vite.js'),
     path.join(REPO,'templates/html/ui-handbook.html')]) await stat(file);
   const mime = {'.html':'text/html; charset=utf-8','.css':'text/css','.js':'text/javascript',

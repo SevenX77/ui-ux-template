@@ -8,9 +8,10 @@ import path from 'node:path';
 import {fileURLToPath, pathToFileURL} from 'node:url';
 import {createHash} from 'node:crypto';
 import {chromium} from 'playwright-core';
+import {requireBrowser} from './browser.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
-const DEFAULT_CHROME = 'C:/Users/test/AppData/Local/ms-playwright/chromium-1217/chrome-win64/chrome.exe';
+
 // These are acceptance inputs/tolerances, not template design or interaction timings.
 export const STORY_FORGE_SPEC = Object.freeze({
   themes:['pure','neon','prism','aurora','paper','ember'], languages:['zh','en'],
@@ -312,7 +313,7 @@ export async function runStoryForge(page,options={}) {
 function parseArgs(args){const o={};for(let i=0;i<args.length;i++){const a=args[i];if(a==='--include-playback')o.includePlayback=true;else if(a==='--help')o.help=true;else if(['--url','--report','--cases','--themes','--languages','--viewport','--chrome','--reduced-motion','--expected-document-sha256'].includes(a)){if(!args[i+1])throw new Error('Missing value for '+a);o[a.slice(2)]=args[++i];}else throw new Error('Unknown argument '+a);}return o;}
 async function cli(){
   const args=parseArgs(process.argv.slice(2));if(args.help){console.log('node parity/story-forge.mjs --url HTTP_URL --report PATH [--cases data,explore,layers,geometry,lanes,magnifier,watch,tools,chat,reading,drag] [--themes pure,neon | all] [--languages zh,en] [--viewport 1440x900] [--chrome PATH] [--expected-document-sha256 HASH] [--reduced-motion reduce] [--include-playback --cases playback]');return;}
-  if(!args.url||!args.report)throw new Error('--url and --report are required');const chrome=args.chrome||process.env.CHROME_EXECUTABLE||DEFAULT_CHROME;await stat(chrome);const bytes=await readFile(fileURLToPath(import.meta.url));
+  if(!args.url||!args.report)throw new Error('--url and --report are required');const chrome=await requireBrowser(args.chrome);const bytes=await readFile(fileURLToPath(import.meta.url));
   const size=(args.viewport||'1440x900').split('x').map(Number);if(size.length!==2||size.some(x=>!Number.isFinite(x)||x<=0))throw new Error('Invalid viewport');let browser;
   try{browser=await chromium.launch({executablePath:chrome,headless:true,args:['--no-sandbox']});const context=await browser.newContext({viewport:{width:size[0],height:size[1]}}),page=await context.newPage();const report=await runStoryForge(page,{url:args.url,reportPath:args.report,cases:args.cases,themes:args.themes==='all'?STORY_FORGE_SPEC.themes:args.themes?.split(','),languages:args.languages?.split(','),viewport:{width:size[0],height:size[1]},includePlayback:args.includePlayback,reducedMotion:args['reduced-motion'],expectedDocumentSha256:args['expected-document-sha256']});report.environment={chromeExecutable:chrome,browserVersion:browser.version(),runnerSha256:createHash('sha256').update(bytes).digest('hex')};await writeFile(args.report,JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify({report:path.resolve(args.report),...report.summary,allSelectedChecksPass:report.allSelectedChecksPass,fatal:report.fatal}));if(!report.allSelectedChecksPass)process.exitCode=1;await context.close();}finally{await browser?.close();}
 }
