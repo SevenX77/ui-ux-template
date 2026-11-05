@@ -1,4 +1,4 @@
-# React template, version 1
+# React template
 
 React 18, TypeScript and Vite render the original design core. This directory owns rendering and application state. Tokens, the five stylesheets, the interaction engine, dictionary, assets and sample content remain in `../../core`. Do not copy them into a project or add design values here.
 
@@ -59,9 +59,11 @@ Chinese source strings go through `useLanguage().t()`. Do not maintain a second 
 
 ## Reference samples
 
-Ported: page chrome (`.bar`, `.rail`, `.pnav`), `#schemes`, `#shape`, `#controls`, `#dash`, `#work`, `#table`, and `#gallery`. React renders dynamic lists from state and shared `core/content/*.json`. Gallery items come from `core/dist/gallery.json`.
+All 16 handbook sections render in React, in HTML order: `#terms`, `#schemes`, `#shape`, `#controls`, `#workspace` (Story Forge and motion cards), `#dash`, `#canvas`, `#maps`, `#agents`, `#more`, `#work`, `#table`, `#gallery`, `#daily`, `#values`, and `#refs`. Page chrome (`.bar`, `.rail`, `.pnav`) navigates within React. There is no HTML fallback; phone view embeds this React entry.
 
-Not yet ported: `#terms`, `#workspace` (Story Forge), `#canvas`, `#maps`, `#agents`, `#more`, `#daily`, `#values`, and `#refs`. Navigation entries for these samples open the original HTML handbook. This is not a complete handbook port.
+React owns component/application state, input, DOM measurements and drawing lifetimes. Both stacks read the same `core/content/*.json` and pure policies/geometry/drawing in `core/behavior/`. Gallery items come from `core/dist/gallery.json`. The language provider first commits the source language, then the requested locale before paint, preserving the HTML first-layout behavior.
+
+Implementation is complete; final whole-handbook acceptance is recorded separately in [decision 0017](../../docs/decisions/0017-port-remaining-samples-to-react.md). Do not infer a full parity pass from this sample list.
 
 ## Check parity
 
@@ -71,6 +73,6 @@ Install Google Chrome in its normal system location. Do not download a Playwrigh
 npm run parity
 ```
 
-The command builds React, then starts a repository-root static server and Vite preview. It uses `playwright-core` with the system Chrome executable. It compares all seven sections under six themes, Chinese/English, and desktop/phone viewports. It pairs every element by DOM path, compares the specified computed styles (size tolerance: one pixel), saves section screenshots, reports pixel differences, and checks hover/dim/outside-click, live kanban drag, selector movement and language scroll pinning.
+The command builds React, then starts a repository-root static server and Vite preview. It uses `playwright-core` with the system Chrome executable. It compares all 16 sections (384 cases) under six themes, Chinese/English, and desktop/phone viewports. It pairs every element by DOM path, compares the specified computed styles (size tolerance: one pixel), saves section screenshots, reports pixel differences, and checks hover/dim/outside-click, live kanban drag, selector movement and language scroll pinning.
 
-Read `parity/report.md` first. Zero style mismatches is the target. A reported exception is not an equivalent pass: read its explanation and effect. Screenshot differences and interaction failures are separate evidence. Raw results and screenshots are under `parity/out/` and are gitignored. A passing build alone does not establish parity. These checks do not cover a real phone or the unported samples.
+Read `parity/report.md` first. Zero style mismatches is the target. A reported exception is not an equivalent pass: read its explanation and effect. Screenshot differences and interaction failures are separate evidence. Raw results and screenshots are under `parity/out/` and are gitignored. A passing build alone does not establish parity. These checks do not cover a real phone. Section-own results, raw unequal pairs and remaining limits are recorded in decision 0017.

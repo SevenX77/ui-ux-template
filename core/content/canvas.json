@@ -1,0 +1,552 @@
+{
+  "text": {
+    "t0": "07 / CANVAS · NODES",
+    "t1": "画布与节点",
+    "t2": "节点图可拖动节点、连接跟随；右侧配置项能折叠、能拖动排序。下面的业务蓝图来自 Puzzle：框选区域、看汇总。",
+    "t3": "点一个节点：配置面板叠在画布上，无关节点变暗。拖空白处平移，Ctrl + 滚轮缩放，点空白处退出。",
+    "t4": "▶ 运行流程",
+    "t5": "−",
+    "t6": "100%",
+    "t7": "+",
+    "t8": "适合画布",
+    "t9": "配置",
+    "t10": "Camera",
+    "t11": "节点待机只有标题和预览，端口和工具悬停才出现。配置组用握把拖动，也能用键盘 ↑↓ 排序。",
+    "t12": "业务蓝图 ",
+    "t13": "来源：Puzzle 视频。悬停预览一组的连线，点击后汇总面板叠在画布上",
+    "t14": "−",
+    "t15": "100%",
+    "t16": "+",
+    "t17": "适合画布"
+  },
+  "nodes": [
+    {
+      "id": "img",
+      "t": "Image",
+      "p": 17,
+      "x": 30,
+      "y": 40
+    },
+    {
+      "id": "mesh",
+      "t": "Mesh",
+      "p": 29,
+      "x": 30,
+      "y": 290
+    },
+    {
+      "id": "cam",
+      "t": "Camera",
+      "p": 19,
+      "x": 300,
+      "y": 24
+    },
+    {
+      "id": "comp",
+      "t": "Composer",
+      "p": 26,
+      "x": 310,
+      "y": 280
+    },
+    {
+      "id": "vid",
+      "t": "Video",
+      "p": 25,
+      "x": 590,
+      "y": 140
+    }
+  ],
+  "edges": [
+    [
+      "img",
+      "cam"
+    ],
+    [
+      "img",
+      "comp"
+    ],
+    [
+      "mesh",
+      "comp"
+    ],
+    [
+      "cam",
+      "vid"
+    ],
+    [
+      "comp",
+      "vid"
+    ]
+  ],
+  "configItems": [
+    {
+      "kind": "camera",
+      "title": "Camera",
+      "open": true
+    },
+    {
+      "kind": "dimensions",
+      "title": "Dimensions",
+      "open": true
+    },
+    {
+      "kind": "layers",
+      "title": "Layers",
+      "open": false
+    },
+    {
+      "kind": "prompt",
+      "title": "Prompt",
+      "open": false
+    },
+    {
+      "kind": "output",
+      "title": "Output",
+      "open": false
+    }
+  ],
+  "form": {
+    "fov": 35,
+    "unit": "°",
+    "mode": [
+      "Orbit",
+      "Free"
+    ],
+    "width": "1920",
+    "height": "1080",
+    "layers": [
+      {
+        "name": "Character",
+        "aria": "角色层",
+        "on": true
+      },
+      {
+        "name": "Background",
+        "aria": "背景层",
+        "on": true
+      }
+    ],
+    "prompt": "Slow push-in. Dust in the beam.",
+    "output": "MP4 · 24fps",
+    "promptRows": 3
+  },
+  "labels": {
+    "resolution": "1920 × 1080",
+    "fov": "Field of view",
+    "fovAria": "视角",
+    "mode": "Mode",
+    "width": "宽",
+    "height": "高",
+    "format": "Format",
+    "dragSort": "拖动排序 ",
+    "runComplete": "流程运行完成（本地示例）",
+    "summary": "汇总这一区内所有步骤的成本",
+    "labour": "人力成本",
+    "time": "每次用时",
+    "cost": "每次成本",
+    "month": "每月",
+    "year": "每年",
+    "tools": "工具成本",
+    "steps": "步骤 · ",
+    "live": "Live",
+    "active": "Active",
+    "tool": "···",
+    "chevron": "⌄",
+    "grip": "⋮⋮"
+  },
+  "view": {
+    "group": "画布视图",
+    "out": "缩小画布",
+    "in": "放大画布",
+    "fit": "适合画布",
+    "outText": "−",
+    "inText": "+",
+    "initial": "100%"
+  },
+  "nodeGeometry": {
+    "dragThreshold": 4,
+    "gap": 16,
+    "bendX": 36,
+    "bendY": 30,
+    "mid": 0.5
+  },
+  "timing": {
+    "runStep": 650
+  },
+  "blueprint": {
+    "nodeWidth": 92,
+    "nodeHeight": 40,
+    "diamondSize": 42,
+    "gap": 6,
+    "corner": 8,
+    "arrowLength": 6,
+    "arrowHalf": 3.4,
+    "labelX": 10,
+    "labelY": 7,
+    "groups": [
+      {
+        "n": "Inbound",
+        "x": 16,
+        "y": 16,
+        "w": 430,
+        "h": 232,
+        "c": "c1",
+        "hours": "2.50",
+        "cost": "$102",
+        "month": "$2,000",
+        "year": "$24,000",
+        "tools": [
+          [
+            "Veed",
+            "$29"
+          ],
+          [
+            "Loom",
+            "$36"
+          ],
+          [
+            "ChatGPT",
+            "$80"
+          ]
+        ],
+        "nodes": {
+          "cap": [
+            14,
+            46,
+            "Capture lead"
+          ],
+          "enr": [
+            122,
+            46,
+            "Enrich"
+          ],
+          "sco": [
+            230,
+            46,
+            "Score"
+          ],
+          "bok": [
+            319,
+            150,
+            "Book call"
+          ],
+          "asg": [
+            190,
+            150,
+            "Assign"
+          ],
+          "fol": [
+            60,
+            150,
+            "Follow up"
+          ]
+        },
+        "dia": {
+          "d1": [
+            365,
+            66,
+            "?"
+          ]
+        },
+        "edges": [
+          [
+            "cap",
+            "enr"
+          ],
+          [
+            "enr",
+            "sco"
+          ],
+          [
+            "sco",
+            "d1"
+          ],
+          [
+            "d1",
+            "bok",
+            "否"
+          ],
+          [
+            "bok",
+            "asg"
+          ],
+          [
+            "asg",
+            "fol"
+          ]
+        ]
+      },
+      {
+        "n": "RevOps",
+        "x": 462,
+        "y": 16,
+        "w": 300,
+        "h": 232,
+        "c": "c2",
+        "hours": "4.20",
+        "cost": "$186",
+        "month": "$3,720",
+        "year": "$44,640",
+        "tools": [
+          [
+            "HubSpot",
+            "$90"
+          ],
+          [
+            "Clay",
+            "$149"
+          ]
+        ],
+        "nodes": {
+          "syn": [
+            14,
+            46,
+            "Sync CRM"
+          ],
+          "fct": [
+            150,
+            46,
+            "Forecast"
+          ],
+          "rep": [
+            20,
+            150,
+            "Report"
+          ]
+        },
+        "dia": {
+          "d2": [
+            196,
+            170,
+            "?"
+          ]
+        },
+        "edges": [
+          [
+            "syn",
+            "fct"
+          ],
+          [
+            "fct",
+            "d2"
+          ],
+          [
+            "d2",
+            "rep",
+            "通过"
+          ]
+        ]
+      },
+      {
+        "n": "Support",
+        "x": 16,
+        "y": 264,
+        "w": 300,
+        "h": 200,
+        "c": "c4",
+        "hours": "1.10",
+        "cost": "$38",
+        "month": "$760",
+        "year": "$9,120",
+        "tools": [
+          [
+            "Intercom",
+            "$74"
+          ]
+        ],
+        "nodes": {
+          "tri": [
+            60,
+            46,
+            "Triage"
+          ],
+          "ans": [
+            178,
+            46,
+            "Answer"
+          ],
+          "esc": [
+            60,
+            126,
+            "Escalate"
+          ],
+          "clo": [
+            178,
+            126,
+            "Close"
+          ]
+        },
+        "dia": {},
+        "edges": [
+          [
+            "tri",
+            "ans"
+          ],
+          [
+            "tri",
+            "esc"
+          ],
+          [
+            "ans",
+            "clo"
+          ],
+          [
+            "esc",
+            "clo"
+          ]
+        ]
+      },
+      {
+        "n": "Product Dev",
+        "x": 332,
+        "y": 264,
+        "w": 430,
+        "h": 200,
+        "c": "c3",
+        "hours": "6.40",
+        "cost": "$410",
+        "month": "$8,200",
+        "year": "$98,400",
+        "tools": [
+          [
+            "Linear",
+            "$48"
+          ],
+          [
+            "Figma",
+            "$75"
+          ],
+          [
+            "Screen Studio",
+            "$9"
+          ]
+        ],
+        "nodes": {
+          "bri": [
+            14,
+            46,
+            "Brief"
+          ],
+          "roa": [
+            150,
+            46,
+            "Roadmap"
+          ],
+          "bui": [
+            300,
+            46,
+            "Build"
+          ],
+          "rev": [
+            150,
+            126,
+            "Review"
+          ],
+          "shi": [
+            14,
+            126,
+            "Ship"
+          ]
+        },
+        "dia": {
+          "d3": [
+            346,
+            146,
+            "?"
+          ]
+        },
+        "edges": [
+          [
+            "bri",
+            "roa"
+          ],
+          [
+            "roa",
+            "bui"
+          ],
+          [
+            "bui",
+            "d3"
+          ],
+          [
+            "d3",
+            "rev",
+            "通过"
+          ],
+          [
+            "rev",
+            "shi"
+          ]
+        ]
+      }
+    ],
+    "cross": [
+      [
+        "d1",
+        "syn",
+        "合格"
+      ],
+      [
+        "fol",
+        "tri"
+      ],
+      [
+        "rep",
+        "roa"
+      ]
+    ]
+  },
+  "styles": {
+    "config": {
+      "marginTop": "calc(10px*var(--y))"
+    },
+    "nodeMeta": {
+      "marginTop": "calc(6px*var(--y))"
+    },
+    "slider": {
+      "margin": "8px 0"
+    },
+    "dimensions": {
+      "flexWrap": "nowrap"
+    },
+    "layer": {
+      "padding": "3px 0"
+    },
+    "prompt": {
+      "resize": "none",
+      "lineHeight": "1.5"
+    },
+    "groupMetric": {
+      "fontWeight": "400"
+    },
+    "summary": {
+      "margin": "calc(2px*var(--y)) 0 calc(8px*var(--y))"
+    },
+    "tiles": {
+      "gap": "6px"
+    },
+    "tileValue": {
+      "fontSize": "15px"
+    },
+    "lab": {
+      "marginTop": "calc(10px*var(--y))"
+    },
+    "toolRow": {
+      "gridTemplateColumns": "1fr auto auto",
+      "padding": "3px 0"
+    },
+    "steps": {
+      "gap": "4px"
+    }
+  },
+  "attrs": {
+    "pulsePathLength": 1
+  },
+  "runOrder": [
+    "img",
+    "mesh",
+    "cam",
+    "comp",
+    "vid"
+  ]
+}

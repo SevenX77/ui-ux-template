@@ -17,7 +17,7 @@ const REPO = path.resolve(TEMPLATE, '../..');
 // Acceptance constants are frozen here, before any observations. These are test
 // inputs/oracles, not template styling or a second implementation of core UX.
 const SPEC = Object.freeze({
-  sections: ['schemes', 'shape', 'controls', 'dash', 'work', 'table', 'gallery'],
+  sections: ['terms', 'schemes', 'shape', 'controls', 'workspace', 'dash', 'canvas', 'maps', 'agents', 'more', 'work', 'table', 'gallery', 'daily', 'values', 'refs'],
   themes: ['pure', 'neon', 'prism', 'aurora', 'paper', 'ember'],
   languages: ['zh', 'en'],
   viewports: [{width:1440, height:1080}, {width:390, height:844}],
@@ -35,6 +35,9 @@ const SPEC = Object.freeze({
   settleTimeout: 12000,
   assetTimeout: 12000,
   chrome: ['.bar', '.rail', '.pnav'],
+  stableShotAttempts: 8,
+  stableShotDelay: 350,
+  nearestNeighbourWait: 2500,
 });
 const runId = new Date().toISOString().replace(/[:.]/g, '-');
 const OUT = path.join(HERE, 'out', runId);
@@ -175,7 +178,14 @@ async function settle(page, selector, scroll=true) {
     while(performance.now()<deadline){
       await frame();
       const nodes=[root,...root.querySelectorAll('*')];
-      const geometry=nodes.map(e=>{const r=e.getBoundingClientRect();return [r.x,r.y,r.width,r.height,e.textContent?.length].join(',');}).join('|');
+      // The phone tap repeats a transform forever. Its painted bounds cannot
+      // settle, but its actual layout can. Keep every node in snapshots and
+      // screenshots; use the natural layout box only for this repeating marker.
+      const geometry=nodes.map(e=>{
+        const repeatingTap=e.matches('#agents .ph-tap')&&e.getAnimations().some(a=>a.playState==='running'&&a.effect?.getComputedTiming().endTime===Infinity);
+        if(repeatingTap)return [e.offsetLeft,e.offsetTop,e.offsetWidth,e.offsetHeight,e.textContent?.length].join(',');
+        const r=e.getBoundingClientRect();return [r.x,r.y,r.width,r.height,e.textContent?.length].join(',');
+      }).join('|');
       const animations=[...root.getAnimations({subtree:true})];
       for(let ancestor=root.parentElement;ancestor;ancestor=ancestor.parentElement)
         animations.push(...ancestor.getAnimations({subtree:false}));
@@ -204,6 +214,20 @@ async function settle(page, selector, scroll=true) {
 }
 async function revealSection(page,id) {
   const selector='#'+id;
+  if(id==='agents'){
+    // Match the shared default series through real visibility, not a seeded
+    // random source or altered DOM oracle. Live updates are checked separately.
+    const state=await page.evaluate(()=>({theme:document.documentElement.dataset.scheme,language:document.documentElement.lang}));
+    const fresh=await pageReady(page,page.url(),state.theme,state.language);
+    await page.locator('#mob-grid').evaluate(node=>node.scrollIntoView({block:'center',behavior:'instant'}));
+    await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+    await page.evaluate(()=>{const root=document.querySelector('#agents');scrollTo({top:Math.max(0,scrollY+root.getBoundingClientRect().top-innerHeight),behavior:'instant'});});
+    await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+    await settle(page,selector,false);
+    const fixture=await page.evaluate(()=>({balance:document.querySelector('#mb').textContent,offscreen:document.querySelector('#mob').getBoundingClientRect().top>=innerHeight,unrevealed:[...document.querySelector('#mob-grid').children].filter(node=>node.classList.contains('pre')).length}));
+    if(fixture.balance!=='$134.10'||!fixture.offscreen||fixture.unrevealed)throw new Error('Native Agent default visibility fixture not established: '+JSON.stringify(fixture));
+    report.diagnostics.push({kind:'ready',scope:'agents-native-default-visibility',document:fresh,fixture});
+  }else{
   await settle(page,selector);
   // Visit every part of a tall section naturally so off-screen reveal classes
   // cannot make an apparently equal blank screenshot. Stop at its real bottom.
@@ -230,7 +254,8 @@ async function revealSection(page,id) {
     await page.waitForFunction(expected=>document.querySelectorAll('#mg .mg-i').length===expected,
       report.environment.galleryCount);
   }
-  await settle(page,selector);
+  }
+  await settle(page,selector,id!=='agents');
   const assets=await page.evaluate(async ({selector,timeout})=>{
     const nodes=[document.querySelector(selector),...document.querySelectorAll(selector+' *')],urls=new Set();
     nodes.forEach(e=>{const s=getComputedStyle(e).backgroundImage;for(const m of s.matchAll(/url\(["']?(.*?)["']?\)/g))urls.add(m[1]);});
@@ -242,7 +267,7 @@ async function revealSection(page,id) {
     })));
     return results;
   },{selector,timeout:SPEC.assetTimeout});
-  await settle(page,selector);
+  await settle(page,selector,id!=='agents');
   return assets;
 }
 async function snapshot(page,selector) {
@@ -253,7 +278,12 @@ async function snapshot(page,selector) {
       properties.forEach(key=>styles[key]=key==='background-image'?cs.getPropertyValue(key)!=='none':cs.getPropertyValue(key));
       const attrs={};
       for(const a of [...element.attributes].sort((a,b)=>a.name.localeCompare(b.name)))
-        if(a.name==='class'||a.name.startsWith('data-'))attrs[a.name]=a.name==='class'?a.value.split(/\s+/).filter(Boolean).sort().join(' '):a.value;
+        if(a.name.startsWith('data-'))attrs[a.name]=a.value;
+        else if(a.name==='class'){
+          // class is compared as its token set: an empty attribute and an absent one select the same CSS rules.
+          const tokens=a.value.split(/\s+/).filter(Boolean).sort().join(' ');
+          if(tokens)attrs.class=tokens;
+        }
       const bounds=element.getBoundingClientRect(),rootBounds=root.getBoundingClientRect();
       out.push({path:domPath,tag:element.tagName.toLowerCase(),attrs,styles,
         bounds:{x:bounds.x-rootBounds.x,y:bounds.y-rootBounds.y,width:bounds.width,height:bounds.height},
@@ -302,7 +332,81 @@ function pixelDifference(aBytes,bBytes) {
     comparedPixels:width*height,differentPixels:changed,differentPixelRatio:changed/(width*height),
     maxChannelDifference:maxChannel,meanAbsoluteChannelDifference:total/(width*height*4)},diff:PNG.sync.write(diff)};
 }
-async function capturePair(pages,selector,key,directory='screenshots') {
+// Places a section on a whole document pixel on both sides. React omits unported
+// sections, so without this the same section starts at a different pixel fraction
+// and text rasterises differently. Only body padding above the section changes.
+async function alignOrigin(page,selector) {
+  const offset=await page.evaluate(selector=>{
+    const body=document.body;body.style.removeProperty('padding-top');
+    const top=document.querySelector(selector).getBoundingClientRect().top+scrollY;
+    const shift=Math.ceil(top)-top;
+    if(shift)body.style.paddingTop=parseFloat(getComputedStyle(body).paddingTop)+shift+'px';
+    return document.querySelector(selector).getBoundingClientRect().top+scrollY;
+  },selector);
+  if(offset!==Math.round(offset))throw new Error(`Section origin ${offset} is not whole at ${selector}`);
+  await settle(page,selector);
+}
+// Removes the section's siblings for the capture, so it sits at the same document position on both sides.
+// React omits unported sections; otherwise a neighbour's shadow can fall inside the capture, and gradient
+// dithering and image raster, which follow document coordinates, differ by a level or two.
+async function isolate(page,selector,on) {
+  await page.evaluate(({selector,on})=>{
+    const section=document.querySelector(selector);
+    [...section.parentElement.children].filter(e=>e!==section&&!e.matches('.bar,.rail,.pnav,script,style')).forEach(e=>{
+      if(on){e.dataset.parityStyle=e.getAttribute('style')||'';e.style.setProperty('display','none','important');}
+      else{e.setAttribute('style',e.dataset.parityStyle||'');delete e.dataset.parityStyle;}
+    });
+    if(on){
+      scrollTo({top:0,behavior:'instant'});
+      // Composited layers keep the pixel snapping of their old page position; rebuilding them at the new one removes it.
+      section.style.setProperty('display','none');section.getBoundingClientRect();section.style.removeProperty('display');
+    }
+  },{selector,on});
+  if(on)await settle(page,selector,false);
+}
+// Infinite loops such as the skeleton shimmer sit at the same time on both sides for one frame; their keyframes still show.
+async function holdLoops(page,hold) {
+  await page.evaluate(async hold=>{
+    if(hold){
+      window.__parityHeld=document.getAnimations().filter(a=>a.playState==='running'&&a.effect?.getComputedTiming().endTime===Infinity);
+      window.__parityHeld.forEach(a=>{a.pause();a.currentTime=0;});
+      await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+    }else{(window.__parityHeld||[]).forEach(a=>a.play());window.__parityHeld=[];}
+  },hold);
+}
+// Fixed chrome is clipped from the viewport: a locator screenshot of the top bar scrolls the page by 540px.
+async function captureClip(page,selector,file) {
+  const box=await page.locator(selector).boundingBox();
+  const x=Math.floor(box.x),y=Math.floor(box.y),clip={x,y,width:Math.ceil(box.x+box.width)-x,height:Math.ceil(box.y+box.height)-y};
+  return {box,bytes:await page.screenshot({path:file,clip,animations:'allow'})};
+}
+// Text in a composited sticky cell can repaint after the first frame, so capture until two frames agree.
+async function stableShot(page,selector,file) {
+  let last=await page.locator(selector).screenshot({path:file,animations:'allow'});
+  for(let attempt=0;attempt<SPEC.stableShotAttempts;attempt++){
+    await page.waitForTimeout(SPEC.stableShotDelay);
+    const next=await page.locator(selector).screenshot({path:file,animations:'allow'});
+    if(Buffer.compare(last,next)===0)return next;
+    last=next;
+  }
+  return last;
+}
+// Chromium's smoothed downscale of one image varies with what else the page has drawn from that image.
+// Nearest-neighbour sampling has no such state: zero here means the same image, box and text, whatever the raw count.
+async function nearestNeighbourDifference(pages,selector) {
+  const bytes=[];
+  for(const page of pages){
+    await page.bringToFront();
+    const style=await page.addStyleTag({content:'.pic{image-rendering:pixelated!important}'});
+    await isolate(page,selector,true);await page.waitForTimeout(SPEC.nearestNeighbourWait);await holdLoops(page,true);
+    bytes.push(await stableShot(page,selector,undefined));
+    await isolate(page,selector,false);await holdLoops(page,false);
+    await style.evaluate(node=>node.remove());
+  }
+  const {differentPixels,maxChannelDifference}=pixelDifference(...bytes).metrics;
+  return {differentPixels,maxChannelDifference};
+}
+async function capturePair(pages,selector,key,directory='screenshots',fixed=false) {
   const files={html:path.join(OUT,directory,key+'-html.png'),react:path.join(OUT,directory,key+'-react.png'),
     diff:path.join(OUT,directory,key+'-diff.png')};
   await mkdir(path.dirname(files.html),{recursive:true});
@@ -312,10 +416,19 @@ async function capturePair(pages,selector,key,directory='screenshots') {
   const bytes=[],boxes=[];
   for(let i=0;i<pages.length;i++){
     const page=pages[i];await page.bringToFront();await settle(page,selector,false);
-    boxes.push(await page.locator(selector).boundingBox());
-    bytes.push(await page.locator(selector).screenshot({path:files[i?'react':'html'],animations:'allow'}));
+    const file=files[i?'react':'html'];
+    await holdLoops(page,true);
+    if(fixed){const shot=await captureClip(page,selector,file);boxes.push(shot.box);bytes.push(shot.bytes);}
+    else{
+      await holdLoops(page,false);await isolate(page,selector,true);await holdLoops(page,true);
+      boxes.push(await page.locator(selector).boundingBox());
+      bytes.push(await stableShot(page,selector,file));
+      await isolate(page,selector,false);
+    }
+    await holdLoops(page,false);
   }
   const result=pixelDifference(...bytes);await writeFile(files.diff,result.diff);
+  if(result.metrics.differentPixels&&!fixed)result.metrics.nearestNeighbour=await nearestNeighbourDifference(pages,selector);
   return {...result.metrics,captureBounds:{html:boxes[0],react:boxes[1]},files:Object.fromEntries(Object.entries(files).map(([k,v])=>[k,rel(v)]))};
 }
 async function sectionCase(pages,configuration,id) {
@@ -365,7 +478,7 @@ async function topbarSupplement(pages,configuration){
   try{
     row.settlement=[];
     for(const page of pages)row.settlement.push(await settleVisibleTopbar(page));
-    row.pixels=await capturePair(pages,'.bar-in',configuration.key+'-visible-topbar','chrome-supplement');
+    row.pixels=await capturePair(pages,'.bar-in',configuration.key+'-visible-topbar','chrome-supplement',true);
     if(row.pixels.skipped||row.pixels.error||Object.keys(row.pixels.files||{}).length!==3||
       ![row.pixels.html?.width,row.pixels.html?.height,row.pixels.react?.width,row.pixels.react?.height].every(value=>Number.isFinite(value)&&value>0))
       throw new Error('Missing nonempty paired visible-topbar screenshots');
@@ -378,7 +491,9 @@ async function topbarSupplement(pages,configuration){
 
 async function chromeCase(pages,configuration) {
   // Measure chrome at the same visible section, including phone capsule.
-  for(const page of pages){await page.bringToFront();await settle(page,'#dash');}
+  for(const page of pages){await page.bringToFront();await settle(page,'#dash');await alignOrigin(page,'#dash');
+    // The top bar blurs what lies behind it, so that must be #dash on both sides, not the differing section above it.
+    await page.evaluate(()=>scrollBy({top:100,behavior:'instant'}));await settle(page,'#dash',false);}
   for(const selector of SPEC.chrome){
     const row={...configuration,selector,errors:[]};
     try{
@@ -389,7 +504,7 @@ async function chromeCase(pages,configuration) {
       await json(rawFile,{configuration,selector,html:snapshots[0],react:snapshots[1]});row.raw=rel(rawFile);
       row.captureSelector=selector==='.bar'?'.bar-in':selector;
       if(selector==='.bar')for(const page of pages)await settleVisibleTopbar(page);
-      row.pixels=await capturePair(pages,row.captureSelector,key,'chrome');
+      row.pixels=await capturePair(pages,row.captureSelector,key,'chrome',true);
       if(selector==='.bar'&&(row.pixels.skipped||row.pixels.error||Object.keys(row.pixels.files||{}).length!==3))
         throw new Error('Visible topbar screenshot pair is missing');
     }catch(error){row.errors.push(errorText(error));}
@@ -508,6 +623,138 @@ async function languageCheck(page,language){
   await page.evaluate(language=>window.setLang(language,true),language);
   return {pass:anchor.fullyVisible&&delta<=SPEC.languagePinTolerance,from:language,to:target,anchor,after,delta};
 }
+async function canvasCheck(page){
+  const data=JSON.parse(await readFile(path.join(REPO,'core/content/canvas.json'),'utf8'));
+  const checks=[],add=(id,pass,observation)=>checks.push({id,pass:!!pass,observation});
+  await page.keyboard.press('Escape');
+  const camera=page.locator('#nodeStage .nd[data-id="cam"]');
+  await camera.scrollIntoViewIfNeeded();await camera.click();
+  await page.waitForFunction(()=>document.querySelector('#nodeStage .nd[data-id="cam"]')?.classList.contains('ux-focus')&&document.querySelectorAll('#wires .wire.rel').length>0,null,{timeout:SPEC.settleTimeout});
+  const focus=await page.evaluate(()=>({name:document.querySelector('#nodeName').textContent,related:document.querySelectorAll('#nodeStage .nd.rel').length,wires:document.querySelectorAll('#wires .wire.rel').length,pulses:document.querySelectorAll('#wires .pulse').length}));
+  const related=new Set(['cam']);data.edges.forEach(([a,b])=>{if(a==='cam')related.add(b);if(b==='cam')related.add(a);});
+  add('camera-focus',focus.name===data.nodes.find(n=>n.id==='cam').t&&focus.related===related.size&&focus.wires===data.edges.filter(e=>e.includes('cam')).length&&focus.pulses===focus.wires,focus);
+  const toggle=page.locator('#cfg .cfg[data-i="0"] .cfg-toggle'),before=await toggle.getAttribute('aria-expanded');await toggle.click();
+  await page.waitForFunction(before=>document.querySelector('#cfg .cfg[data-i="0"] .cfg-toggle')?.getAttribute('aria-expanded')!==before,before,{timeout:SPEC.settleTimeout});
+  const folded=await toggle.getAttribute('aria-expanded');add('config-fold',folded!==before,{before,after:folded});
+  await page.locator('#cfg .cfg[data-i="0"] .grip').press('ArrowDown');
+  await page.waitForFunction(()=>document.querySelector('#cfg .cfg')?.dataset.i==='1',null,{timeout:SPEC.settleTimeout});
+  const order=await page.locator('#cfg .cfg').evaluateAll(items=>items.map(item=>Number(item.dataset.i)));add('config-keyboard-order',JSON.stringify(order)===JSON.stringify([1,0,...data.configItems.slice(2).map((_,i)=>i+2)]),order);
+  await camera.scrollIntoViewIfNeeded();const dragBefore=await camera.evaluate(el=>({x:el.offsetLeft,y:el.offsetTop,paths:[...document.querySelectorAll('#wires .wire')].map(p=>p.getAttribute('d'))})),box=await camera.boundingBox();
+  if(!box)throw new Error('Canvas camera has no visible drag box');const sx=box.x+box.width/2,sy=box.y+box.height/2;
+  await page.mouse.move(sx,sy);await page.mouse.down();try{await page.mouse.move(sx+28,sy+16,{steps:8});}finally{await page.mouse.up();}
+  await page.waitForFunction(before=>{const el=document.querySelector('#nodeStage .nd[data-id="cam"]');return el.dataset.dragged==='true'&&(el.offsetLeft!==before.x||el.offsetTop!==before.y);},dragBefore,{timeout:SPEC.settleTimeout});
+  const dragAfter=await camera.evaluate(el=>({x:el.offsetLeft,y:el.offsetTop,paths:[...document.querySelectorAll('#wires .wire')].map(p=>p.getAttribute('d')),dragged:el.dataset.dragged,dragClass:el.classList.contains('drag')}));
+  add('node-drag-wires',dragAfter.dragged==='true'&&!dragAfter.dragClass&&(dragAfter.x!==dragBefore.x||dragAfter.y!==dragBefore.y)&&JSON.stringify(dragAfter.paths)!==JSON.stringify(dragBefore.paths),{before:dragBefore,after:dragAfter});
+  await page.locator('#canvas .sec-h h2').click();
+  await page.waitForFunction(()=>!document.querySelector('#nodeStage .nd.ux-focus'),null,{timeout:SPEC.settleTimeout});
+  const output=page.locator('#nodeApp [data-cv="z"]'),zoomBefore=await output.textContent();await page.locator('#nodeApp [data-cv="in"]').click();
+  await page.waitForFunction(before=>document.querySelector('#nodeApp [data-cv="z"]').textContent!==before,zoomBefore,{timeout:SPEC.settleTimeout});const zoomAfter=await output.textContent();await page.locator('#nodeApp [data-cv="fit"]').click();add('canvas-zoom',zoomBefore!==zoomAfter,{before:zoomBefore,after:zoomAfter});
+  await page.locator('#runBtn').click();await page.waitForFunction(()=>document.querySelector('#runBtn').disabled&&document.querySelectorAll('#nodeStage .nd.run').length>0,null,{timeout:SPEC.settleTimeout});add('run-start',true,{disabled:await page.locator('#runBtn').isDisabled()});
+  await page.keyboard.press('Escape');const group=page.locator('#bp .bp-g').first();await group.scrollIntoViewIfNeeded();await group.click();
+  await page.waitForFunction(()=>document.querySelector('#bp .bp-g')?.classList.contains('ux-focus')&&document.querySelectorAll('#bpSide .bp-tile').length===4&&document.querySelectorAll('#bpSvg .pulse').length>0,null,{timeout:SPEC.settleTimeout});
+  await settle(page,'#bpSide',false);
+  const detail=await page.evaluate(()=>({text:document.querySelector('#bpSide').textContent.replace(/\s+/g,' ').trim(),title:document.querySelector('#bpSide .between b').textContent,tiles:document.querySelectorAll('#bpSide .bp-tile').length,steps:[...document.querySelectorAll('#bpSide .row.sm .tag')].map(el=>el.textContent),off:document.querySelectorAll('#bp .off').length,pulses:document.querySelectorAll('#bpSvg .pulse').length}));
+  add('blueprint-summary',detail.title===data.blueprint.groups[0].n&&detail.tiles===4&&detail.steps.length===Object.keys(data.blueprint.groups[0].nodes).length&&detail.off>0&&detail.pulses>0,detail);
+  await page.keyboard.press('Escape');await page.waitForFunction(()=>!document.querySelector('#bp .bp-g.ux-focus')&&!document.querySelector('#bpSvg .pulse'),null,{timeout:SPEC.settleTimeout});
+  const retained=await page.locator('#bpSide').evaluate(el=>el.textContent.replace(/\s+/g,' ').trim());add('blueprint-blur-retains-detail',retained===detail.text,{before:detail.text,after:retained});
+  await page.waitForFunction(()=>!document.querySelector('#runBtn').disabled&&!document.querySelector('#nodeStage .nd.run')&&!document.querySelector('#wires .wire.on'),null,{timeout:SPEC.settleTimeout});add('run-finish',true,{disabled:await page.locator('#runBtn').isDisabled(),running:await page.locator('#nodeStage .nd.run').count()});
+  return {checks,pass:checks.every(check=>check.pass),signature:{name:focus.name,related:focus.related,wires:focus.wires,folded,order,moved:checks.find(c=>c.id==='node-drag-wires').pass,zoomed:zoomBefore!==zoomAfter,detail:detail.text,steps:detail.steps,retained:retained===detail.text,runFinished:checks.at(-1).pass}};
+}
+
+
+// Section-owned checks use public DOM and real input. No clocks, random sources,
+// application state or style are replaced. Static sections have no invented action.
+const REMAINING_SECTIONS=['maps','agents','more','daily','terms','values','refs'];
+async function remainingCheck(page,section){
+  const checks=[],add=(id,pass,observation)=>checks.push({id,pass:!!pass,observation});
+  const c=JSON.parse(await readFile(path.join(REPO,'core/content',section+'.json'),'utf8'));
+  const click=async selector=>{
+    const target=page.locator(selector);await target.scrollIntoViewIfNeeded();
+    // Core tools appear on genuine component intent. A locator click cannot
+    // establish that intent while it is waiting for a hidden tool to be visible.
+    if(await target.getAttribute('data-tool')!==null){const component=target.locator('xpath=ancestor::*[@data-cmp][1]');if(await component.count())await component.hover();}
+    await target.click();
+  };
+  const outside=async()=>{await page.keyboard.press('Escape');await click('#'+section+' .sec-h h2');};
+  const text=selector=>page.locator(selector).evaluate(node=>node.textContent.replace(/\s+/g,' ').trim());
+  let signature;
+  try{
+    await outside();
+    if(section==='maps'){
+      await click('#rolemap .rm-cat[data-k="res"]');
+      await page.waitForFunction(()=>document.querySelector('#rmW').classList.contains('open'));
+      add('category-detail',await text('#rmD .xs.b')==='Research',{roles:await page.locator('#rolemap .rm-role.on').count()});
+      await outside();await click('#rolemap .rm-role[data-i="0"]');
+      await page.waitForFunction(()=>document.querySelector('#rmW').classList.contains('open'));
+      const role=await text('#rmD');add('role-commit',role.includes(c.roles[0].name)&&await page.locator('#rmSvg .pulse').count()>0,role);
+      await page.mouse.move(1,1);add('role-saved-on-leave',await text('#rmD')===role,role);
+      await outside();await click('#rolemap .rm-cat[data-k="all"]');
+      await page.waitForFunction(()=>document.querySelectorAll('#rolemap .rm-role.on').length===10);
+      add('all-roles',await page.locator('#rolemap .rm-role.on').count()===c.roles.length,await text('#rmD'));
+      await outside();await page.locator('#rolemap .between').first().hover();await click('#rmAuto');await page.waitForFunction(()=>document.querySelector('#rmW').classList.contains('open'));await click('#rmAuto');
+      add('auto-tour-start-stop',await page.locator('#rolemap .rm-role.cur').count()===1&&!await page.locator('#rmAuto .ic-pause').count(),await text('#rmAuto'));
+      await outside();await click('#fan .fan-l button[data-i="0"]');
+      const first=page.locator('#fan .fan-i[data-k="0"]');await first.scrollIntoViewIfNeeded();await first.hover();await page.waitForFunction(()=>document.querySelector('#fan path.l[data-k="0"]').classList.contains('on'));
+      add('fan-hover-preview',true,{paths:await page.locator('#fan path.l.on').count()});await first.click();
+      await page.waitForFunction(()=>document.querySelector('#fan').classList.contains('open'));
+      const fan=await text('#fanR');add('fan-detail',await text('#fanR .big')==='31%'&&await page.locator('#fan .fan-i.on').count()===1,fan);
+      await outside();const retained=await text('#fanR');add('fan-blur-retains-detail',retained===fan&&!await page.locator('#fan.open').count(),retained);
+      await click('#fan .fan-l button[data-i="1"]');await page.waitForFunction(()=>document.querySelectorAll('#fan .fan-i').length===11);
+      add('fan-category',await page.locator('#fan .fan-i').count()===c.fan[1].items.length,{items:await page.locator('#fan .fan-i').count()});
+      signature={role,fan,retained,items:await page.locator('#fan .fan-i').count()};
+    }else if(section==='agents'){
+      await click('#agRun');await page.waitForFunction(()=>document.querySelector('#kTask').textContent.startsWith('11'));await click('#agRun');
+      add('scene-play-pause',!await page.locator('#ag.playing').count()&&await text('#kTask')==='11/42',await text('#agTime'));
+      await page.waitForFunction(()=>document.querySelectorAll('#agLog div[data-c="2"]').length>=2);
+      await click('#crew .crew[data-i="0"]');
+      await page.waitForFunction(()=>[...document.querySelectorAll('#agLog>div')].filter(node=>getComputedStyle(node).display!=='none').every(node=>node.dataset.c==='0'));
+      const filtered=await page.locator('#agLog>div').evaluateAll(nodes=>nodes.filter(node=>getComputedStyle(node).display!=='none').map(node=>node.dataset.c));add('crew-log-filter',filtered.length>0&&filtered.every(index=>index==='0'),filtered);
+      await click('#agReset');await page.waitForFunction(()=>document.querySelector('#kTask').textContent==='5/42'&&document.querySelectorAll('#agLog>div').length===2);
+      add('scene-reset',await text('#kErr')==='0'&&!await page.locator('#ag.playing').count(),{task:await text('#kTask'),phone:await text('#phone')});
+      await click('#mseg button:nth-of-type(2)');await page.waitForFunction(()=>document.querySelector('#mp').textContent.includes('COPIED BUY'));
+      const panel=await text('#mp');add('mobile-tab',await page.locator('#mp>div').count()===c.mobilePanels.COPY.length,panel);
+      const plots=await page.locator('#ms').evaluate(svg=>({paths:svg.querySelectorAll('path').length,circles:svg.querySelectorAll('circle').length,valid:[...svg.querySelectorAll('path')].every(path=>!path.getAttribute('d').includes('NaN'))}));add('mobile-plot',plots.paths===2&&plots.circles===1&&plots.valid,plots);
+      const balanceBefore=await text('#mb');await page.locator('#mob').scrollIntoViewIfNeeded();await page.waitForFunction(before=>document.querySelector('#mb').textContent!==before,balanceBefore);
+      const live=await page.evaluate(()=>{const cy=+document.querySelector('#ms circle').getAttribute('cy'),balance=document.querySelector('#mb').textContent;return {cy,balance,expected:'$'+(78+(85-cy)*1.7).toFixed(2)};});
+      add('mobile-live-series-balance',live.balance!==balanceBefore&&live.balance===live.expected,{before:balanceBefore,...live});
+      signature={task:await text('#kTask'),phone:await text('#phone'),panel,reset:true,liveValid:live.balance===live.expected};
+    }else if(section==='more'){
+      const effort=page.locator('#eff');await effort.evaluate(el=>el.scrollIntoView({block:'center',behavior:'instant'}));await settle(page,'#eff',false);const er=await effort.boundingBox(),ex=er.x+er.width*.95,ey=er.y+er.height/2;if(!await page.evaluate(({x,y})=>document.querySelector('#eff').contains(document.elementFromPoint(x,y)),{x:ex,y:ey}))throw new Error('Effort pointer target is obscured');await page.mouse.click(ex,ey);await effort.press('ArrowLeft');
+      add('effort-pointer-keyboard',await effort.getAttribute('aria-valuenow')==='3',await text('#effV'));
+      const command=page.locator('#cmdI');await command.fill('zzzz-no-match');await page.waitForFunction(()=>document.querySelectorAll('#cmdL .cmd-r').length===0);add('command-empty',await page.locator('#cmdL .cmd-empty').count()===1,await text('#cmdL'));
+      await command.fill('');await command.press('ArrowUp');await page.waitForFunction(()=>document.querySelector('#cmdL .cmd-r.on')?.dataset.i==='2');add('command-keyboard-wrap',true,{selected:await text('#cmdL .cmd-r.on')});await command.press('Escape');
+      await click('#vB');await page.waitForFunction(()=>document.querySelector('#vT').textContent!=='00:00');await click('#vB');add('voice-start-stop',!await page.locator('#voice.on').count()&&await text('#vB')===c.labels.voiceOff,await text('#vS'));
+      const hold=page.locator('#hold');await hold.scrollIntoViewIfNeeded();const hr=await hold.boundingBox();await page.mouse.move(hr.x+hr.width/2,hr.y+hr.height/2);await page.mouse.down();try{await page.waitForFunction(()=>document.querySelector('#pack').classList.contains('open'));}finally{await page.mouse.up();}add('hold-opens',await page.locator('#pack.open').count()===1&&!await page.locator('#radar.holding').count(),await text('#hold'));
+      await click('#cnB');add('card-reveal',await text('#cn')===c.labels.cardShown,await text('#cn'));await click('#cnB');add('card-hide',await text('#cn')===c.labels.cardHidden,await text('#cn'));
+      await click('#slice');await click('#slice');const slices=await page.locator('#slice i').evaluateAll(nodes=>({count:nodes.length,round:nodes.every(node=>node.style.borderRadius==='50%'),small:nodes.every(node=>node.style.transform==='scale(0.24)')}));add('slice-two-modes',slices.count===c.counts.slices&&slices.round&&slices.small,slices);await click('#slice');
+      await click('#blurGo');add('blur-replay',await page.locator('#blurin.blur-on span').count()>0,await text('#blurin'));
+      await click('#regen');await page.waitForFunction(()=>document.querySelector('#streamT').classList.contains('done'));const stream=await text('#streamT');add('stream-regenerate-completes',stream.length>0&&await page.locator('#chips .chip').count()===1,{text:stream,chips:await page.locator('#chips .chip').count()});
+      await click('#pillDl');add('invitation-reveal-focus',await page.locator('#pillOpen').isVisible()&&await page.locator('#pillCopy').evaluate(node=>node===document.activeElement),await text('#pillOpen'));
+      signature={effort:await text('#effV'),card:await text('#cn'),stream,blur:await text('#blurin'),sliceRestored:await page.locator('#slice i').first().evaluate(node=>node.style.transform==='none')};
+    }else if(section==='daily'){
+      await click('#cal2 button:last-child');add('mini-calendar',await text('#cal2 button.on')==='31',await text('#cal2 button.on'));
+      await click('#daily .d-msg .switch');await page.waitForFunction(()=>document.querySelectorAll('#msgs .msgi').length===3);await page.locator('#msgs .msgi').first().hover();await click('#msgs button[data-m="City"]');await page.waitForFunction(()=>document.querySelectorAll('#msgs .msgi').length===2);add('unread-read-removes-row',await page.locator('#msgs button[data-m="City"]').count()===0,{rows:await page.locator('#msgs .msgi').count()});await click('#daily .d-msg .switch');
+      const chats=await page.locator('#chatlog .cmsg').count();await page.locator('#chatf input').fill('parity note');await click('#chatf button');await page.waitForFunction(count=>document.querySelectorAll('#chatlog .cmsg').length===count+2,chats);add('chat-send-reply',await text('#chatlog .cmsg:nth-last-child(2)')==='parity note',await text('#chatlog .cmsg:last-child'));
+      await click('#slots button:nth-of-type(1)');await click('#bookGo');await page.waitForFunction(()=>document.querySelector('#bookGo').disabled);await click('#slots button:nth-of-type(2)');await click('#bookGo');await page.waitForFunction(()=>document.querySelector('#bookGo').disabled);
+      const tasks=await page.locator('#calList .row').evaluateAll(nodes=>nodes.map(node=>node.textContent.trim())),booked=c.booking.prefix+c.slots[1],previous=c.booking.prefix+c.slots[0];add('booking-replaces-own-work-task',tasks.includes(booked)&&!tasks.includes(previous)&&await text('#cal button.on')===String(c.booking.day),tasks);
+      await click('#map .pin:nth-child(3)');const pin=await page.locator('#map .pin.on').getAttribute('aria-label');add('map-pin',await text('#mapList b')===pin,pin);
+      const notes=await page.locator('#notes>div').count();await click('#noteAdd');const note=page.locator('#notes>div').first();await note.fill('owned parity note');add('note-add-edit-caret',await page.locator('#notes>div').count()===notes+1&&await note.evaluate(node=>node===document.activeElement&&node.textContent==='owned parity note'),await text('#notes'));
+      const setting=page.locator('#setCard input'),initial=await setting.inputValue();await setting.fill('Discard this');await click('#setDrop');add('settings-discard',await setting.inputValue()===initial&&!await page.locator('#setBar.show').count(),await setting.inputValue());await setting.fill('Saved parity');await click('#setSave');await setting.fill('Discard again');await click('#setDrop');add('settings-save-snapshot',await setting.inputValue()==='Saved parity',await setting.inputValue());
+      await click('#bkGo');await page.waitForFunction(()=>parseFloat(document.querySelector('#bkB').style.width)>0);await click('#bkGo');const paused=await page.locator('#bkB').evaluate(node=>node.style.width);await page.waitForTimeout(c.timing.backupTick*2);add('backup-pause',await page.locator('#bkB').evaluate(node=>node.style.width)===paused,paused);await click('#bkGo');await page.waitForFunction(()=>parseFloat(document.querySelector('#bkB').style.width)===100);add('backup-complete',await text('#bkS')==='214 / 214',await text('#bkS'));
+      signature={calendar:await text('#cal2 button.on'),reply:await text('#chatlog .cmsg:last-child'),tasks,pin,note:await text('#notes>div:first-child'),settings:await setting.inputValue(),backup:await text('#bkS')};
+    }else if(section==='terms'||section==='refs'){
+      const selector=section==='terms'?'#terms .card':'#reflist .card',card=page.locator(selector).first();await card.scrollIntoViewIfNeeded();await card.hover();await page.waitForFunction(selector=>document.querySelector(selector).classList.contains('ux-hover'),selector);
+      add('display-card-hover',!await card.evaluate(node=>node.classList.contains('ux-focus'))&&await card.getAttribute('data-nofocus')!==null,{state:await card.getAttribute('data-state')});
+      if(section==='terms'){const count=await page.locator('#terms .term').count();add('all-terms',count===Object.values(c.groups).reduce((n,rows)=>n+rows.length,0),count);signature={count};}
+      else{const links=await page.locator('#reflist a').evaluateAll(nodes=>nodes.map(node=>({href:node.getAttribute('href'),target:node.getAttribute('target')})));add('reference-link-contract',JSON.stringify(links)===JSON.stringify(c.items.filter(item=>item.href).map(item=>({href:item.href,target:'_blank'}))),links);signature={cards:await page.locator('#reflist .card').count(),links};}
+    }else if(section==='values'){
+      const rows=await page.locator('#vt tr').count();add('complete-table',rows===c.rows.length+1,{rows,headers:await page.locator('#vt th').count()});const box=page.locator('#values .fade-x'),geometry=await box.evaluate(node=>({width:node.clientWidth,total:node.scrollWidth}));
+      if(geometry.total>geometry.width){await box.scrollIntoViewIfNeeded();await box.hover();await page.mouse.wheel(350,0);await page.waitForFunction(()=>document.querySelector('#values .fade-x').scrollLeft>0);add('native-horizontal-scroll',true,geometry);}signature={rows,headers:await page.locator('#vt th').count()};
+    }
+    await outside();return {checks,pass:checks.length>0&&checks.every(check=>check.pass),signature};
+  }catch(error){try{await outside();}catch{}return {checks,pass:false,error:errorText(error),signature:null};}
+}
+
 async function interactionCases(pages,configuration){
   for(let i=0;i<pages.length;i++){
     const page=pages[i];await page.bringToFront();
@@ -520,14 +767,25 @@ async function interactionCases(pages,configuration){
       failure.configuration=configuration;failure.side=side;throw failure;
     };
     if(row.visibilityState!=='visible')stop('foreground',new Error('Foreground timing prerequisite unavailable: '+side));
+    if(report.spec.sections.includes('canvas')){try{row.canvas=await canvasCheck(page);}catch(error){stop('canvas',error);}}
     for(const id of ['dash','work']){
-      try{row[id]=await hoverCheck(page,id);}catch(error){stop(id,error);}
+      try{console.log(`Interaction start ${configuration.key}/${side}/${id}`);row[id]=await hoverCheck(page,id);console.log(`Interaction done ${configuration.key}/${side}/${id}`);}catch(error){stop(id,error);}
     }
     for(const [name,fn] of [['drag',()=>dragCheck(page,configuration.key,side)],['theme',()=>themeCheck(page,configuration.theme)],['language',()=>languageCheck(page,configuration.language)]]){
-      try{row[name]=await fn();}catch(error){stop(name,error);}
+      try{console.log(`Interaction start ${configuration.key}/${side}/${name}`);row[name]=await fn();console.log(`Interaction done ${configuration.key}/${side}/${name}`);}catch(error){stop(name,error);}
     }
-    row.pass=!row.errors.length&&['dash','work'].every(id=>row[id]?.hoverPass&&row[id]?.dimPass&&row[id]?.outsideClickPass)&&['drag','theme','language'].every(id=>row[id]?.pass);
+    if(report.spec.sections.includes('workspace')){
+      try{console.log(`Interaction start ${configuration.key}/${side}/workspaceMotion`);const {runMotion}=await import('./motion.mjs');row.workspaceMotion=await runMotion(page);console.log(`Interaction done ${configuration.key}/${side}/workspaceMotion`);}catch(error){stop('workspaceMotion',error);}
+    }
+    row.own={};
+    for(const section of REMAINING_SECTIONS.filter(id=>report.spec.sections.includes(id))){console.log(`Interaction own ${configuration.key}/${side}/${section}`);row.own[section]=await remainingCheck(page,section);if(row.own[section].error)row.errors.push({check:section,message:row.own[section].error});}
+    row.pass=Object.values(row.own).every(result=>result.pass)&&!row.errors.length&&['dash','work'].every(id=>row[id]?.hoverPass&&row[id]?.dimPass&&row[id]?.outsideClickPass)&&['drag','theme','language'].every(id=>row[id]?.pass)&&(!report.spec.sections.includes('workspace')||row.workspaceMotion?.allChecksPass)&&(!report.spec.sections.includes('canvas')||row.canvas?.pass);
     report.interactions.push(row);
+  }
+  for(const section of REMAINING_SECTIONS.filter(id=>report.spec.sections.includes(id))){const rows=report.interactions.filter(row=>row.key===configuration.key),equal=rows.length===2&&rows.every(row=>row.own?.[section]?.signature)&&JSON.stringify(rows[0].own[section].signature)===JSON.stringify(rows[1].own[section].signature);for(const row of rows){if(row.own?.[section]){row.own[section].pairedStateEqual=!!equal;if(!equal){row.own[section].pass=false;row.pass=false;}}}}
+  if(report.spec.sections.includes('canvas')){
+    const rows=report.interactions.filter(row=>row.key===configuration.key),equal=JSON.stringify(rows[0]?.canvas?.signature)===JSON.stringify(rows[1]?.canvas?.signature);
+    for(const row of rows){row.canvas.pairedStateEqual=equal;if(!equal){row.canvas.pass=false;row.pass=false;}}
   }
 }
 function mismatchGroups(rows){
@@ -550,12 +808,17 @@ function emptyClassOnly(mismatch){
 function markdown(){
   const lines=['# HTML / React parity report','',`Run: ${runId}`,`Script SHA-256: \`${report.artifacts.script}\``,
     '',`Automated style/DOM-meaning/interaction phase: **${report.summary?.requiredAutomatedChecksPass?'attained for the stated finite conditions':report.stop?'stopped; see the actual trace and unmet/unverified criterion':report.fatal?'unverified (run error)':'partially attained; see remaining checks'}**. Parent fidelity acceptance still requires review of the reported visual differences.`,
-    '',`Strict extra diagnostics: allChecksPass=${report.summary?.allChecksPass}; exit code remains nonzero for unequal raw pixels or even empty class attributes. These extra diagnostics do not create a user requirement for bit-identical screenshots.`,
+    '',`Strict verdict: allChecksPass=${report.summary?.allChecksPass}. A screenshot pair passes when its pixels are equal, or equal once images are drawn by nearest-neighbour sampling.`,
     '', '## Fixed method','',
-    '- Seven sections × six themes × two languages × two viewports = 168 section cases.',
+    `- ${report.spec.sections.length} selected sections × six themes × two languages × two viewports = ${report.spec.sections.length*24} section cases. Mode: ${report.mode}; static-only does not establish interactions.`,
     '- Viewports: 1440×1080 and 390×844. CSS-pixel scale is 1. Normal motion stays enabled.',
     '- Every section element is paired by child-index DOM path. All listed computed properties match exactly, except width/height tolerate at most 1px. Background images compare presence, not stack-specific URLs.',
-    '- Screenshots are unmasked. Every unequal RGBA pixel is counted (channel tolerance 0). The pixel ratio and maximum channel delta are descriptive; a zero-difference pass is strict and no visual difference is silently excused.',
+    '- Screenshots are unmasked. Every unequal RGBA pixel is counted (channel tolerance 0).',
+    '- Each section is captured with its siblings removed, so it sits at the same document position on both sides. React omits unported sections; otherwise neighbours and document coordinates change the raster. Same-stack control runs show those effects vanish within one stack.',
+    '- Infinite loops are held at time 0 for the capture on both sides; their keyframes still show. Sections repeat until two frames agree.',
+    '- A pair with unequal pixels is captured again with images drawn by nearest-neighbour sampling. Its raw count stays reported; only a nonzero second count fails it.',
+    '- Class attributes compare as token sets: empty and absent select the same CSS rules.',
+    '- Fixed chrome is clipped from the viewport with #dash behind the top bar, because a locator screenshot of the bar scrolled the page 540px into differing sections.',
     '- Real pointer actions check the actual ux-hover class at 60/220ms. Target-local native forwarding wrappers bracket real class writes; native ux:hover/rest events and MutationRecords corroborate them. Exact descriptors are restored and the same target must stay connected. The old scheduled samples and actual callback times remain diagnostics. Any late write or unsupported/disagreeing trace stops execution for review.',
     '- Other checks retain peer opacity .3, outside-click rest, a held kanban drag with live counts, theme indicator movement plus <=1px alignment after its actual RAF layout settles, and language pin within 2px. A fixed 900ms observation is not a new theme deadline.',
     '- Readiness waits for font loading, background images, actual geometry and finite animations. Sections are visited by scrolling. The gallery category control then All materializes the full shared dataset if lazy scrolling has not loaded it. This is setup, not evidence of natural lazy-load completeness.',
@@ -565,13 +828,16 @@ function markdown(){
     '- No real phone, touch hardware or unported samples are claimed.', '', '## Section results','',
     '| Section | Cases | Style mismatches | DOM/content differences | Max pixel ratio | Max channel delta | Interaction results | Errors |',
     '|---|---:|---:|---:|---:|---:|---|---:|'];
-  for(const id of SPEC.sections){
+  for(const id of report.spec.sections){
     const rows=report.cases.filter(r=>r.section===id),sum=k=>rows.reduce((n,r)=>n+(r[k]?.length||0),0);
     const ratios=rows.map(r=>r.pixels?.differentPixelRatio).filter(Number.isFinite),channels=rows.map(r=>r.pixels?.maxChannelDifference).filter(Number.isFinite);
     let interaction='Not applicable';
     if(id==='dash'||id==='work'){
       const checks=report.interactions.map(r=>r[id]);const pass=checks.filter(c=>c?.hoverPass&&c?.dimPass&&c?.outsideClickPass).length;
       interaction=`${pass}/${report.interactions.length} scope checks pass${id==='work'?`; drag ${report.interactions.filter(r=>r.drag?.pass).length}/${report.interactions.length}`:''}`;
+    }else if(id==='workspace'){
+      const checked=report.interactions.flatMap(r=>r.workspaceMotion?.checks||[]),passes=checked.filter(c=>c.pass).length;
+      interaction=report.mode==='static-only'?'unverified (static-only)':`motion ${passes}/${checked.length}; Story Forge A7 separate raw/reference reports, not inferred`;
     }
     lines.push(`| #${id} | ${rows.length}/24 | ${sum('styleMismatches')} | ${sum('structureMismatches')} | ${ratios.length?(100*Math.max(...ratios)).toFixed(4)+'%':'unverified'} | ${channels.length?Math.max(...channels):'unverified'} | ${interaction} | ${rows.reduce((n,r)=>n+r.errors.length,0)} |`);
   }
@@ -599,7 +865,7 @@ function markdown(){
   const allStructure=structure.flatMap(r=>r.structureMismatches),emptyClass=allStructure.filter(emptyClassOnly).length;
   if(structure.length)lines.push('',`DOM attribute diagnostics: ${allStructure.length} total, of which ${emptyClass} are solely absent versus empty class attributes. Those leave class membership unchanged; listed computed styles are compared independently. All raw differences remain listed in results.json. Other meaningful DOM/content differences: ${allStructure.length-emptyClass}.`);
   const pixels=[...report.cases,...report.chrome].filter(r=>r.pixels?.differentPixels);
-  if(pixels.length)lines.push('',`${pixels.length} screenshot pair(s) contain unequal pixels. Each pair has HTML, React and difference images. Unequal screenshot sizes are compared on the union canvas; absent pixels count as differences. Causes require visual review; no anti-aliasing, alignment or loading explanation is assumed.`);
+  if(pixels.length)lines.push('',`${pixels.length} screenshot pair(s) contain unequal raw pixels; ${pixels.filter(r=>r.pixels.nearestNeighbour?.differentPixels!==0).length} stay unequal under nearest-neighbour sampling. Each pair has HTML, React and difference images.`);
   const failed=report.interactions.filter(r=>!r.pass);
   for(const row of failed)lines.push('',`- **Interaction ${row.key}/${row.side}**: ${['dash','work'].map(id=>`${id}: hover=${row[id]?.hoverPass??'unverified'}, dim=${row[id]?.dimPass??'unverified'}, outside=${row[id]?.outsideClickPass??'unverified'}`).join('; ')}; drag=${row.drag?.pass??'unverified'}, theme=${row.theme?.pass??'unverified'}, language=${row.language?.pass??'unverified'}. ${row.errors.map(e=>e.check+': '+e.message.split('\n')[0]).join('; ')}. See raw observations; unresolved.`);
   const errors=[...report.cases,...report.chrome].filter(r=>r.errors.length);
@@ -731,20 +997,32 @@ async function validateStaticReuse(planPath,apply=false){
   return receipt;
 }
 function runOptions(){
-  const args=process.argv.slice(2),interactionsOnly=args.includes('--interactions-only'),verifyOnly=args.includes('--verify-reuse');
-  const at=args.indexOf('--reuse'),reuse=at>=0?args[at+1]:null;
-  const allowed=new Set(['--interactions-only','--verify-reuse','--reuse',reuse].filter(Boolean));
-  if(args.some(arg=>!allowed.has(arg))||((interactionsOnly||verifyOnly)&&!reuse)||(!interactionsOnly&&!verifyOnly&&reuse))
-    throw new Error('Usage: node parity/check.mjs [--interactions-only|--verify-reuse --reuse <absolute-plan.json>]');
-  if(interactionsOnly&&verifyOnly)throw new Error('Choose execution or read-only verification');
-  return {interactionsOnly,verifyOnly,reuse};
+  const args=process.argv.slice(2), options={interactionsOnly:false,verifyOnly:false,reuse:null,sections:null,staticOnly:false};
+  for(let i=0;i<args.length;i++){
+    const arg=args[i];
+    if(arg==='--interactions-only')options.interactionsOnly=true;
+    else if(arg==='--verify-reuse')options.verifyOnly=true;
+    else if(arg==='--static-only')options.staticOnly=true;
+    else if(arg==='--reuse'||arg==='--sections'){
+      const value=args[++i];if(!value||value.startsWith('--'))throw new Error('Missing value for '+arg);
+      if(arg==='--reuse')options.reuse=value;else options.sections=value.split(',');
+    }else throw new Error('Unknown option: '+arg);
+  }
+  if(((options.interactionsOnly||options.verifyOnly)&&!options.reuse)||(!options.interactionsOnly&&!options.verifyOnly&&options.reuse)||
+    options.interactionsOnly&&options.verifyOnly||options.reuse&&(options.sections||options.staticOnly))
+    throw new Error('Usage: node parity/check.mjs [--sections <comma-separated-ported-ids>] [--static-only] OR [--interactions-only|--verify-reuse --reuse <absolute-plan.json>]');
+  if(options.sections&&(!options.sections.length||new Set(options.sections).size!==options.sections.length||options.sections.some(id=>!SPEC.sections.includes(id))))
+    throw new Error('Requested sections must be unique ported SPEC.sections entries');
+  return options;
 }
 
 async function main(options={interactionsOnly:false,reuse:null}){
   await mkdir(OUT,{recursive:true});await mkdir(path.join(OUT,'raw'),{recursive:true});await mkdir(path.join(OUT,'interactions'),{recursive:true});
   report.artifacts.script=hash(await readFile(fileURLToPath(import.meta.url)));
   report.artifacts.timeline=hash(await readFile(path.join(HERE,'timeline.mjs')));
-  report.mode=options.interactionsOnly?'interactions-only':'full';
+  report.mode=options.interactionsOnly?'interactions-only':options.staticOnly?'static-only':options.sections?'section':'full';
+  report.spec={...SPEC,sections:options.sections||SPEC.sections};
+  if(!options.staticOnly&&report.spec.sections.includes('workspace'))report.artifacts.motion=hash(await readFile(path.join(HERE,'motion.mjs')));
   if(options.interactionsOnly)await validateStaticReuse(options.reuse,true);
   report.artifacts.html=hash(await readFile(path.join(REPO,'templates/html/ui-handbook.html')));
   report.artifacts.reactEntry=hash(await readFile(path.join(TEMPLATE,'dist/index.html')));
@@ -768,15 +1046,15 @@ async function main(options={interactionsOnly:false,reuse:null}){
           for(let i=0;i<pages.length;i++)ready.push(await pageReady(pages[i],i?urls.react:urls.html,theme,language));
           report.diagnostics.push({configuration,kind:'ready',html:ready[0],react:ready[1]});
           if(!options.interactionsOnly){
-            for(const id of SPEC.sections)await sectionCase(pages,configuration,id);
-            await chromeCase(pages,configuration);
+            for(const id of report.spec.sections)await sectionCase(pages,configuration,id);
+            if(!options.sections)await chromeCase(pages,configuration);
           }else await topbarSupplement(pages,configuration);
-          await interactionCases(pages,configuration);
+          if(!options.staticOnly)await interactionCases(pages,configuration);
         }catch(error){
           report.diagnostics.push({configuration,kind:'configuration-error',message:errorText(error)});
           if(error.acceptanceStop)throw error;
           if(options.interactionsOnly)throw new AcceptanceStop('configuration-readiness',{configuration,error:errorText(error)});
-          for(const id of SPEC.sections)if(!report.cases.some(r=>r.key===configuration.key+'-'+id))report.cases.push({...configuration,key:configuration.key+'-'+id,section:id,errors:[errorText(error)]});
+          for(const id of report.spec.sections)if(!report.cases.some(r=>r.key===configuration.key+'-'+id))report.cases.push({...configuration,key:configuration.key+'-'+id,section:id,errors:[errorText(error)]});
         }
         // Keep evidence usable if the operator cancels a long matrix run.
         await json(path.join(OUT,'checkpoint.json'),report);
@@ -785,8 +1063,9 @@ async function main(options={interactionsOnly:false,reuse:null}){
   }
 }
 export {SPEC,OUT,HERE,REPO,TEMPLATE,CHROME,report,handles,startServers,cleanup,pageReady,settle,away,
-  hoverCheck,dragCheck,themeCheck,languageCheck,observe};
-if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
+  hoverCheck,dragCheck,themeCheck,languageCheck,observe,revealSection,alignOrigin,capturePair,
+  snapshot,compareSnapshots,remainingCheck,pixelDifference,holdLoops,isolate,stableShot,network};
+async function runCli(){
 const options=runOptions();
 if(options.verifyOnly){
   try{console.log(JSON.stringify(await validateStaticReuse(options.reuse,false),null,2));}
@@ -802,26 +1081,35 @@ finally{
   if(report.reuse)try{report.reuse.finishVerification=await validateStaticReuse(report.reuse.plan.path,false);}
   catch(error){report.reuse.finishError=errorText(error);report.fatal=report.fatal||'Reuse binding changed during run: '+errorText(error);}
   const rows=[...report.cases,...report.chrome];
-  report.summary={sectionCases:report.cases.length,expectedSectionCases:168,chromeCases:report.chrome.length,
+  const matrixSize=SPEC.viewports.length*SPEC.themes.length*SPEC.languages.length;
+  const expectedSections=report.spec.sections.length*matrixSize, expectedChrome=options.sections?0:SPEC.chrome.length*matrixSize;
+  const expectedInteractions=options.staticOnly?0:matrixSize*2;
+  report.summary={sectionCases:report.cases.length,expectedSectionCases:expectedSections,chromeCases:report.chrome.length,expectedChromeCases:expectedChrome,expectedInteractionCases:expectedInteractions,
     styleMismatches:rows.reduce((n,r)=>n+(r.styleMismatches?.length||0),0),
     structureMismatches:rows.reduce((n,r)=>n+(r.structureMismatches?.length||0),0),
     unequalScreenshots:rows.filter(r=>r.pixels?.differentPixels).length,
+    unequalAfterNearestNeighbour:rows.filter(r=>r.pixels?.differentPixels&&r.pixels?.nearestNeighbour?.differentPixels!==0).length,
     caseErrors:rows.reduce((n,r)=>n+r.errors.length,0),interactionPasses:report.interactions.filter(r=>r.pass).length,
     interactionCases:report.interactions.length,
+    ownChecks:report.interactions.reduce((n,row)=>n+Object.values(row.own||{}).reduce((m,result)=>m+result.checks.length,0),0),
+    ownPasses:report.interactions.reduce((n,row)=>n+Object.values(row.own||{}).reduce((m,result)=>m+result.checks.filter(check=>check.pass).length,0),0),
+    canvasChecks:report.interactions.reduce((n,r)=>n+(r.canvas?.checks.length||0),0),
+    canvasPasses:report.interactions.reduce((n,r)=>n+(r.canvas?.checks.filter(c=>c.pass).length||0),0),
+    workspaceMotionChecks:report.interactions.reduce((n,r)=>n+(r.workspaceMotion?.checks.length||0),0),
+    workspaceMotionPasses:report.interactions.reduce((n,r)=>n+(r.workspaceMotion?.checks.filter(c=>c.pass).length||0),0),
     freshTopbarCases:report.chromeSupplement.length,
     freshTopbarUnequalScreenshots:report.chromeSupplement.filter(row=>row.pixels?.differentPixels).length};
   const topbarSupplementComplete=report.mode!=='interactions-only'||report.chromeSupplement.length===24&&
     report.chromeSupplement.every(row=>!row.errors.length&&!row.pixels?.skipped&&!row.pixels?.error&&Object.keys(row.pixels?.files||{}).length===3);
   report.summary.meaningfulDOMMismatches=rows.reduce((n,row)=>n+(row.structureMismatches||[]).filter(m=>!emptyClassOnly(m)).length,0);
-  report.summary.requiredAutomatedChecksPass=!report.fatal&&!report.stop&&topbarSupplementComplete&&report.cases.length===168&&report.chrome.length===72&&
-    report.interactions.length===48&&report.interactions.every(row=>row.pass)&&!report.summary.styleMismatches&&!report.summary.meaningfulDOMMismatches&&
-    !report.summary.caseErrors&&!rows.some(row=>row.pixels?.error||row.assets?.flat().some(asset=>!asset.ok))&&
+  report.summary.staticChecksPass=!report.fatal&&!report.stop&&topbarSupplementComplete&&report.cases.length===expectedSections&&report.chrome.length===expectedChrome&&
+    !report.summary.styleMismatches&&!report.summary.meaningfulDOMMismatches&&!report.summary.caseErrors&&
+    !rows.some(row=>row.pixels?.error||row.assets?.flat().some(asset=>!asset.ok))&&
     !network.length&&!report.diagnostics.some(d=>d.kind!=='ready')&&!report.cleanup.errors.length;
-  report.summary.allChecksPass=!report.fatal&&!report.stop&&topbarSupplementComplete&&!report.summary.freshTopbarUnequalScreenshots&&report.cases.length===168&&report.chrome.length===72&&
-    report.interactions.length===48&&report.interactions.every(r=>r.pass)&&
-    !report.summary.styleMismatches&&!report.summary.structureMismatches&&!report.summary.unequalScreenshots&&
-    !report.summary.caseErrors&&!rows.some(r=>r.pixels?.error||r.assets?.flat().some(a=>!a.ok))&&
-    !network.length&&!report.diagnostics.some(d=>d.kind!=='ready')&&report.cleanup.errors.length===0;
+  report.summary.requiredAutomatedChecksPass=!options.staticOnly&&report.summary.staticChecksPass&&
+    report.interactions.length===expectedInteractions&&report.interactions.every(row=>row.pass);
+  report.summary.allChecksPass=report.summary.requiredAutomatedChecksPass&&!report.summary.freshTopbarUnequalScreenshots&&
+    !report.summary.structureMismatches&&!report.summary.unequalAfterNearestNeighbour;
   await mkdir(OUT,{recursive:true});
   await writeFile(path.join(OUT,'preview.log'),previewLog);
   await json(path.join(OUT,'results.json'),report);
@@ -833,3 +1121,6 @@ finally{
 }
 }
 }
+
+if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url))
+  runCli().catch(error=>{console.error(errorText(error));process.exitCode=1;});

@@ -2,7 +2,7 @@
 
 Purpose: the owner's interfaces keep the same look and behaviour across future projects, whatever technology stack each project uses. Every stack's rendering can be checked against the same design.
 
-Status: established on 2026-10-31. Application state: applied on 2026-10-31. Core layout, core module changes (including `UX.sortable` `commit(order)`, cleanup returns and the shared `transitionLanguage`), HTML rewiring, shared content in `core/content/`, the React version-1 template and its parity check are in the repository. Parity result: see the dated record below.
+Status: established on 2026-10-31. Application state: applied on 2026-10-31. Core layout, core module changes (including `UX.sortable` `commit(order)`, cleanup returns and the shared `transitionLanguage`), HTML rewiring, shared content in `core/content/`, the React version-1 template and its parity check are in the repository. Parity result: see the dated records below; the strict pixel verdict remains open on the gallery and table pairs named in the 2026-11-01 record.
 
 ## Definitions
 
@@ -84,9 +84,8 @@ Status: established on 2026-10-31. Application state: applied on 2026-10-31. Cor
 
 8. **HTML and React are the first two templates.** `templates/html/` contains the existing handbook rewired to core and a starter page. `templates/react/` uses React 18, TypeScript and Vite. React version 1 renders page chrome (the top bar with theme and language switches, and the navigation rail), `#schemes`, `#shape`, `#controls`, `#dash`, `#work`, `#table` and `#gallery`. These exercise rules 1–6, 9, 10, 12, 13, 16, 17, 19 and 21–25.
 
-   The React README lists the samples outside version 1: `#terms`, `#workspace` (Story Forge), `#canvas`, `#maps`, `#agents`, `#more`, `#daily`, `#values` and `#refs`.
-
-   Serves: the first React result covers a defined, checkable part of the original design without claiming a complete port.
+   That is the historical version-1 boundary. Decision 0017 extends the current React handbook to all 16 sections, including Story Forge/motion, Canvas, Maps, Agents, More, Daily and the shared Terms/Values/Refs. The current README lists every rendered section; no navigation or phone view falls back to HTML.
+   Serves: version-1 evidence keeps its original scope, while current implementation and full-handbook acceptance are recorded truthfully under decision 0017.
 
    Example: `npm run parity` inside `templates/react` compares the ported reference samples with the HTML handbook.
 
@@ -104,13 +103,31 @@ The module exports, dictionary injection, paint-state reassertion and page-suppl
 
 2026-10-31, React version 1 applied. `templates/react/parity/report.md` records: 168 section cases and 72 page-chrome cases with zero computed-style differences; 48 of 48 interaction sets pass (hover admitted at 151.8–172.3ms, peers dim to .3, outside click rests, kanban drag shows slot and live counts, theme indicator settles, language switch keeps the first visible element within 0.44px); 24 top-bar screenshot pairs identical to the pixel. 174 section screenshot pairs still differ in raw pixels. Paired element boxes differ by at most 0.73px, and the gallery case is explained by a fractional section origin (React renders fewer sections above it, so the same layout is rasterised 0.47px lower); a one-pixel shift drops that pair from 66% to 5.7% unequal pixels. Side-by-side review in the browser on 2026-10-31 (Paper theme, `#dash` at rest, hovered and expanded; `#gallery`) showed no visible difference. Open: the parity script still exits 1 on raw pixel inequality, and the remaining per-section pixel causes are not individually established.
 
+2026-11-01, parity instrument corrected. Run `2026-11-01T20-34-53-057Z`: 0 computed-style differences (276 before), 0 DOM or content differences (480 before), 48 of 48 interaction sets. Of 216 screenshot pairs actually taken (12 rail and 12 capsule pairs have no visible box at one width each), 37 still have unequal raw pixels (211 before): 24 gallery, 12 table and 1 dashboard pair; all page-chrome pairs are identical. The strict verdict `allChecksPass` stays false.
+
+The earlier differences had these verified causes:
+
+- A locator screenshot of the top bar scrolled both pages by 540px. The two pages then rested in different sections, because React omits unported ones, and the rail, the capsule and the blur behind the bar all differed. Chrome is now clipped from the viewport with `#dash` behind it.
+- The same section sat at a different document position on each side, which changed text, gradient and image raster; neighbours' shadows also fell inside captures. Each section is now captured with its siblings removed and its composited layers rebuilt. A control comparing one stack against itself gave zero difference in 54 of 56 pairs, so this effect is not noise.
+- Infinite loops such as the skeleton shimmer were at different phases. They are now held at time 0 for the capture; their keyframes still show.
+- Empty and absent `class` attributes select the same rules, so `class` now compares as a token set.
+- One real React difference: the table's status button rendered its label and the following space as two text nodes, which made it 1/64px wider and shifted later buttons. `templates/react/src/samples/data.tsx` now renders one text node, as HTML does.
+
+The remaining pairs, and what is and is not established about them:
+
+- **Gallery, 24 pairs.** All 54 images have equal bytes and dimensions on both stacks, and tile boxes and classes are equal. Differences are inside image tiles, at most 2 channel levels in most 1440px pairs and up to 76 at 390px. Inside the full run, the nearest-neighbour recapture still differs. In a fresh page that visits only the gallery, the nearest-neighbour capture is identical (pure/en/1440 and pure/zh/390). The inferred cause is Chromium raster state left by the page's earlier history; the mechanism itself is not established.
+- **Table, 12 pairs.** Six English 1440px pairs differ only inside thumbnails and become identical under nearest-neighbour sampling. Six Chinese 390px pairs also show one thumbnail, row "Score cue 25", drawn 1px apart, with an equal computed box and the same image. Its cause is not established.
+- **Dashboard, 1 pair.** Six pixels at one channel level in neon/en/1440; absent from the preceding run, so it is treated as run-to-run variation.
+
+Side-by-side review of the worst pure/zh/390 gallery area on 2026-11-01 showed the same images, crops and captions. Real touch devices and the samples outside version 1 remain unchecked.
+
 ## Acceptance
 
 - **Structure:** the two-layer tree exists. A search of `templates/` finds no independent colour, size, radius, shadow, easing or duration values: template styling reads core through `var(--…)`. No template file duplicates a core file.
 - **Build:** `python3 core/build.py --check` passes; `python3 -I templates/html/src/build.py` rebuilds the handbook; `npm run build` inside `templates/react` builds the React template.
 - **HTML preservation:** the handbook opens without console errors and behaves as before. Spot checks cover hover, dim and lock on `#dash`, theme switching, language switching and kanban drag.
 - **React parity:** check every ported sample under all six themes, both languages, and viewports 1440×1080 and 390×844. Corresponding elements have equal computed font, colour, background, radius, shadow and padding, with size differences within 1px. Report screenshot pixel differences per section; fix or explain every visible difference. Hover reaches `ux-hover` by 220ms and not at 60ms; peer components dim to .3; a click outside returns to rest; a dragged kanban card leaves a slot and counts update before release; the theme-switch indicator slides; and a language switch keeps the first visible element in place.
-- **Limits:** these criteria do not check a real phone or the samples listed as not yet ported in decision 8.
+- **Limits:** these criteria do not check a real phone. Historical version-1 results cover their original seven sections; decision 0017 requires the current all16/full384 result and records its limits.
 
 ## Owner record
 
@@ -122,3 +139,14 @@ The module exports, dictionary injection, paint-state reassertion and page-suppl
 > 4. 把项目的这些规范写进文档和项目的claude.md 和 agents.md, 让以后的开发不要破坏架构,按照规范继续
 
 Gloss: "1. I want to make it a general UI template serving my many future projects. 2. So I need several technology-stack templates, not one. The design core must not change; the templates exported per stack are separate and clear. 3. First make an HTML and a React version; I need to see whether React's result matches the original design, and you must check it for me first. 4. Write these project norms into the documents and the project's CLAUDE.md and AGENTS.md, so that later development does not break the architecture and continues by the norms."
+
+
+2026-11-02, decision 0017 implementation: all16 sections are rendered as React components/state with shared Core content/policies. The HTML fallback import is removed; phone view uses React. Core/output metadata is 1.4.0. Section-scoped results and native defects are in decision 0017; final full384/HTML-preservation checks are pending, not implied by the expanded implementation. Earlier dated version-1 and unequal-pixel records remain historical evidence.
+
+
+2026-11-02, finish-line stop: original-HTML384 has style0/DOM0, but38 screenshot pairs above measured variation (Agents12, More24, Table2), so A5 fails. Final React384 is not run under the brief's stop condition. Navigation/phone use all16 React sections; builds pass; this is not whole-port acceptance. Decision0017 contains the per-section record and next user decision.
+
+
+2026-11-03, authorized finish-line continuation: caller steering5/6 permitted final React384 despite retained failed A5, followed by only12 controlled original/current HTML cases and report/stop. React run `2026-11-02T22-50-23-497Z` completed384 sections +72 chrome: style/DOM/errors0,48/48 interaction sets,1992/1992 own,432/432 Canvas and864/864 Workspace motion checks pass. Strict pixels remain false:78 raw unequal,73 nearest unequal; all names/per-section counts remain in the finish report. The command exits1, not a universal pass.
+
+The prescribed A5 follow-up attempted12 cases, produced11 PNG pairs and qualified10 on review:4 Table pairs exact0;6 Agent/More-phone pairs unequal;2 More-desktop cases unverified due harness clock setup/ownership errors. A Table Blob-URL identity predicate was an invalid proxy; exact image/source/decoded-size evidence is recorded without changing raw metrics. More/Agents source review finds Core-extracted drawing rules equivalent for matching full state/history; Table thumbnail code and bytes are unchanged. This does not establish all38 historical excess pairs as temporal. Raw A5 remains failed and its3072 artifacts unchanged. No app changes/reruns followed. Decision0017 and `templates/react/parity/out/controlled-html-2026-11-03/report.md` contain the full record. Parent acceptance remains partial; A7’s named gap and exact `python3` capability limit remain. All owned resources closed; owner processes/Git/root README untouched. Reported and stopped.

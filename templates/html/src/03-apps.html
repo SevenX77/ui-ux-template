@@ -37,27 +37,27 @@
 </section>
 
 <section class="wrap sec" id="daily">
-  <div class="sec-h"><div><div class="k">14 / EVERYDAY</div><h2>日常场景</h2></div><p>同一套规则放进九个日常组件。鼠标移上一个，别的变暗，移走就恢复；确认和保存这类操作，要用时才出现。</p></div>
+  <div class="sec-h"><div><div class="k">{{content:daily.text.t0}}</div><h2>{{content:daily.text.t1}}</h2></div><p>{{content:daily.text.t2}}</p></div>
   <div class="daily" data-scope="daily">
-    <div class="card d-cal" data-cmp><div class="between"><b>十月</b><span class="xs mute">3 件事</span></div><div class="cal mini" id="cal2"></div></div>
-    <div class="card d-chat" data-cmp><div class="row" style="flex-wrap:nowrap"><span class="avatar">林</span><div><div class="b sm">林 · 项目搭档</div><div class="xs mute">在线</div></div></div><div class="chatlog" id="chatlog"><div class="cmsg"><span class="bub">样片今晚能看吗？</span></div><div class="cmsg me"><span>能，九点前发你。</span></div></div><form class="row" id="chatf" style="flex-wrap:nowrap"><input class="input" placeholder="回复" aria-label="回复"><button class="btn ico" aria-label="发送" data-tool>↑</button></form></div>
-    <div class="card d-msg" data-cmp><div class="between"><b>消息</b><button class="switch" role="switch" aria-checked="false" aria-label="只看未读" data-tg></button></div><div id="msgs"></div></div>
-    <div class="card d-book" data-cmp><b>预约一个下午</b><div class="xs mute" style="margin:calc(2px*var(--y)) 0 calc(10px*var(--y))">Studio B · 10月30日</div><div class="row" id="slots"></div><button class="btn need" id="bookGo">确认预约</button></div>
-    <div class="d-home card" data-cmp style="padding:0;overflow:hidden"><div class="pic" style="height:92px;border-radius:0;background:var(--w23) center/cover"><span class="tag on" style="position:absolute;left:12px;top:12px" data-tool>精选</span></div><div style="padding:8px 14px"><div class="between"><b>朝南的光，安静的空间</b><b class="num-t">¥128/时</b></div><div class="xs mute">120㎡ · 自然光 · 可布景</div></div></div>
+    <div class="card d-cal" data-cmp><div class="between"><b>{{content:daily.text.t3}}</b><span class="xs mute">{{content:daily.text.t4}}</span></div><div class="cal mini" id="cal2"></div></div>
+    <div class="card d-chat" data-cmp><div class="row" style="{{style:daily.styles.s1}}"><span class="avatar">{{content:daily.text.t5}}</span><div><div class="b sm">{{content:daily.text.t6}}</div><div class="xs mute">{{content:daily.text.t7}}</div></div></div><div class="chatlog" id="chatlog"><div class="cmsg"><span class="bub">{{content:daily.text.t8}}</span></div><div class="cmsg me"><span>{{content:daily.text.t9}}</span></div></div><form class="row" id="chatf" style="{{style:daily.styles.s1}}"><input class="input" placeholder="{{content:daily.attrs.a1}}" aria-label="{{content:daily.attrs.a1}}"><button class="btn ico" aria-label="{{content:daily.attrs.a2}}" data-tool>{{content:daily.text.t10}}</button></form></div>
+    <div class="card d-msg" data-cmp><div class="between"><b>{{content:daily.text.t11}}</b><button class="switch" role="switch" aria-checked="false" aria-label="{{content:daily.attrs.a3}}" data-tg></button></div><div id="msgs"></div></div>
+    <div class="card d-book" data-cmp><b>{{content:daily.text.t12}}</b><div class="xs mute" style="{{style:daily.styles.s2}}">{{content:daily.text.t13}}</div><div class="row" id="slots"></div><button class="btn need" id="bookGo">{{content:daily.text.t14}}</button></div>
+    <div class="d-home card" data-cmp style="{{style:daily.styles.s3}}"><div class="pic" style="{{style:daily.styles.s4}}"><span class="tag on" style="{{style:daily.styles.s5}}" data-tool>{{content:daily.text.t15}}</span></div><div style="{{style:daily.styles.s6}}"><div class="between"><b>{{content:daily.text.t16}}</b><b class="num-t">{{content:daily.text.t17}}</b></div><div class="xs mute">{{content:daily.text.t18}}</div></div></div>
     <div class="card d-map" data-cmp><div class="map" id="map"></div><div id="mapList" class="sm"></div></div>
-    <div class="card d-note" data-cmp><div class="between"><b>便笺</b><button class="btn sec2 sm" id="noteAdd" data-tool>＋ 新增</button></div><div class="notes" id="notes"></div></div>
-    <div class="card d-back" data-cmp><div class="between"><b>备份</b><span class="xs mute" id="bkS">214 张，选中 214</span></div><div class="thumbs" id="thumbs"></div><div style="height:6px;border-radius:9px;background:var(--sunk);margin:12px 0;overflow:hidden"><i id="bkB" style="display:block;height:100%;width:0;background:var(--signal);transition:width .2s"></i></div><button class="btn sm" id="bkGo">开始备份</button></div>
-    <div class="card d-set" id="setCard" data-cmp><b>设置</b><label class="sm" style="display:block;margin-top:calc(10px*var(--y))"><span class="xs mute">项目名</span><input class="input" value="Static" style="margin-top:calc(4px*var(--y))"></label><div class="between sm" style="margin-top:calc(12px*var(--y))"><span>减少动态效果</span><button class="switch" role="switch" aria-checked="false" data-tg aria-label="减少动态效果"></button></div><div class="between sm" style="margin-top:calc(8px*var(--y))"><span>深夜通知</span><button class="switch" role="switch" aria-checked="true" data-tg aria-label="深夜通知"></button></div><div class="row need" id="setBar"><button class="btn sm" id="setSave">保存</button><button class="btn ghost sm" id="setDrop">放弃修改</button></div></div>
+    <div class="card d-note" data-cmp><div class="between"><b>{{content:daily.text.t19}}</b><button class="btn sec2 sm" id="noteAdd" data-tool>{{content:daily.text.t20}}</button></div><div class="notes" id="notes"></div></div>
+    <div class="card d-back" data-cmp><div class="between"><b>{{content:daily.text.t21}}</b><span class="xs mute" id="bkS">{{content:daily.text.t22}}</span></div><div class="thumbs" id="thumbs"></div><div style="{{style:daily.styles.s7}}"><i id="bkB" style="{{style:daily.styles.s8}}"></i></div><button class="btn sm" id="bkGo">{{content:daily.text.t23}}</button></div>
+    <div class="card d-set" id="setCard" data-cmp><b>{{content:daily.text.t24}}</b><label class="sm" style="{{style:daily.styles.s9}}"><span class="xs mute">{{content:daily.text.t25}}</span><input class="input" value="{{content:daily.initial.settings.name}}" style="{{style:daily.styles.s10}}"></label><div class="between sm" style="{{style:daily.styles.s11}}"><span>{{content:daily.text.t26}}</span><button class="switch" role="switch" aria-checked="false" data-tg aria-label="{{content:daily.attrs.a4}}"></button></div><div class="between sm" style="{{style:daily.styles.s12}}"><span>{{content:daily.text.t27}}</span><button class="switch" role="switch" aria-checked="true" data-tg aria-label="{{content:daily.attrs.a5}}"></button></div><div class="row need" id="setBar"><button class="btn sm" id="setSave">{{content:daily.text.t28}}</button><button class="btn ghost sm" id="setDrop">{{content:daily.text.t29}}</button></div></div>
   </div>
 </section>
 
 <section class="wrap sec" id="values">
-  <div class="sec-h"><div><div class="k">15 / VALUES</div><h2>统一数值表</h2></div><p>界面只能从这里取值。源码逐项对照 Story Forge v5。</p></div>
-  <div class="card fade-x" style="overflow:auto"><table class="vt" id="vt"></table></div>
+  <div class="sec-h"><div><div class="k">{{content:values.text.t0}}</div><h2>{{content:values.text.t1}}</h2></div><p>{{content:values.text.t2}}</p></div>
+  <div class="card fade-x" style="{{style:values.styles.s0}}"><table class="vt" id="vt"></table></div>
 </section>
 
-<section class="wrap sec" id="refs" style="padding-bottom:60px">
-  <div class="sec-h"><div><div class="k">16 / REFERENCES</div><h2>参考来源</h2></div><p>每个来源取什么，不取什么。原始抽帧在 references/frames。</p></div>
+<section class="wrap sec" id="refs" style="{{style:refs.styles.s0}}">
+  <div class="sec-h"><div><div class="k">{{content:refs.text.t0}}</div><h2>{{content:refs.text.t1}}</h2></div><p>{{content:refs.text.t2}}</p></div>
   <div class="grid g4" id="reflist" data-scope="refs"></div>
 </section>
 

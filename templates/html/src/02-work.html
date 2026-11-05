@@ -1,109 +1,110 @@
-<section class="wrap sec" id="workspace">
-  <div class="sec-h"><div><div class="k">05 / WORKSPACE · 复刻 STORY FORGE</div><h2>工作台</h2></div><p>Story Forge 的完整工作台。Explore 里拖动和缩放画布，用左侧按钮筛选素材；Create 里切换剧本、故事板、影片三层和全片、幕、场、节拍、镜头五级范围，拖动播放头或播放定时静帧预览，在对话框光标处引用多个素材；悬停历史按钮预览，点击固定。</p></div>
-  <div class="sf mode-explore" id="sf" data-scope="sf" data-lock>
-    <div class="titlebar" data-cmp data-nofocus data-passive><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><div class="proj">STATIC</div><div class="bctl"><svg class="bctl-bg" viewBox="0 0 207 42" preserveAspectRatio="none" aria-hidden="true"><defs><filter id="sf-bctlRim" color-interpolation-filters="sRGB"><feComponentTransfer in="SourceAlpha"><feFuncA type="table" tableValues="1 0"/></feComponentTransfer><feGaussianBlur/><feOffset dx="0" result="o"/><feFlood/><feComposite in2="o" operator="in"/><feComposite in2="SourceAlpha" operator="in"/><feMerge><feMergeNode in="SourceGraphic"/><feMergeNode/></feMerge></filter></defs><path class="bctl-path" filter="url(#sf-bctlRim)" d="M0,0 C7,0 14,7 14,14 L14,26 A16,16 0 0,0 30,42 L177,42 A16,16 0 0,0 193,26 L193,14 C193,7 200,0 207,0 Z"/></svg><button type="button" class="on" data-sf-call="bMode" data-mode="explore">Explore</button><button type="button" data-sf-call="bMode" data-mode="create">Create</button></div></div>
+<section class="wrap sec" id="{{content:workspace.attrs.a0}}">
+  <div class="sec-h"><div><div class="k">{{content:workspace.text.t0}}</div><h2>{{content:workspace.text.t1}}</h2></div><p>{{content:workspace.text.t2}}</p></div>
+  <div class="sf-lights" aria-hidden="true"></div>
+  <div class="sf mode-{{content:workspace.defaults.mode}}" id="{{content:workspace.attrs.a1}}" data-scope="sf" data-lock>
+    <div class="titlebar" data-cmp data-nofocus data-passive><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><div class="proj">{{content:workspace.text.t3}}</div><div class="bctl"><svg class="bctl-bg" viewBox="{{content:workspace.attrs.a2}}" preserveAspectRatio="{{content:workspace.attrs.a3}}" aria-hidden="true"><defs><filter id="{{content:workspace.attrs.a4}}" color-interpolation-filters="sRGB"><feComponentTransfer in="SourceAlpha"><feFuncA type="table" tableValues="{{content:workspace.attrs.a5}}"/></feComponentTransfer><feGaussianBlur/><feOffset dx="{{content:workspace.attrs.a6}}" result="o"/><feFlood/><feComposite in2="o" operator="in"/><feComposite in2="SourceAlpha" operator="in"/><feMerge><feMergeNode in="SourceGraphic"/><feMergeNode/></feMerge></filter></defs><path class="bctl-path" filter="url(#sf-bctlRim)" d="{{content:workspace.attrs.a7}}"/></svg><button type="button" class="on" data-sf-call="bMode" data-mode="explore">{{content:workspace.text.t4}}</button><button type="button" data-sf-call="bMode" data-mode="create">{{content:workspace.text.t5}}</button></div></div>
 
     <!-- ===== EXPLORE · full-bleed infinite canvas, sits beneath all chrome ===== -->
-    <div class="explore" id="sf-explore">
-    <div class="cv-tools" role="group" aria-label="画布视图"><button data-sf-call="cvZoomOut" aria-label="缩小画布">−</button><button data-sf-call="cvFit">适合画布</button><button data-sf-call="cvZoomIn" aria-label="放大画布">+</button></div>
-      <div class="cv-vp" id="sf-cvVp"><div class="cv-inner" id="sf-cvInner" data-scope="sf-canvas"><!-- items injected --></div></div>
+    <div class="explore" id="{{content:workspace.attrs.a8}}">
+    <div class="cv-tools" role="group" aria-label="{{content:workspace.attrs.a9}}"><button data-sf-call="cvZoomOut" aria-label="{{content:workspace.attrs.a10}}">{{content:workspace.text.t6}}</button><button data-sf-call="cvFit">{{content:workspace.text.t7}}</button><button data-sf-call="cvZoomIn" aria-label="{{content:workspace.attrs.a11}}">{{content:workspace.text.t8}}</button></div>
+      <div class="cv-vp" id="{{content:workspace.attrs.a12}}"><div class="cv-inner" id="{{content:workspace.attrs.a13}}" data-scope="sf-canvas"><!-- items injected --></div></div>
     </div>
     <!-- left edge → vertical filter rail, hover to reveal -->
-    <div class="cv-rail-zone" id="sf-cvRailZone" tabindex="0" aria-label="素材筛选">
-      <div class="cv-rail" id="sf-cvFilter">
-        <button class="rb on" data-flt="all" data-tip="全部素材" aria-label="全部素材" data-sf-call="cvFilter" data-value="all"><svg viewBox="0 0 24 24"><path d="m12 2 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5"/><path d="m3 17 9 5 9-5"/></svg></button>
-        <button class="rb" data-flt="char" data-tip="角色素材" aria-label="角色素材" data-sf-call="cvFilter" data-value="char"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6.5 8-6.5s8 2.5 8 6.5"/></svg></button>
-        <button class="rb" data-flt="mood" data-tip="情绪板" aria-label="情绪板" data-sf-call="cvFilter" data-value="mood"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18c1 0 1.6-.8 1.6-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.1 0-.9.7-1.6 1.6-1.6H16a5 5 0 0 0 5-5c0-3.9-4-7.4-9-7.4Z"/></svg></button>
-        <button class="rb" data-flt="visual" data-tip="视觉参考" aria-label="视觉参考" data-sf-call="cvFilter" data-value="visual"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="9.5" r="1.5"/><path d="m4 18 5-5 4 3.5 3-2.5 4 4"/></svg></button>
-        <button class="rb" data-flt="note" data-tip="创意笔记" aria-label="创意笔记" data-sf-call="cvFilter" data-value="note"><svg viewBox="0 0 24 24"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5V14l-6 6H5.5A1.5 1.5 0 0 1 4 18.5Z"/><path d="M14 20v-4.5A1.5 1.5 0 0 1 15.5 14H20"/></svg></button>
+    <div class="cv-rail-zone" id="{{content:workspace.attrs.a14}}" tabindex="{{content:workspace.attrs.a15}}" aria-label="{{content:workspace.attrs.a16}}">
+      <div class="cv-rail" id="{{content:workspace.attrs.a17}}">
+        <button class="rb on" data-flt="all" data-tip="{{content:workspace.attrs.a18}}" aria-label="{{content:workspace.attrs.a19}}" data-sf-call="cvFilter" data-value="all"><svg viewBox="{{content:workspace.attrs.a20}}"><path d="{{content:workspace.attrs.a21}}"/><path d="{{content:workspace.attrs.a22}}"/><path d="{{content:workspace.attrs.a23}}"/></svg></button>
+        <button class="rb" data-flt="char" data-tip="{{content:workspace.attrs.a24}}" aria-label="{{content:workspace.attrs.a25}}" data-sf-call="cvFilter" data-value="char"><svg viewBox="{{content:workspace.attrs.a26}}"><circle cx="{{content:workspace.attrs.a27}}" cy="{{content:workspace.attrs.a28}}" r="{{content:workspace.svgRadii.character}}"/><path d="{{content:workspace.attrs.a29}}"/></svg></button>
+        <button class="rb" data-flt="mood" data-tip="{{content:workspace.attrs.a30}}" aria-label="{{content:workspace.attrs.a31}}" data-sf-call="cvFilter" data-value="mood"><svg viewBox="{{content:workspace.attrs.a32}}"><path d="{{content:workspace.attrs.a33}}"/></svg></button>
+        <button class="rb" data-flt="visual" data-tip="{{content:workspace.attrs.a34}}" aria-label="{{content:workspace.attrs.a35}}" data-sf-call="cvFilter" data-value="visual"><svg viewBox="{{content:workspace.attrs.a36}}"><rect x="{{content:workspace.attrs.a37}}" y="{{content:workspace.attrs.a38}}" width="{{content:workspace.attrs.a39}}" height="{{content:workspace.attrs.a40}}" rx="{{content:workspace.attrs.a41}}"/><circle cx="{{content:workspace.attrs.a42}}" cy="{{content:workspace.attrs.a43}}" r="{{content:workspace.svgRadii.visualReference}}"/><path d="{{content:workspace.attrs.a44}}"/></svg></button>
+        <button class="rb" data-flt="note" data-tip="{{content:workspace.attrs.a45}}" aria-label="{{content:workspace.attrs.a46}}" data-sf-call="cvFilter" data-value="note"><svg viewBox="{{content:workspace.attrs.a47}}"><path d="{{content:workspace.attrs.a48}}"/><path d="{{content:workspace.attrs.a49}}"/></svg></button>
       </div>
     </div>
     <!-- focus / edit lightbox -->
-    <div class="cv-focus" id="sf-cvFocus"><div class="cv-focus-bd" id="sf-cvFocusBd"></div><button class="preview-close" type="button" data-sf-call="cvUnfocus" aria-label="关闭预览">×</button><div class="cv-focus-stage" id="sf-cvFocusStage"></div></div>
+    <div class="cv-focus" id="{{content:workspace.attrs.a50}}"><div class="cv-focus-bd" id="{{content:workspace.attrs.a51}}"></div><button class="preview-close" type="button" data-sf-call="cvUnfocus" aria-label="{{content:workspace.attrs.a52}}">{{content:workspace.text.t9}}</button><div class="cv-focus-stage" id="{{content:workspace.attrs.a53}}"></div></div>
 
     <div class="stage">
-      <div class="browser" data-cmp data-nofocus data-passive id="sf-browser">
+      <div class="browser" data-cmp data-nofocus data-passive id="{{content:workspace.attrs.a54}}">
         <div class="mid">
-          <div class="cpanel" id="sf-cpanel">
-            <div class="cp-main"><button class="cp-close" type="button" data-sf-call="cpClose" aria-label="关闭上下文面板">×</button>
+          <div class="cpanel" id="{{content:workspace.attrs.a55}}">
+            <div class="cp-main"><button class="cp-close" type="button" data-sf-call="cpClose" aria-label="{{content:workspace.attrs.a56}}">{{content:workspace.text.t10}}</button>
               <div class="cp-fade t"></div>
-              <div class="cp-body" id="sf-cpBody"></div>
+              <div class="cp-body" id="{{content:workspace.attrs.a57}}"></div>
               <div class="cp-fade b"></div>
             </div>
           </div>
           <div class="bpanel">
             <div class="b-main">
               <div class="bfade t"></div>
-              <div class="monitor" hidden><div class="monitor-picture" id="sf-monitorPicture" data-sf-call="selShot" data-value="0" role="button" tabindex="0" aria-label="当前镜头"></div><div class="monitor-info"><span id="sf-monitorTime"></span><span id="sf-monitorName"></span><span id="sf-monitorNote"></span></div></div>
-              <div class="bview" id="sf-bview"></div>
+              <div class="monitor" hidden><div class="monitor-picture" id="{{content:workspace.attrs.a58}}" data-sf-call="selShot" data-value="0" role="button" tabindex="{{content:workspace.attrs.a59}}" aria-label="{{content:workspace.attrs.a60}}"></div><div class="monitor-info"><span id="{{content:workspace.attrs.a61}}"></span><span id="{{content:workspace.attrs.a62}}"></span><span id="{{content:workspace.attrs.a63}}"></span></div></div>
+              <div class="bview" id="{{content:workspace.attrs.a64}}"></div>
               <div class="bfade b"></div>
             </div>
           </div>
         </div></div>
 
-      <div class="timeline" data-cmp data-nofocus data-hold data-live tabindex="0" aria-label="时间线">
+      <div class="timeline" data-cmp data-nofocus data-hold data-live tabindex="{{content:workspace.attrs.a65}}" aria-label="{{content:workspace.attrs.a66}}">
         <div class="tlctl">
-          <div class="seg" id="sf-layerSeg">
-            <button type="button" class="on" data-sf-call="setLayer" data-value="script">剧本</button>
-            <button type="button" data-sf-call="setLayer" data-value="storyboard">故事板</button>
-            <button type="button" data-sf-call="setLayer" data-value="movie">影片</button>
+          <div class="seg" id="{{content:workspace.attrs.a67}}">
+            <button type="button" class="on" data-sf-call="setLayer" data-value="script">{{content:workspace.text.t11}}</button>
+            <button type="button" data-sf-call="setLayer" data-value="storyboard">{{content:workspace.text.t12}}</button>
+            <button type="button" data-sf-call="setLayer" data-value="movie">{{content:workspace.text.t13}}</button>
           </div>
           <div class="tlhead">
-          <div class="tlname" id="sf-tlname" data-sf-call="toggleTlMenu"><span id="sf-tlnameLabel">Timeline A</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div>
-          <div class="tltrack" id="sf-tltrack">
-            <button class="tt" data-track="graphics" data-sf-call="setTrack" data-value="graphics" aria-label="图形轨道"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6.5V5h14v1.5"/><path d="M12 5v14"/><path d="M9.2 19h5.6"/></svg></button>
-            <button class="tt on" data-track="video" data-sf-call="setTrack" data-value="video" aria-label="视频轨道"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="13" rx="2.2"/><path d="M10.5 9.2l4 2.8-4 2.8z" fill="currentColor" stroke="none"/></svg></button>
-            <button class="tt" data-track="audio" data-sf-call="setTrack" data-value="audio" aria-label="音频轨道"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11v2M8 8.5v7M12 5v14M16 8.5v7M20 11v2"/></svg></button>
+          <div class="tlname" id="{{content:workspace.attrs.a68}}" data-sf-call="toggleTlMenu"><span id="{{content:workspace.attrs.a69}}">{{content:workspace.text.t14}}</span><svg viewBox="{{content:workspace.attrs.a70}}" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="{{content:workspace.attrs.a71}}"/></svg></div>
+          <div class="tltrack" id="{{content:workspace.attrs.a72}}">
+            <button class="tt" data-track="graphics" data-sf-call="setTrack" data-value="graphics" aria-label="{{content:workspace.attrs.a73}}"><svg viewBox="{{content:workspace.attrs.a74}}" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="{{content:workspace.attrs.a75}}"/><path d="{{content:workspace.attrs.a76}}"/><path d="{{content:workspace.attrs.a77}}"/></svg></button>
+            <button class="tt on" data-track="video" data-sf-call="setTrack" data-value="video" aria-label="{{content:workspace.attrs.a78}}"><svg viewBox="{{content:workspace.attrs.a79}}" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="{{content:workspace.attrs.a80}}" y="{{content:workspace.attrs.a81}}" width="{{content:workspace.attrs.a82}}" height="{{content:workspace.attrs.a83}}" rx="{{content:workspace.attrs.a84}}"/><path d="{{content:workspace.attrs.a85}}" fill="currentColor" stroke="none"/></svg></button>
+            <button class="tt" data-track="audio" data-sf-call="setTrack" data-value="audio" aria-label="{{content:workspace.attrs.a86}}"><svg viewBox="{{content:workspace.attrs.a87}}" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="{{content:workspace.attrs.a88}}"/></svg></button>
           </div>
-          <button type="button" class="transport" id="sf-transport" data-sf-call="transport" aria-label="播放" aria-pressed="false">▶</button>
-          <div class="tlmenu" id="sf-tlmenu"></div>
+          <button type="button" class="transport" id="{{content:workspace.attrs.a89}}" data-sf-call="transport" aria-label="{{content:workspace.attrs.a90}}" aria-pressed="{{content:workspace.attrs.a91}}">{{content:workspace.text.t15}}</button>
+          <div class="tlmenu" id="{{content:workspace.attrs.a92}}"></div>
         </div>
-          <div class="seg" id="sf-zoomSeg">
-            <button type="button" data-sf-call="setZoom" data-value="Film">全片</button>
-            <button type="button" data-sf-call="setZoom" data-value="Act">幕</button>
-            <button type="button" data-sf-call="setZoom" data-value="Scene">场</button>
-            <button type="button" data-sf-call="setZoom" data-value="Beat">节拍</button>
-            <button type="button" class="on" data-sf-call="setZoom" data-value="Shot">镜头</button>
+          <div class="seg" id="{{content:workspace.attrs.a93}}">
+            <button type="button" data-sf-call="setZoom" data-value="Film">{{content:workspace.text.t16}}</button>
+            <button type="button" data-sf-call="setZoom" data-value="Act">{{content:workspace.text.t17}}</button>
+            <button type="button" data-sf-call="setZoom" data-value="Scene">{{content:workspace.text.t18}}</button>
+            <button type="button" data-sf-call="setZoom" data-value="Beat">{{content:workspace.text.t19}}</button>
+            <button type="button" class="on" data-sf-call="setZoom" data-value="Shot">{{content:workspace.text.t20}}</button>
           </div>
         </div>
 
         <div class="tlrow">
-          <div class="stripwrap"><div class="filmstrip" id="sf-strip">
-            <div class="filmtrack" id="sf-ftrack"><div class="playhead" id="sf-playhead" aria-hidden="true"></div>
-              <div class="perfbar top" id="sf-perfTop"></div>
-              <div class="frames" id="sf-frames"></div>
-              <div class="perfbar bot" id="sf-perfBot"></div>
+          <div class="stripwrap"><div class="filmstrip" id="{{content:workspace.attrs.a94}}">
+            <div class="filmtrack" id="{{content:workspace.attrs.a95}}"><div class="playhead" id="{{content:workspace.attrs.a96}}" aria-hidden="true"></div>
+              <div class="perfbar top" id="{{content:workspace.attrs.a97}}"></div>
+              <div class="frames" id="{{content:workspace.attrs.a98}}"></div>
+              <div class="perfbar bot" id="{{content:workspace.attrs.a99}}"></div>
             </div>
           </div></div>
-          <div class="hero" id="sf-hero"></div>
-          <div class="lane-heads" id="sf-laneHeads"></div>
+          <div class="hero" id="{{content:workspace.attrs.a100}}"></div>
+          <div class="lane-heads" id="{{content:workspace.attrs.a101}}"></div>
         </div>
       </div>
 
       <div class="copilot" data-cmp data-hold>
-        <div class="history-gap"><button type="button" class="history-toggle" id="sf-historyToggle" aria-label="聊天记录" aria-expanded="false" aria-pressed="false" data-sf-call="toggleHistory"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button></div>
+        <div class="history-gap"><button type="button" class="history-toggle" id="{{content:workspace.attrs.a102}}" aria-label="{{content:workspace.attrs.a103}}" aria-expanded="{{content:workspace.attrs.a104}}" aria-pressed="{{content:workspace.attrs.a105}}" data-sf-call="toggleHistory"><svg viewBox="{{content:workspace.attrs.a106}}" fill="none" stroke="currentColor" stroke-width="{{content:workspace.attrs.a107}}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{content:workspace.attrs.a108}}"/></svg></button></div>
         <div class="ctrace">
           <div class="cglass"></div>
-          <div class="ctrace-body" id="sf-ctraceBody" tabindex="-1">
-            <div id="sf-ctraceInner"></div>
+          <div class="ctrace-body" id="{{content:workspace.attrs.a109}}" tabindex="{{content:workspace.attrs.a110}}">
+            <div id="{{content:workspace.attrs.a111}}"></div>
           </div>
         </div>
         <div class="cbar">
-          <div id="sf-cinput" contenteditable="true" role="textbox" aria-multiline="true" aria-label="告诉 AI 你想要什么" data-ph="告诉 AI 你想要什么，其余交给它"></div><div class="mention-menu" id="sf-mentions" role="listbox" hidden></div>
-          <button class="send" aria-label="发送" data-keep data-sf-call="send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+          <div id="{{content:workspace.attrs.a112}}" contenteditable="true" role="textbox" aria-multiline="true" aria-label="{{content:workspace.attrs.a113}}" data-ph="{{content:workspace.attrs.a114}}"></div><div class="mention-menu" id="{{content:workspace.attrs.a115}}" role="listbox" hidden></div>
+          <button class="send" aria-label="{{content:workspace.attrs.a116}}" data-keep data-sf-call="send"><svg viewBox="{{content:workspace.attrs.a117}}" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="{{content:workspace.attrs.a118}}"/></svg></button>
         </div>
       </div>
     </div>
-    <div class="reply" id="sf-reply" role="status"></div>
+    <div class="reply" id="{{content:workspace.attrs.a119}}" role="status"></div>
   </div>
-  <div class="sub">动效规则 <small>每一条都按右边的按钮单独看</small></div>
-  <div class="bento" id="motion" data-scope="motion"></div>
+  <div class="sub">{{content:workspace.text.t21}} <small>{{content:workspace.text.t22}}</small></div>
+  <div class="bento" id="{{content:workspace.attrs.a120}}" data-scope="motion"></div>
 
-  <div class="sub">三种让位的判据 <small>Story Forge 里的真实情况</small></div>
+  <div class="sub">{{content:workspace.text.t23}} <small>{{content:workspace.text.t24}}</small></div>
   <div class="grid g3">
-    <div class="card"><div class="b">挤占</div><p class="sm mute sf-giveway-note">两者要同时看、互相对照。</p><p class="xs">上下文面板打开时，阅读列让位；观看时监看视窗放大，侧栏暂时让开。多行输入把时间线上推，轨道行高不随选择改变。</p></div>
-    <div class="card"><div class="b">覆盖</div><p class="sm mute sf-giveway-note">临时查看，用完就走。</p><p class="xs">悬停历史按钮，聊天记录以毛玻璃浮层盖在时间线上；移开即收起。素材预览使用半透明黑色影院背景，不改变正文的滚动余量。</p></div>
-    <div class="card"><div class="b">退场</div><p class="sm mute sf-giveway-note">两者争同一块位置。</p><p class="xs">点击历史按钮固定记录，时间线收起；再次点击恢复。仅聚焦对话不会隐藏时间线，Explore 模式仍不显示时间线。</p></div>
+    <div class="card"><div class="b">{{content:workspace.text.t25}}</div><p class="sm mute sf-giveway-note">{{content:workspace.text.t26}}</p><p class="xs">{{content:workspace.text.t27}}</p></div>
+    <div class="card"><div class="b">{{content:workspace.text.t28}}</div><p class="sm mute sf-giveway-note">{{content:workspace.text.t29}}</p><p class="xs">{{content:workspace.text.t30}}</p></div>
+    <div class="card"><div class="b">{{content:workspace.text.t31}}</div><p class="sm mute sf-giveway-note">{{content:workspace.text.t32}}</p><p class="xs">{{content:workspace.text.t33}}</p></div>
   </div>
 </section>
 
@@ -135,20 +136,20 @@
 </section>
 
 <section class="wrap sec" id="canvas">
-  <div class="sec-h"><div><div class="k">07 / CANVAS · NODES</div><h2>画布与节点</h2></div><p>节点图可拖动节点、连接跟随；右侧配置项能折叠、能拖动排序。下面的业务蓝图来自 Puzzle：框选区域、看汇总。</p></div>
+  <div class="sec-h"><div><div class="k">{{content:canvas.text.t0}}</div><h2>{{content:canvas.text.t1}}</h2></div><p>{{content:canvas.text.t2}}</p></div>
   <div class="node-app" id="nodeApp" data-scope="node" data-hold>
-    <div class="node-stage" id="nodeStage" data-canvas><div class="cv-world" id="nodeWorld"><svg class="node-wires" id="wires"></svg></div><div class="nd-hint xs faint">点一个节点：配置面板叠在画布上，无关节点变暗。拖空白处平移，Ctrl + 滚轮缩放，点空白处退出。</div><button class="btn run-f" id="runBtn" data-keep>▶ 运行流程</button></div><div class="cvz" data-keep role="group" aria-label="画布视图"><button data-cv="out" aria-label="缩小画布">−</button><output data-cv="z">100%</output><button data-cv="in" aria-label="放大画布">+</button><button data-cv="fit">适合画布</button></div>
-    <aside class="node-side" id="nodeSide" data-keep><div class="side-in"><div class="between"><b>配置</b><span class="xs mute" id="nodeName">Camera</span></div><div id="cfg" style="margin-top:calc(10px*var(--y))"></div></div></aside>
+    <div class="node-stage" id="nodeStage" data-canvas><div class="cv-world" id="nodeWorld"><svg class="node-wires" id="wires"></svg></div><div class="nd-hint xs faint">{{content:canvas.text.t3}}</div><button class="btn run-f" id="runBtn" data-keep>{{content:canvas.text.t4}}</button></div><div class="cvz" data-keep role="group" aria-label="{{content:canvas.view.group}}"><button data-cv="out" aria-label="{{content:canvas.view.out}}">{{content:canvas.text.t14}}</button><output data-cv="z">{{content:canvas.text.t15}}</output><button data-cv="in" aria-label="{{content:canvas.view.in}}">{{content:canvas.text.t16}}</button><button data-cv="fit">{{content:canvas.text.t17}}</button></div>
+    <aside class="node-side" id="nodeSide" data-keep><div class="side-in"><div class="between"><b>{{content:canvas.text.t9}}</b><span class="xs mute" id="nodeName">{{content:canvas.text.t10}}</span></div><div id="cfg" style="{{style:canvas.styles.config}}"></div></div></aside>
   </div>
-  <p class="note">节点待机只有标题和预览，端口和工具悬停才出现。配置组用握把拖动，也能用键盘 ↑↓ 排序。</p>
+  <p class="note">{{content:canvas.text.t11}}</p>
 
-  <div class="sub">业务蓝图 <small>来源：Puzzle 视频。悬停预览一组的连线，点击后汇总面板叠在画布上</small></div>
-  <div class="bp" id="bp" data-scope="bp" data-hold><div class="bp-board" id="bpBoard" data-canvas></div><div class="cvz" data-keep role="group" aria-label="画布视图"><button data-cv="out" aria-label="缩小画布">−</button><output data-cv="z">100%</output><button data-cv="in" aria-label="放大画布">+</button><button data-cv="fit">适合画布</button></div><aside class="bp-side" id="bpSide" data-keep></aside></div>
+  <div class="sub">{{content:canvas.text.t12}}<small>{{content:canvas.text.t13}}</small></div>
+  <div class="bp" id="bp" data-scope="bp" data-hold><div class="bp-board" id="bpBoard" data-canvas></div><div class="cvz" data-keep role="group" aria-label="{{content:canvas.view.group}}"><button data-cv="out" aria-label="{{content:canvas.view.out}}">{{content:canvas.text.t14}}</button><output data-cv="z">{{content:canvas.text.t15}}</output><button data-cv="in" aria-label="{{content:canvas.view.in}}">{{content:canvas.text.t16}}</button><button data-cv="fit">{{content:canvas.text.t17}}</button></div><aside class="bp-side" id="bpSide" data-keep></aside></div>
 </section>
 
 <section class="wrap sec" id="maps">
-  <div class="sec-h"><div><div class="k">08 / MAPS</div><h2>关系图</h2></div><p>把抽象关系变成能探索的空间。来源：X 上的角色地图、抖音的创作面板。彩色主题效果最明显；荧光方案下为单色。</p></div>
+  <div class="sec-h"><div><div class="k">{{content:maps.text.kicker}}</div><h2>{{content:maps.text.title}}</h2></div><p>{{content:maps.text.intro}}</p></div>
   <div class="rolemap" id="rolemap" data-scope="rm" data-dim="none" data-hold data-cmp></div>
-  <div class="sub">扇形展开 <small>点左边切类别；悬停条目预览连线；点条目后详情挤进来，点外面退出</small></div>
+  <div class="sub">{{content:maps.text.fanTitle}}<small>{{content:maps.text.fanNote}}</small></div>
   <div class="fan" id="fan" data-scope="fan" data-dim="none" data-hold data-cmp></div>
 </section>

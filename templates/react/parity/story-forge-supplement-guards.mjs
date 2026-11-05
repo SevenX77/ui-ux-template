@@ -1,0 +1,18 @@
+/** Deterministic input-guard tests only. No browser, DOM or HTTP request. */
+import {mkdir,writeFile,stat,readFile} from 'node:fs/promises';
+import path from 'node:path';
+import {createHash} from 'node:crypto';
+import {runStoryForgeSupplement,STORY_FORGE_SUPPLEMENT_CASES} from './story-forge-supplement.mjs';
+const reportPath=process.argv[2];if(!reportPath)throw Error('Report path required');
+const dir=reportPath+'.fixtures';await mkdir(path.dirname(reportPath),{recursive:true});
+const fixtures=[];const reject=(name,delta,pattern)=>fixtures.push({name,delta,expected:'reject-before-page-or-artifact',pattern});
+for(const key of ['cases','themes','languages']){reject(key+' empty array',{[key]:[]},key+' selection must be a nonempty');reject(key+' empty string',{[key]:''},key+' selection must be a nonempty');reject(key+' empty comma entry',{[key]:key==='cases'?'motion,':key==='themes'?'pure,':'zh,'},key+' selection must be a nonempty');reject(key+' null',{[key]:null},key+' selection must be a nonempty');reject(key+' nonstring entry',{[key]:[1]},key+' selection must be a nonempty');const item=key==='cases'?'motion':key==='themes'?'pure':'zh';reject(key+' duplicate array',{[key]:[item,item]},key+' selection has duplicate');reject(key+' duplicate normalized string',{[key]:item+', '+item+' '},key+' selection has duplicate');reject(key+' unknown entry',{[key]:['__unknown__']},key+' selection has unknown');}
+reject('long case needs opt-in',{cases:['natural-images']},'Natural images require --include-playback');
+fixtures.push({name:'default nonempty selections',delta:{cases:undefined,themes:undefined,languages:undefined},expected:'reaches-sentinel-without-browser'});
+fixtures.push({name:'one explicit valid selection',delta:{cases:['motion'],themes:['pure'],languages:['zh']},expected:'reaches-sentinel-without-browser'});
+fixtures.push({name:'normalized nonempty valid lists',delta:{cases:' motion , reading-drag ',themes:' pure , neon ',languages:' zh , en '},expected:'reaches-sentinel-without-browser'});
+const results=[];
+for(let i=0;i<fixtures.length;i++){const f=fixtures[i],artifactDir=path.join(dir,String(i)),pageAccess=[],sentinel=Error('GUARDS_COMPLETED_NO_BROWSER'),page=new Proxy({}, {get(_t,k){pageAccess.push(String(k));throw sentinel;}});let observed,pass=false;
+ try{await runStoryForgeSupplement(page,{url:'http://127.0.0.1:1/not-contacted',reportPath:reportPath+'.unused',expectedDocumentSha256:'0'.repeat(64),artifactDir,cases:['motion'],themes:['pure'],languages:['zh'],...f.delta});observed='UNEXPECTED_FULFILLMENT';}catch(e){observed=e.message;pass=f.expected==='reaches-sentinel-without-browser'?e===sentinel:e!==sentinel&&new RegExp(f.pattern).test(e.message);}
+ let created=false;try{created=(await stat(artifactDir)).isDirectory();}catch{}if(f.expected==='reject-before-page-or-artifact')pass=pass&&!created&&pageAccess.length===0;results.push({...f,observed,pass,pageAccess,artifactDirCreated:created});}
+const source=new URL('./story-forge-supplement.mjs',import.meta.url),report={kind:'Deterministic API input guards; no application behavior or acceptance',runnerSha256:createHash('sha256').update(await readFile(source)).digest('hex'),interfaceCaseCount:STORY_FORGE_SUPPLEMENT_CASES.length,fixtures:results,allGuardsMatch:results.length>0&&results.every(r=>r.pass),scope:'Proxy sentinel proves invalid inputs reject before page access/artifact creation; valid inputs reach next-stage sentinel only. No browser/context/HTTP request is created.'};await writeFile(reportPath,JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify({report:reportPath,fixtures:results.length,allGuardsMatch:report.allGuardsMatch,failed:results.filter(r=>!r.pass)}));if(!report.allGuardsMatch)process.exitCode=1;

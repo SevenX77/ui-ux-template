@@ -235,7 +235,7 @@ export function Table() {
     <div className={`dt card${dense ? ' dense' : ''}`} id="dt" ref={root} data-scope="dt" data-dim="none" data-cmp="" data-hold="">
       <div className="dt-bar">
         <b>{t(T.text.t3)}</b>
-        <Segmented id="dtSt" role="group" aria-label={t(T.text.t14)}>{['全部', ...T.statuses].map(value => <button key={value} data-s={value} className={value === status ? 'on' : undefined} onClick={() => redraw(() => {setStatus(value); setPage(0);})}>{t(value)} <small className="xs" style={style(T.styles.statusCount)}>{value === '全部' ? records.length : records.filter(record => record.status === value).length}</small></button>)}</Segmented>
+        <Segmented id="dtSt" role="group" aria-label={t(T.text.t14)}>{['全部', ...T.statuses].map(value => <button key={value} data-s={value} className={value === status ? 'on' : undefined} onClick={() => redraw(() => {setStatus(value); setPage(0);})}>{`${t(value)} `}<small className="xs" style={style(T.styles.statusCount)}>{value === '全部' ? records.length : records.filter(record => record.status === value).length}</small></button>)}</Segmented>
         <span style={style(T.styles.flex)} />
         <span className="sq-w"><input className="input sq" id="dtQ" value={query} placeholder={t(T.text.t15)} aria-label={t(T.text.t15)} onChange={event => redraw(() => {setQuery(event.target.value); setPage(0);})} /></span>
         <Segmented className="seg quiet" id="dtD" role="group" aria-label={t(T.text.t16)}><button className={!dense ? 'on' : undefined} onClick={() => setDense(false)}>{t(T.text.t4)}</button><button className={dense ? 'on' : undefined} onClick={() => setDense(true)}>{t(T.text.t5)}</button></Segmented>

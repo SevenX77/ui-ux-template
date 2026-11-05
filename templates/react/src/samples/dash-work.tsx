@@ -1,6 +1,8 @@
 import {Fragment, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent} from 'react';
 import dash from '@core/content/dash.json';
 import work from '@core/content/work.json';
+import dailyContent from '@core/content/daily.json';
+import {dailyBooking} from '@core/behavior/daily.js';
 import {UX, whenSeen, countUp, useLanguage, useIndicators, useSortable, openModal, closeModal, toast} from '../ui';
 import {Dial} from './found';
 
@@ -89,9 +91,14 @@ export function Work() {
  const c = work, {lang, t} = useLanguage(), ref = useRef<HTMLElement>(null), fileRef = useRef<HTMLDivElement>(null), chooseRef = useRef<HTMLInputElement>(null), calendarRef = useRef<HTMLDivElement>(null), kanRef = useRef<HTMLDivElement>(null);
  const [files, setFiles] = useState<FileRow[]>(() => c.files.map((data, index) => ({id: 'file' + index, data}))), [selected, setSelected] = useState<Set<string>>(() => new Set()), [query, setQuery] = useState(''), [uploading, setUploading] = useState(false), [over, setOver] = useState(false);
  const [picked, setPicked] = useState(c.picked), [preview, setPreview] = useState(c.picked), pickedRef = useRef(picked); pickedRef.current = picked;
+ const [tasksRecord, setTasksRecord] = useState<Record<string, string[]>>(() => Object.fromEntries(Object.entries(c.tasks).map(([day, tasks]) => [day, [...tasks]])));
+ useEffect(() => {
+  const book = (event: Event) => {const detail = (event as CustomEvent<{previousBooking: string | null; slot: string}>).detail; setTasksRecord(tasks => dailyBooking(tasks, detail.previousBooking, detail.slot, dailyContent.booking).tasks); setPicked(dailyContent.booking.day); setPreview(dailyContent.booking.day);};
+  document.addEventListener('sample:daily-booked', book); return () => document.removeEventListener('sample:daily-booked', book);
+ }, []);
  const [columns, setColumns] = useState<Column[]>(() => c.columns.map((column, columnIndex) => ({...column, tasks: column.tasks.map((title, index) => ({id: columnIndex + '-' + index, title}))}))), [liveCounts, setLiveCounts] = useState<number[]>([]);
  const cardIds = useRef(new WeakMap<Element, string>()), nextId = useRef(0), selectionRef = useRef(selected); selectionRef.current = selected;
- const visibleFiles = files.filter(file => file.data[1].includes(query) || t(file.data[1]).toLowerCase().includes(query.toLowerCase())), dayTasks = (c.tasks as Record<string, string[]>)[String(preview)];
+ const visibleFiles = files.filter(file => file.data[1].includes(query) || t(file.data[1]).toLowerCase().includes(query.toLowerCase())), dayTasks = tasksRecord[String(preview)];
  const upload = (on: boolean) => {setUploading(on); if (on) UX.focus(fileRef.current); else if (!selectionRef.current.size && fileRef.current?.classList.contains('ux-focus')) UX.blur(fileRef.current.closest('[data-scope]'));};
  const remove = (ids: Set<string>, message: string) => {if (!ids.size) return; setFiles(values => values.filter(file => !ids.has(file.id))); setSelected(values => new Set([...values].filter(id => !ids.has(id)))); toast(t(message) + ' · ' + ids.size);};
  const archive = (ids: Set<string>) => remove(ids, c.labels.archived);

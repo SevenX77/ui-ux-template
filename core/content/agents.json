@@ -1,0 +1,474 @@
+{
+  "text": {
+    "t0": "03",
+    "t1": "12",
+    "t2": "Mon, Oct 26",
+    "t3": "Dana",
+    "t4": "are you still coming?",
+    "t5": "running 10 min late",
+    "t6": "October",
+    "t7": "Pharmacy day",
+    "t8": "Standup · 9:30",
+    "t9": "Pharmacy 24h",
+    "t10": "12 min · Open now",
+    "t11": "Order",
+    "t12": "Ibuprofen 200 mg × 2",
+    "t13": "Oct 27 · Checker fixed",
+    "t14": "Photos",
+    "t15": "42 tasks done",
+    "t16": "0 errors · 98%",
+    "t17": "Studio Bot",
+    "t18": "Live",
+    "t19": "Balance",
+    "t20": "$78.00",
+    "t21": "Win rate",
+    "t22": "73.5%",
+    "t23": "历史",
+    "t24": "LOG",
+    "t25": "COPY",
+    "t26": "TOP",
+    "t27": "TREND",
+    "t28": "09 / AGENTS",
+    "t29": "多 Agent 运行",
+    "t30": "来源：X 上的 Android Agent 控制台。播放时只有当前角色亮，其他变暗；点一个角色，日志只看它的。",
+    "t31": "任务",
+    "t32": "点击",
+    "t33": "应用",
+    "t34": "拦截错误",
+    "t35": "重置",
+    "t36": "手机端看板 ",
+    "t37": "来源：X 上的 Bot 看板。KPI、切换、通知从顶部滑入，主界面继续更新",
+    "t38": "一致的结构",
+    "t39": "手机上只改变排列，不改变语言：同样的圆角、卡片和信号。悬停在手机上不存在，所以工具常驻，聚焦改由点击触发。",
+    "t40": "Session complete",
+    "t41": "0 errors",
+    "t42": "42 tasks",
+    "t43": "while charging · 03:12",
+    "t44": "0",
+    "t45": "/42",
+    "t46": "/8",
+    "t47": "▶ 播放",
+    "t48": "00:00"
+  },
+  "styles": {
+    "s0": {
+      "textAlign": "center",
+      "paddingTop": "60px",
+      "fontSize": "50px",
+      "fontWeight": "300",
+      "lineHeight": "1"
+    },
+    "s1": {
+      "textAlign": "center",
+      "marginTop": "calc(12px*var(--y))",
+      "color": "#888"
+    },
+    "s2": {
+      "fontSize": "13px"
+    },
+    "s3": {
+      "marginTop": "calc(12px*var(--y))",
+      "background": "#eee",
+      "padding": "6px 9px",
+      "borderRadius": "9px",
+      "display": "inline-block"
+    },
+    "s4": {
+      "textAlign": "right",
+      "marginTop": "calc(8px*var(--y))"
+    },
+    "s5": {
+      "background": "#111",
+      "color": "#fff",
+      "padding": "6px 9px",
+      "borderRadius": "9px",
+      "display": "inline-block"
+    },
+    "s6": {
+      "marginTop": "calc(12px*var(--y))",
+      "background": "#dbeafe",
+      "padding": "8px",
+      "borderRadius": "9px"
+    },
+    "s7": {
+      "marginTop": "calc(8px*var(--y))",
+      "background": "#312e81",
+      "color": "#fff",
+      "padding": "14px 8px",
+      "borderRadius": "9px"
+    },
+    "s8": {
+      "marginTop": "calc(10px*var(--y))",
+      "height": "150px",
+      "borderRadius": "9px",
+      "background": "linear-gradient(115deg,#e8f0e4 48%,#fff 48% 52%,#e8f0e4 52%)"
+    },
+    "s9": {
+      "marginTop": "calc(8px*var(--y))"
+    },
+    "s10": {
+      "marginTop": "calc(10px*var(--y))",
+      "padding": "8px",
+      "background": "#f4f4f4",
+      "borderRadius": "9px"
+    },
+    "s11": {
+      "marginTop": "calc(8px*var(--y))",
+      "padding": "8px",
+      "borderRadius": "9px",
+      "boxShadow": "0 0 0 2px #10b981"
+    },
+    "s12": {
+      "display": "grid",
+      "gridTemplateColumns": "1fr 1fr 1fr",
+      "gap": "3px",
+      "marginTop": "calc(10px*var(--y))"
+    },
+    "s13": {
+      "aspectRatio": "1",
+      "background": "#ddd",
+      "display": "block",
+      "borderRadius": "9px"
+    },
+    "s14": {
+      "position": "absolute",
+      "inset": "0",
+      "background": "#000",
+      "color": "#fff",
+      "textAlign": "center",
+      "paddingTop": "60px"
+    },
+    "s15": {
+      "fontSize": "50px",
+      "fontWeight": "300",
+      "lineHeight": "1"
+    },
+    "s16": {
+      "marginTop": "calc(22px*var(--y))",
+      "fontSize": "12px"
+    },
+    "s17": {
+      "color": "#888"
+    },
+    "s18": {
+      "background": "var(--good)"
+    },
+    "s19": {
+      "gap": "6px"
+    },
+    "s20": {
+      "minHeight": "0",
+      "padding": "9px 11px",
+      "borderRadius": "16px"
+    },
+    "s21": {
+      "fontSize": "18px"
+    },
+    "s22": {
+      "padding": "8px 10px",
+      "borderRadius": "16px"
+    },
+    "s23": {
+      "width": "100%",
+      "height": "64px",
+      "display": "block"
+    },
+    "s24": {
+      "display": "grid",
+      "gridTemplateColumns": "repeat(4,1fr)",
+      "textAlign": "center"
+    },
+    "s25": {
+      "flex": "1",
+      "padding": "9px 11px",
+      "borderRadius": "16px",
+      "fontSize": "10.5px",
+      "lineHeight": "1.7",
+      "overflow": "hidden",
+      "maskImage": "var(--fade-b)"
+    },
+    "s26": {
+      "gridTemplateColumns": "minmax(0,340px) minmax(0,1fr)",
+      "gap": "14px"
+    },
+    "s27": {
+      "alignContent": "start"
+    },
+    "s28": {
+      "marginTop": "calc(6px*var(--y))"
+    },
+    "s29": {
+      "minHeight": "130px",
+      "display": "flex",
+      "flexDirection": "column",
+      "justifyContent": "space-between"
+    },
+    "s30": {
+      "background": "rgba(255,255,255,.2)",
+      "color": "#fff"
+    },
+    "s31": {
+      "opacity": ".85",
+      "marginTop": "calc(6px*var(--y))"
+    }
+  },
+  "attrs": {
+    "a0": "0 0 300 90",
+    "a1": "none"
+  },
+  "crew": [
+    {
+      "name": "Planner",
+      "color": "c2",
+      "index": 0,
+      "face": "M15 3a12 12 0 1 0 0 24 12 12 0 0 0 0-24Z"
+    },
+    {
+      "name": "Reader",
+      "color": "c4",
+      "index": 1,
+      "face": "M15 2l3 5 6-1-1 6 5 3-5 3 1 6-6-1-3 5-3-5-6 1 1-6-5-3 5-3-1-6 6 1Z"
+    },
+    {
+      "name": "Tapper",
+      "color": "c5",
+      "index": 2,
+      "face": "M6 12a9 9 0 0 1 18 0v12l-4-3-5 3-5-3-4 3Z"
+    },
+    {
+      "name": "Typer",
+      "color": "c3",
+      "index": 3,
+      "face": "M15 26C7 20 4 15 5 10a6 6 0 0 1 10-2 6 6 0 0 1 10 2c1 5-2 10-10 16Z"
+    },
+    {
+      "name": "Checker",
+      "color": "c1",
+      "index": 4,
+      "face": "M15 3l12 24H3Z"
+    }
+  ],
+  "queue": [
+    [
+      "回复 Dana",
+      "消息"
+    ],
+    [
+      "周会改到 9:30",
+      "日历"
+    ],
+    [
+      "查附近药店",
+      "地图"
+    ],
+    [
+      "下单布洛芬",
+      "表单"
+    ],
+    [
+      "清理重复照片",
+      "相册"
+    ]
+  ],
+  "scenes": [
+    {
+      "crew": 0,
+      "log": [
+        "$ agent attach old-android",
+        "planner: 5 tasks · dry run ok"
+      ],
+      "tap": [
+        50,
+        86
+      ],
+      "q": -1
+    },
+    {
+      "crew": 2,
+      "log": [
+        "tap messages (118, 742)",
+        "reader: 7 elements"
+      ],
+      "tap": [
+        60,
+        88
+      ],
+      "q": 0
+    },
+    {
+      "crew": 3,
+      "log": [
+        "type \"running 10 min late\"",
+        "checker: OK reply - Dana"
+      ],
+      "tap": [
+        80,
+        90
+      ],
+      "q": 0
+    },
+    {
+      "crew": 2,
+      "log": [
+        "swipe standup → 9:30",
+        "checker: OK standup"
+      ],
+      "tap": [
+        50,
+        48
+      ],
+      "q": 1
+    },
+    {
+      "crew": 1,
+      "log": [
+        "screenshot → vision: 12 elements",
+        "route: pharmacy 24h — 12 min"
+      ],
+      "tap": [
+        56,
+        40
+      ],
+      "q": 2
+    },
+    {
+      "crew": 4,
+      "log": [
+        "type date \"Oct 27\"",
+        "checker: FAIL wrong date - Oct 26 ≠ Oct 27",
+        "rollback → clear date field",
+        "type date \"Oct 27\"",
+        "checker: OK order"
+      ],
+      "tap": [
+        50,
+        48
+      ],
+      "q": 3,
+      "err": 1
+    },
+    {
+      "crew": 2,
+      "log": [
+        "find duplicates → 3",
+        "backup 214 photos"
+      ],
+      "tap": [
+        30,
+        50
+      ],
+      "q": 4
+    },
+    {
+      "crew": 0,
+      "log": [
+        "42/42 verified · 1 caught · 0 errors",
+        "session complete"
+      ],
+      "q": 5
+    }
+  ],
+  "mobilePanels": {
+    "LOG": [
+      "[SCAN] 400 pairs",
+      "[EXEC] buy 1.91",
+      "[FILL] sold +3.73",
+      "[RISK] skipped dev 11%",
+      "[COPY] top-10 mirrored",
+      "[EXEC] buy 2.14"
+    ],
+    "COPY": [
+      "COPIED BUY · OPEN",
+      "COPIED SELL · +5.05",
+      "COPIED BUY · OPEN",
+      "COPIED BUY · OPEN"
+    ],
+    "TOP": [
+      "1 point farm  +805,947",
+      "2 Unipcs      +646,819",
+      "3 TVMX        +408,259",
+      "4 TheSOLstice +405,854"
+    ],
+    "TREND": [
+      "CLAUDIA ▲ 47.94%",
+      "PURR    ▲ 38.72%",
+      "LMAO    ▲ 35.48%",
+      "HOOKED  ▲ 33.71%"
+    ]
+  },
+  "mobileTabs": [
+    "LOG",
+    "COPY",
+    "TOP",
+    "TREND"
+  ],
+  "mobileSeries": [
+    20,
+    22,
+    21,
+    26,
+    24,
+    30,
+    28,
+    33
+  ],
+  "timing": {
+    "log": 220,
+    "scene": 1700,
+    "mobile": 700,
+    "toast": 2000
+  },
+  "totals": {
+    "tasks": 42,
+    "taps": 115,
+    "apps": 8,
+    "seconds": 19
+  },
+  "logLimit": 17,
+  "queueMarks": {
+    "complete": "✓",
+    "current": "▸",
+    "idle": "·"
+  },
+  "labels": {
+    "play": "▶ 播放",
+    "pause": "暂停",
+    "mobileToast": " · 素材导出完成 +16.24",
+    "taskTotal": "/42",
+    "appTotal": "/8"
+  },
+  "faceAttrs": {
+    "viewBox": "0 0 30 30",
+    "fill": "var(--col)",
+    "eyeFill": "var(--on-c)",
+    "leftX": "11.5",
+    "rightX": "18.5",
+    "eyeY": "15",
+    "eyeRadius": "1.8"
+  },
+  "logStyles": {
+    "bad": {
+      "color": "var(--bad)"
+    },
+    "good": {
+      "color": "var(--c1)"
+    }
+  },
+  "mobilePlot": {
+    "viewBox": "0 0 300 90",
+    "width": 290,
+    "baseline": 85,
+    "height": 90,
+    "fill": "var(--c1)",
+    "fillOpacity": ".14",
+    "strokeWidth": "2",
+    "radius": "4"
+  },
+  "mobileLineStyle": {
+    "animation": "fadeUp .25s both"
+  },
+  "mobileToastEvery": 6,
+  "logHidden": {
+    "display": "none"
+  }
+}

@@ -1,0 +1,1675 @@
+{
+  "logLine": "A teenager tries to stop his parents changing while a television insists the world is still normal.",
+  "shots": [
+    {
+      "id": "s01",
+      "num": 1,
+      "dur": 4,
+      "scene": "scene1",
+      "beat": "wake",
+      "cast": [
+        "joe"
+      ],
+      "desc": "Joe wakes, blue light on his face",
+      "picture": "shot-joe-crt-closeup",
+      "size": "Close-up",
+      "lens": "50mm",
+      "move": "Locked",
+      "props": [
+        "CRT spill"
+      ]
+    },
+    {
+      "id": "s02",
+      "num": 2,
+      "dur": 5,
+      "scene": "scene2",
+      "beat": "broadcast",
+      "cast": [
+        "pete",
+        "donna"
+      ],
+      "desc": "Parents rigid on the sofa",
+      "picture": "shot-parents-living-room",
+      "size": "Wide",
+      "lens": "35mm",
+      "move": "Locked symmetrical",
+      "props": [
+        "CRT television",
+        "sofa",
+        "cushion",
+        "remote"
+      ]
+    },
+    {
+      "id": "s03",
+      "num": 3,
+      "dur": 3,
+      "scene": "scene2",
+      "beat": "broadcast",
+      "cast": [],
+      "desc": "Insert: white street on the TV",
+      "picture": "shot-crt-static",
+      "size": "Insert",
+      "lens": "85mm",
+      "move": "Locked",
+      "props": [
+        "CRT television"
+      ]
+    },
+    {
+      "id": "s04",
+      "num": 4,
+      "dur": 4,
+      "scene": "scene2",
+      "beat": "broadcast",
+      "cast": [
+        "joe"
+      ],
+      "desc": "Joe in the doorway",
+      "picture": "shot-joe-recognition",
+      "size": "Medium close-up",
+      "lens": "50mm",
+      "move": "Slow push",
+      "props": [
+        "doorway"
+      ]
+    },
+    {
+      "id": "s05",
+      "num": 5,
+      "dur": 4,
+      "scene": "scene2",
+      "beat": "morph",
+      "cast": [
+        "pete"
+      ],
+      "desc": "Cheek turns to wool",
+      "picture": "shot-sheep-morph",
+      "size": "Close-up",
+      "lens": "85mm",
+      "move": "Locked",
+      "props": [
+        "wool",
+        "shirt button"
+      ]
+    },
+    {
+      "id": "s06",
+      "num": 6,
+      "dur": 3,
+      "scene": "scene2",
+      "beat": "morph",
+      "cast": [
+        "joe"
+      ],
+      "desc": "Hand on the hammer",
+      "picture": "shot-hammer-prop",
+      "size": "Hand insert",
+      "lens": "85mm",
+      "move": "Locked",
+      "props": [
+        "hammer",
+        "radiator"
+      ]
+    },
+    {
+      "id": "s07",
+      "num": 7,
+      "dur": 2,
+      "scene": "scene2",
+      "beat": "morph",
+      "cast": [],
+      "desc": "Screen breaks; announcer cuts off",
+      "picture": "shot-broken-tv",
+      "size": "Insert",
+      "lens": "50mm",
+      "move": "Impact",
+      "props": [
+        "broken CRT",
+        "glass",
+        "hammer"
+      ]
+    },
+    {
+      "id": "s08",
+      "num": 8,
+      "dur": 4,
+      "scene": "scene2",
+      "beat": "relief",
+      "cast": [
+        "pete",
+        "donna"
+      ],
+      "desc": "Parents almost human",
+      "picture": "shot-parents-human",
+      "size": "Two-shot",
+      "lens": "50mm",
+      "move": "Locked",
+      "props": [
+        "sofa",
+        "cushion",
+        "remote"
+      ]
+    },
+    {
+      "id": "s09",
+      "num": 9,
+      "dur": 5,
+      "scene": "scene3",
+      "beat": "reveal",
+      "cast": [
+        "joe"
+      ],
+      "desc": "Joe above the flooded street",
+      "picture": "shot-sheep-street",
+      "size": "Wide",
+      "lens": "28mm",
+      "move": "Slow reveal",
+      "props": [
+        "balcony rail"
+      ]
+    },
+    {
+      "id": "s10",
+      "num": 10,
+      "dur": 4,
+      "scene": "scene3",
+      "beat": "reveal",
+      "cast": [],
+      "desc": "The flock, all facing the building",
+      "picture": "shot-flock-reveal",
+      "size": "Extreme wide",
+      "lens": "35mm",
+      "move": "Locked",
+      "props": []
+    },
+    {
+      "id": "s11",
+      "num": 11,
+      "dur": 4,
+      "scene": "scene3",
+      "beat": "hold",
+      "cast": [
+        "joe"
+      ],
+      "desc": "Joe between the dead TV, still flickering, and the flock",
+      "picture": "shot-joe-hold",
+      "size": "Wide",
+      "lens": "35mm",
+      "move": "Locked hold",
+      "props": [
+        "broken CRT",
+        "balcony rail"
+      ]
+    },
+    {
+      "id": "s12",
+      "num": 12,
+      "dur": 3,
+      "scene": "scene3",
+      "beat": "hold",
+      "cast": [],
+      "desc": "CUT TO BLACK: noise and breath; end card",
+      "picture": null,
+      "size": "Black",
+      "lens": "None",
+      "move": "None",
+      "props": []
+    }
+  ],
+  "cuts": {
+    "A": {
+      "name": "Picture Lock A",
+      "shotIds": [
+        "s01",
+        "s02",
+        "s03",
+        "s04",
+        "s05",
+        "s06",
+        "s07",
+        "s08",
+        "s09",
+        "s10",
+        "s11",
+        "s12"
+      ]
+    },
+    "B": {
+      "name": "Alt Cut B",
+      "shotIds": [
+        "s01",
+        "s02",
+        "s04",
+        "s05",
+        "s06",
+        "s07",
+        "s08",
+        "s09",
+        "s10",
+        "s12"
+      ]
+    },
+    "C": {
+      "name": "Trailer C",
+      "shotIds": [
+        "s01",
+        "s05",
+        "s07",
+        "s09"
+      ]
+    },
+    "D": {
+      "name": "Teaser D",
+      "shotIds": [
+        "s01",
+        "s04",
+        "s12"
+      ]
+    },
+    "E": {
+      "name": "Festival Master E",
+      "shotIds": [
+        "s01",
+        "s02",
+        "s03",
+        "s04",
+        "s05",
+        "s06",
+        "s07",
+        "s08",
+        "s09",
+        "s10",
+        "s11",
+        "s12"
+      ],
+      "deliverableOf": "A"
+    }
+  },
+  "scenes": {
+    "scene1": {
+      "n": "Scene 1",
+      "slug": "INT. BEDROOM — BEFORE DAWN",
+      "act": "act1",
+      "set": "Bedroom",
+      "textures": "Bed linen · doorway · CRT blue spill",
+      "props": [
+        "bed",
+        "doorway"
+      ],
+      "grad": "var(--sf-shot-joe-crt-closeup) center/cover no-repeat"
+    },
+    "scene2": {
+      "n": "Scene 2",
+      "slug": "INT. LIVING ROOM — BEFORE DAWN",
+      "act": "act1",
+      "set": "Living room",
+      "textures": "Worn sofa · CRT scanlines · amber practical lamps · radiator",
+      "props": [
+        "CRT television",
+        "hammer",
+        "sofa",
+        "cushion",
+        "remote",
+        "wool",
+        "shirt button"
+      ],
+      "grad": "var(--sf-shot-parents-living-room) center/cover no-repeat"
+    },
+    "scene3": {
+      "n": "Scene 3",
+      "slug": "EXT. BALCONY — DAWN",
+      "act": "act2",
+      "set": "Balcony",
+      "textures": "Balcony glass · rail · overexposed flooded street",
+      "props": [
+        "balcony rail",
+        "broken CRT"
+      ],
+      "grad": "var(--sf-shot-sheep-street) center/cover no-repeat"
+    }
+  },
+  "beats": {
+    "wake": "Wake",
+    "broadcast": "Broadcast",
+    "morph": "Morph / Hammer",
+    "relief": "False relief",
+    "reveal": "Reveal",
+    "hold": "Hold"
+  },
+  "characters": {
+    "joe": {
+      "name": "Joe",
+      "sheet": "var(--sf-char-joe) center/cover no-repeat",
+      "voice": "170Hz · sleep-deprived"
+    },
+    "pete": {
+      "name": "Pete",
+      "sheet": "var(--sf-char-pete) center/cover no-repeat",
+      "voice": "105Hz · hollow paternal"
+    },
+    "donna": {
+      "name": "Donna",
+      "sheet": "var(--sf-char-donna) center/cover no-repeat",
+      "voice": "215Hz · almost human"
+    },
+    "announcer": {
+      "name": "Announcer (V.O.)",
+      "voice": "Off-screen · calm, patient broadcast"
+    }
+  },
+  "look": {
+    "grad": "var(--sf-lookbook-camera-board) center/cover no-repeat",
+    "rig": "Alexa LF reference · vintage spherical lenses · generated stills · 16:9",
+    "light": "CRT face key · dirty tungsten practicals · overexposed white exterior",
+    "grade": "Cold cyan signal vs stale amber interiors; texture is in the source image"
+  },
+  "script": [
+    {
+      "id": "scene1",
+      "type": "scene",
+      "shots": [
+        "s01"
+      ],
+      "text": "INT. BEDROOM — BEFORE DAWN"
+    },
+    {
+      "id": "joe_wakes",
+      "type": "action",
+      "shots": [
+        "s01"
+      ],
+      "text": "A television speaks from another room, low and patient. Joe, sixteen, wakes with blue light moving across his face like water."
+    },
+    {
+      "id": "announcer",
+      "type": "dialogue",
+      "speaker": "announcer",
+      "shots": [
+        "s01",
+        "s02",
+        "s03",
+        "s04",
+        "s05",
+        "s06"
+      ],
+      "text": "Everything is normal. Please remain seated."
+    },
+    {
+      "id": "scene2",
+      "type": "scene",
+      "shots": [
+        "s02",
+        "s03",
+        "s04",
+        "s05",
+        "s06",
+        "s07",
+        "s08"
+      ],
+      "text": "INT. LIVING ROOM — BEFORE DAWN"
+    },
+    {
+      "id": "parents_sofa",
+      "type": "action",
+      "shots": [
+        "s02"
+      ],
+      "text": "In the living room, Pete and Donna sit side by side on the sofa. Their hands rest on their knees. Their eyes do not blink."
+    },
+    {
+      "id": "crt_signal",
+      "type": "action",
+      "shots": [
+        "s03"
+      ],
+      "text": "The screen shows a perfect white street full of sheep. The apartment is too still to believe the broadcast."
+    },
+    {
+      "id": "joe_question",
+      "type": "dialogue",
+      "speaker": "joe",
+      "shots": [
+        "s04"
+      ],
+      "paren": "(whispering)",
+      "text": "Dad. Mom. Can you hear me?"
+    },
+    {
+      "id": "first_morph",
+      "type": "action",
+      "shots": [
+        "s05"
+      ],
+      "text": "The skin along Pete’s cheek tightens, then dimples into pale wool. His lips barely move."
+    },
+    {
+      "id": "pete_static",
+      "type": "dialogue",
+      "speaker": "pete",
+      "shots": [
+        "s05"
+      ],
+      "paren": "(lips barely moving)",
+      "text": "We are fine. The world is fine."
+    },
+    {
+      "id": "hammer_choice",
+      "type": "action",
+      "shots": [
+        "s06"
+      ],
+      "text": "Joe finds the hammer beside the radiator. He lifts it, but the tool becomes impossibly heavy."
+    },
+    {
+      "id": "screen_break",
+      "type": "action",
+      "shots": [
+        "s07"
+      ],
+      "text": "He swings anyway. Glass flowers outward. The announcer cuts off. The room mutes."
+    },
+    {
+      "id": "false_relief",
+      "type": "action",
+      "shots": [
+        "s08"
+      ],
+      "text": "Static floods back. For one second Pete and Donna look almost human."
+    },
+    {
+      "id": "donna_warning",
+      "type": "dialogue",
+      "speaker": "donna",
+      "shots": [
+        "s08"
+      ],
+      "paren": "(softly)",
+      "text": "Do not go outside, sweetheart."
+    },
+    {
+      "id": "scene3",
+      "type": "scene",
+      "shots": [
+        "s09",
+        "s10",
+        "s11",
+        "s12"
+      ],
+      "text": "EXT. BALCONY — DAWN"
+    },
+    {
+      "id": "balcony_reveal",
+      "type": "action",
+      "shots": [
+        "s09"
+      ],
+      "text": "Joe backs through the balcony door. The city below is silent and overexposed."
+    },
+    {
+      "id": "flock",
+      "type": "action",
+      "shots": [
+        "s10"
+      ],
+      "text": "Thousands of sheep stand in the street, all facing his building."
+    },
+    {
+      "id": "final_hold",
+      "type": "action",
+      "shots": [
+        "s11"
+      ],
+      "text": "Behind Joe, the broken television keeps flickering. Ahead, the flock waits without moving."
+    },
+    {
+      "id": "black",
+      "type": "action",
+      "shots": [
+        "s12"
+      ],
+      "text": "CUT TO BLACK. Noise and breath; end card."
+    }
+  ],
+  "sourceCues": [
+    {
+      "id": "announcer",
+      "lane": "voice",
+      "kind": "aud",
+      "cls": "dial",
+      "start": 0,
+      "end": 23,
+      "text": "ANNOUNCER (V.O.): Everything is normal. Please remain seated.",
+      "row": 1
+    },
+    {
+      "id": "hum",
+      "lane": "sound",
+      "kind": "aud",
+      "cls": "sfx",
+      "start": 0,
+      "end": 23,
+      "text": "CRT hum"
+    },
+    {
+      "id": "impact",
+      "lane": "sound",
+      "kind": "aud",
+      "cls": "sfx",
+      "start": 23,
+      "end": 25,
+      "text": "Hammer and glass · room mute"
+    },
+    {
+      "id": "static",
+      "lane": "sound",
+      "kind": "aud",
+      "cls": "sfx",
+      "start": 25,
+      "end": 42,
+      "text": "Static flood"
+    },
+    {
+      "id": "cloth",
+      "lane": "sound",
+      "kind": "aud",
+      "cls": "sfx",
+      "start": 25,
+      "end": 42,
+      "text": "Sheep cloth and breath · pre-lap",
+      "row": 1
+    },
+    {
+      "id": "noise",
+      "lane": "sound",
+      "kind": "aud",
+      "cls": "sfx",
+      "start": 42,
+      "end": 45,
+      "text": "Noise and breath"
+    },
+    {
+      "id": "music",
+      "lane": "music",
+      "kind": "aud",
+      "cls": "mus",
+      "start": 29,
+      "end": 42,
+      "text": "Sparse reveal cue"
+    },
+    {
+      "id": "title",
+      "lane": "graphics",
+      "kind": "gfx",
+      "cls": "ovl",
+      "shotIds": [
+        "s01"
+      ],
+      "text": "STATIC"
+    },
+    {
+      "id": "chyron",
+      "lane": "graphics",
+      "kind": "gfx",
+      "cls": "ovl",
+      "shotIds": [
+        "s03"
+      ],
+      "text": "ALL IS NORMAL"
+    },
+    {
+      "id": "endcard",
+      "lane": "graphics",
+      "kind": "gfx",
+      "cls": "ovl",
+      "shotIds": [
+        "s12"
+      ],
+      "text": "STATIC · The End"
+    }
+  ],
+  "chat": [
+    {
+      "r": "user",
+      "t": "Let’s build STATIC: Joe wakes up, his parents are changing, and the TV keeps saying the world is normal."
+    },
+    {
+      "r": "bot",
+      "t": "The sample contains <b>12 shots / 45 seconds</b>, nested Film / Act / Scene / Beat / Shot scopes, a lined script and production references."
+    },
+    {
+      "r": "user",
+      "t": "The family wide needs to feel ritualistic. Keep them dead-center on the sofa."
+    },
+    {
+      "r": "bot",
+      "t": "<b>Shot 2</b> is the symmetrical family wide with Pete and Donna. The character-consistency board is an Explore reference; no generation was run."
+    },
+    {
+      "r": "user",
+      "t": "Keep the transformation quiet rather than monstrous."
+    },
+    {
+      "r": "bot",
+      "t": "<b>Shot 5</b> is Pete’s cheek turning to wool. The VFX breakdown remains a planning document, not a shot or a background plate."
+    },
+    {
+      "r": "user",
+      "t": "Show the reveal options."
+    },
+    {
+      "r": "bot",
+      "t": "<b>Shot 9</b> has a circled source still and a same-source framing study at Shot / Footage. These are not rendered alternate video takes."
+    },
+    {
+      "r": "user",
+      "t": "Show the 15-second trailer."
+    },
+    {
+      "r": "bot",
+      "t": "<b>Trailer C</b>: Joe wake-up (1), morph detail (5), broken CRT (7), then the white street (9), <b>15 seconds</b>. Switch cuts with the timeline name. Festival Master E is a deliverable of Picture Lock A."
+    }
+  ],
+  "pipeline": [
+    "Seed",
+    "Script",
+    "Breakdown",
+    "Bible",
+    "Casting",
+    "Locations",
+    "Lookbook and colour script",
+    "Storyboard",
+    "Shot list",
+    "Props and continuity",
+    "VFX breakdown",
+    "Takes",
+    "Edit",
+    "Picture lock",
+    "VFX finals",
+    "Sound",
+    "Grade",
+    "Master QC"
+  ],
+  "explore": [
+    {
+      "id": "n1",
+      "type": "note",
+      "tag": "note",
+      "title": "Seed · Logline",
+      "phase": "Seed",
+      "bodyFrom": "n1"
+    },
+    {
+      "id": "pitch",
+      "type": "img",
+      "tag": "visual",
+      "title": "Pitch Deck Cover",
+      "g": "var(--sf-pitch-deck-cover) center/cover no-repeat",
+      "phase": "Seed"
+    },
+    {
+      "id": "n7",
+      "type": "note",
+      "tag": "note",
+      "title": "STATIC · Lined Script",
+      "phase": "Script",
+      "bodyFrom": "n7"
+    },
+    {
+      "id": "breakdown",
+      "type": "img",
+      "tag": "visual",
+      "title": "Script Breakdown",
+      "g": "var(--sf-script-breakdown-board) center/cover no-repeat",
+      "phase": "Breakdown"
+    },
+    {
+      "id": "i2",
+      "type": "img",
+      "tag": "visual",
+      "title": "Production Bible",
+      "g": "var(--sf-production-bible-spread) center/cover no-repeat",
+      "phase": "Bible"
+    },
+    {
+      "id": "consistency",
+      "type": "img",
+      "tag": "char",
+      "title": "Character Consistency",
+      "g": "var(--sf-character-consistency-board) center/cover no-repeat",
+      "phase": "Bible"
+    },
+    {
+      "id": "i3",
+      "type": "img",
+      "tag": "char",
+      "title": "Casting Contact Sheet",
+      "g": "var(--sf-casting-contact-sheet) center/cover no-repeat",
+      "phase": "Casting"
+    },
+    {
+      "id": "i4",
+      "type": "img",
+      "tag": "visual",
+      "title": "Location Scout Board",
+      "g": "var(--sf-location-scout-board) center/cover no-repeat",
+      "phase": "Locations"
+    },
+    {
+      "id": "i5",
+      "type": "img",
+      "tag": "mood",
+      "title": "Lookbook · Cinematography",
+      "g": "var(--sf-lookbook-camera-board) center/cover no-repeat",
+      "phase": "Lookbook and colour script"
+    },
+    {
+      "id": "i6",
+      "type": "img",
+      "tag": "mood",
+      "title": "Colour Script",
+      "g": "var(--sf-color-script-strip) center/cover no-repeat",
+      "phase": "Lookbook and colour script"
+    },
+    {
+      "id": "i7",
+      "type": "img",
+      "tag": "visual",
+      "title": "Storyboard Wall",
+      "g": "var(--sf-storyboard-wall) center/cover no-repeat",
+      "phase": "Storyboard"
+    },
+    {
+      "id": "i8",
+      "type": "img",
+      "tag": "visual",
+      "title": "Shot List",
+      "g": "var(--sf-shot-list-board) center/cover no-repeat",
+      "phase": "Shot list"
+    },
+    {
+      "id": "i13",
+      "type": "img",
+      "tag": "visual",
+      "title": "Props and Continuity",
+      "g": "var(--sf-props-continuity-board) center/cover no-repeat",
+      "phase": "Props and continuity"
+    },
+    {
+      "id": "i11",
+      "type": "img",
+      "tag": "visual",
+      "title": "VFX Breakdown · planning",
+      "g": "var(--sf-vfx-breakdown-board) center/cover no-repeat",
+      "phase": "VFX breakdown"
+    },
+    {
+      "id": "i9",
+      "type": "img",
+      "tag": "visual",
+      "title": "Takes · reference contact sheet",
+      "g": "var(--sf-video-takes-grid) center/cover no-repeat",
+      "phase": "Takes"
+    },
+    {
+      "id": "i12",
+      "type": "img",
+      "tag": "visual",
+      "title": "Edit Timeline",
+      "g": "var(--sf-editing-timeline-board) center/cover no-repeat",
+      "phase": "Edit"
+    },
+    {
+      "id": "lock",
+      "type": "note",
+      "tag": "note",
+      "title": "Picture Lock A",
+      "phase": "Picture lock",
+      "bodyFrom": "lock"
+    },
+    {
+      "id": "finals",
+      "type": "note",
+      "tag": "note",
+      "title": "VFX Finals · sample status",
+      "body": "Shot 10 is the flock composite. It is not an unaltered background plate. No VFX render was run in this sample.",
+      "phase": "VFX finals"
+    },
+    {
+      "id": "i10",
+      "type": "img",
+      "tag": "visual",
+      "title": "Sound Design Map",
+      "g": "var(--sf-sound-design-board) center/cover no-repeat",
+      "phase": "Sound"
+    },
+    {
+      "id": "grade",
+      "type": "note",
+      "tag": "note",
+      "title": "Grade · look target",
+      "phase": "Grade",
+      "bodyFrom": "grade"
+    },
+    {
+      "id": "i14",
+      "type": "img",
+      "tag": "visual",
+      "title": "Master QC · reference board",
+      "g": "var(--sf-final-master-qc-board) center/cover no-repeat",
+      "phase": "Master QC"
+    },
+    {
+      "id": "n2",
+      "type": "note",
+      "tag": "char",
+      "title": "Joe",
+      "body": "Sixteen. Sleep-deprived, observant. Confusion becomes protection, then recognition.",
+      "phase": "Bible"
+    },
+    {
+      "id": "n3",
+      "type": "note",
+      "tag": "char",
+      "title": "Pete & Donna",
+      "body": "Parents as almost-normal presences. Their horror is compliance, not aggression.",
+      "phase": "Bible"
+    },
+    {
+      "id": "n4",
+      "type": "note",
+      "tag": "note",
+      "title": "Locations",
+      "phase": "Locations",
+      "bodyFrom": "n4"
+    },
+    {
+      "id": "n5",
+      "type": "note",
+      "tag": "note",
+      "title": "Look Target · 16:9",
+      "phase": "Lookbook and colour script",
+      "bodyFrom": "n5"
+    },
+    {
+      "id": "n6",
+      "type": "note",
+      "tag": "note",
+      "title": "Core Contrast",
+      "body": "The broadcast says the world is fine; every image says the opposite. The street reveal is a fact that has been waiting.",
+      "phase": "Seed"
+    },
+    {
+      "id": "n8",
+      "type": "note",
+      "tag": "note",
+      "title": "Sound Spine",
+      "phase": "Sound",
+      "bodyFrom": "n8"
+    },
+    {
+      "id": "n9",
+      "type": "note",
+      "tag": "note",
+      "title": "Pipeline Structure",
+      "phase": "Seed",
+      "bodyFrom": "n9"
+    },
+    {
+      "id": "workflow",
+      "type": "img",
+      "tag": "visual",
+      "title": "Workflow Overview · reference",
+      "g": "var(--sf-workflow-overview-board) center/cover no-repeat",
+      "phase": "Seed"
+    },
+    {
+      "id": "seedboard",
+      "type": "img",
+      "tag": "visual",
+      "title": "Story Seed Board",
+      "g": "var(--sf-story-seed-board) center/cover no-repeat",
+      "phase": "Seed"
+    }
+  ],
+  "tagNames": {
+    "char": "Character",
+    "mood": "Mood Board",
+    "visual": "Visual Ref",
+    "note": "Note"
+  },
+  "motion": [
+    {
+      "title": "悬停抬起",
+      "note": ".2s，只加阴影，不移动",
+      "body": [
+        {
+          "tag": "div",
+          "attrs": {
+            "class": "card lift mo-demo",
+            "style": {
+              "padding": "8px 18px",
+              "background": "var(--card)"
+            }
+          },
+          "children": [
+            "移上来"
+          ]
+        }
+      ],
+      "kind": "hover",
+      "span": "s3"
+    },
+    {
+      "title": "意图延迟",
+      "note": ".15s 后才响应，路过不触发",
+      "body": [
+        {
+          "tag": "div",
+          "attrs": {
+            "class": "mo-demo",
+            "data-d": "",
+            "style": {
+              "padding": "8px 16px",
+              "borderRadius": "16px",
+              "background": "var(--card)",
+              "transition": "box-shadow .35s var(--ease) .15s,transform .35s var(--ease) .15s"
+            }
+          },
+          "children": [
+            "快速划过我"
+          ]
+        }
+      ],
+      "kind": "hover",
+      "span": "s3"
+    },
+    {
+      "title": "工具浮现",
+      "note": ".25s 淡入并下落 4px",
+      "body": [
+        {
+          "tag": "div",
+          "attrs": {
+            "class": "mo-tool"
+          },
+          "children": [
+            {
+              "tag": "div",
+              "attrs": {
+                "class": "seg",
+                "style": {
+                  "opacity": "0",
+                  "visibility": "hidden",
+                  "transform": "translateY(-4px)",
+                  "transition": "opacity .25s,transform .35s var(--ease),visibility 0s",
+                  "position": "absolute",
+                  "top": "6px",
+                  "left": "50%",
+                  "marginLeft": "-58px"
+                },
+                "data-o": ""
+              },
+              "children": [
+                {
+                  "tag": "button",
+                  "attrs": {
+                    "class": "on"
+                  },
+                  "children": [
+                    "A"
+                  ]
+                },
+                {
+                  "tag": "button",
+                  "attrs": {},
+                  "children": [
+                    "B"
+                  ]
+                },
+                {
+                  "tag": "button",
+                  "attrs": {},
+                  "children": [
+                    "C"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "div",
+              "attrs": {
+                "style": {
+                  "padding": "6px 16px",
+                  "borderRadius": "16px",
+                  "background": "var(--card)",
+                  "marginTop": "calc(36px*var(--y))"
+                }
+              },
+              "children": [
+                "目标"
+              ]
+            }
+          ]
+        }
+      ],
+      "kind": "play",
+      "span": "s3"
+    },
+    {
+      "title": "挤占",
+      "note": ".52s，两者一起重新居中",
+      "body": [
+        {
+          "tag": "div",
+          "attrs": {
+            "style": {
+              "display": "flex",
+              "width": "100%",
+              "justifyContent": "center",
+              "gap": "0"
+            },
+            "class": "mo-push"
+          },
+          "children": [
+            {
+              "tag": "div",
+              "attrs": {
+                "style": {
+                  "flex": "0 1 150px",
+                  "height": "60px",
+                  "background": "var(--card)",
+                  "borderRadius": "9px"
+                }
+              },
+              "children": []
+            },
+            {
+              "tag": "div",
+              "attrs": {
+                "data-o": "",
+                "style": {
+                  "flex": "0 0 0",
+                  "width": "0",
+                  "height": "60px",
+                  "background": "var(--signal)",
+                  "borderRadius": "9px",
+                  "opacity": "0",
+                  "transition": "flex-basis .52s cubic-bezier(.22,1,.3,1),opacity .35s,margin .52s",
+                  "marginLeft": "0"
+                }
+              },
+              "children": []
+            }
+          ]
+        }
+      ],
+      "kind": "play",
+      "span": "s3"
+    },
+    {
+      "title": "覆盖",
+      "note": ".35s，底下不动",
+      "body": [
+        {
+          "tag": "div",
+          "attrs": {
+            "style": {
+              "width": "100%",
+              "height": "80px",
+              "position": "relative"
+            }
+          },
+          "children": [
+            {
+              "tag": "div",
+              "attrs": {
+                "class": "xs mute",
+                "style": {
+                  "padding": "6px"
+                }
+              },
+              "children": [
+                "正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文"
+              ]
+            },
+            {
+              "tag": "div",
+              "attrs": {
+                "data-o": "",
+                "style": {
+                  "position": "absolute",
+                  "left": "0",
+                  "right": "0",
+                  "bottom": "0",
+                  "height": "52px",
+                  "background": "var(--glass)",
+                  "backdropFilter": "blur(5px)",
+                  "borderRadius": "9px",
+                  "opacity": "0",
+                  "transition": "opacity .35s",
+                  "boxShadow": "var(--e2)"
+                }
+              },
+              "children": []
+            }
+          ]
+        }
+      ],
+      "kind": "play",
+      "span": "s4"
+    },
+    {
+      "title": "退场",
+      "note": ".35s 高度变 0，下移 20px",
+      "body": [
+        {
+          "tag": "div",
+          "attrs": {
+            "style": {
+              "width": "100%"
+            }
+          },
+          "children": [
+            {
+              "tag": "div",
+              "attrs": {
+                "data-o": "",
+                "style": {
+                  "height": "30px",
+                  "background": "var(--card)",
+                  "borderRadius": "9px",
+                  "transition": "all .35s var(--ease)",
+                  "marginBottom": "calc(6px*var(--y))",
+                  "overflow": "hidden"
+                }
+              },
+              "children": []
+            },
+            {
+              "tag": "div",
+              "attrs": {
+                "style": {
+                  "height": "30px",
+                  "background": "var(--sunk)",
+                  "borderRadius": "9px"
+                }
+              },
+              "children": []
+            }
+          ]
+        }
+      ],
+      "kind": "play",
+      "span": "s4"
+    },
+    {
+      "title": "输入扩展",
+      "note": ".5s 宽度 60% → 80%",
+      "body": [
+        {
+          "tag": "div",
+          "attrs": {
+            "data-o": "",
+            "style": {
+              "width": "60%",
+              "height": "38px",
+              "background": "var(--card)",
+              "borderRadius": "16px",
+              "transition": "width .5s var(--ease),box-shadow .5s var(--ease)"
+            }
+          },
+          "children": []
+        }
+      ],
+      "kind": "play",
+      "span": "s4"
+    },
+    {
+      "title": "变暗",
+      "note": ".3s 降到 .3，仍可点击",
+      "body": [
+        {
+          "tag": "div",
+          "attrs": {
+            "class": "row",
+            "style": {
+              "flexWrap": "nowrap"
+            }
+          },
+          "children": [
+            {
+              "tag": "div",
+              "attrs": {
+                "style": {
+                  "padding": "12px 18px",
+                  "background": "var(--card)",
+                  "borderRadius": "9px"
+                },
+                "class": "sm b"
+              },
+              "children": [
+                "活动"
+              ]
+            },
+            {
+              "tag": "div",
+              "attrs": {
+                "data-o": "",
+                "class": "sm",
+                "style": {
+                  "padding": "12px 18px",
+                  "background": "var(--card)",
+                  "borderRadius": "9px",
+                  "transition": "opacity .3s"
+                }
+              },
+              "children": [
+                "其他"
+              ]
+            }
+          ]
+        }
+      ],
+      "kind": "play",
+      "span": "s6"
+    },
+    {
+      "title": "通知",
+      "note": ".45s 从上滑入，不挤内容",
+      "body": [
+        {
+          "tag": "div",
+          "attrs": {
+            "style": {
+              "width": "100%",
+              "height": "80px",
+              "position": "relative",
+              "overflow": "hidden"
+            }
+          },
+          "children": [
+            {
+              "tag": "div",
+              "attrs": {
+                "class": "xs mute",
+                "style": {
+                  "paddingTop": "28px",
+                  "textAlign": "center"
+                }
+              },
+              "children": [
+                "内容不动"
+              ]
+            },
+            {
+              "tag": "div",
+              "attrs": {
+                "data-o": "",
+                "class": "xs",
+                "style": {
+                  "position": "absolute",
+                  "left": "10%",
+                  "right": "10%",
+                  "top": "6px",
+                  "padding": "6px 10px",
+                  "background": "var(--ink)",
+                  "color": "var(--app)",
+                  "borderRadius": "9px",
+                  "transform": "translateY(-140%)",
+                  "transition": "transform .45s var(--ease)"
+                }
+              },
+              "children": [
+                "已保存"
+              ]
+            }
+          ]
+        }
+      ],
+      "kind": "play",
+      "span": "s6"
+    }
+  ],
+  "motionStates": {
+    "2": [
+      {
+        "opacity": 1,
+        "visibility": "visible",
+        "transform": "none"
+      },
+      {
+        "opacity": 0,
+        "visibility": "hidden",
+        "transform": "translateY(-4px)"
+      }
+    ],
+    "3": [
+      {
+        "flexBasis": "110px",
+        "opacity": 1,
+        "marginLeft": "6px"
+      },
+      {
+        "flexBasis": "0px",
+        "opacity": 0,
+        "marginLeft": "0px"
+      }
+    ],
+    "4": [
+      {
+        "opacity": 1
+      },
+      {
+        "opacity": 0
+      }
+    ],
+    "5": [
+      {
+        "height": "0px",
+        "opacity": 0,
+        "transform": "translateY(20px)",
+        "marginBottom": "0px"
+      },
+      {
+        "height": "30px",
+        "opacity": 1,
+        "transform": "none",
+        "marginBottom": "6px"
+      }
+    ],
+    "6": [
+      {
+        "width": "80%",
+        "boxShadow": "var(--e3)"
+      },
+      {
+        "width": "60%",
+        "boxShadow": "none"
+      }
+    ],
+    "7": [
+      {
+        "opacity": 0.3
+      },
+      {
+        "opacity": 1
+      }
+    ],
+    "8": [
+      {
+        "transform": "none"
+      },
+      {
+        "transform": "translateY(-140%)"
+      }
+    ]
+  },
+  "motionReset": 1300,
+  "motionHover": {
+    "on": {
+      "boxShadow": "var(--e3)"
+    },
+    "off": {
+      "boxShadow": ""
+    }
+  },
+  "text": {
+    "t0": "05 / WORKSPACE · 复刻 STORY FORGE",
+    "t1": "工作台",
+    "t2": "Story Forge 的完整工作台。Explore 里拖动和缩放画布，用左侧按钮筛选素材；Create 里切换剧本、故事板、影片三层和全片、幕、场、节拍、镜头五级范围，拖动播放头或播放定时静帧预览，在对话框光标处引用多个素材；悬停历史按钮预览，点击固定。",
+    "t3": "STATIC",
+    "t4": "Explore",
+    "t5": "Create",
+    "t6": "−",
+    "t7": "适合画布",
+    "t8": "+",
+    "t9": "×",
+    "t10": "×",
+    "t11": "剧本",
+    "t12": "故事板",
+    "t13": "影片",
+    "t14": "Timeline A",
+    "t15": "▶",
+    "t16": "全片",
+    "t17": "幕",
+    "t18": "场",
+    "t19": "节拍",
+    "t20": "镜头",
+    "t21": "动效规则",
+    "t22": "每一条都按右边的按钮单独看",
+    "t23": "三种让位的判据",
+    "t24": "Story Forge 里的真实情况",
+    "t25": "挤占",
+    "t26": "两者要同时看、互相对照。",
+    "t27": "上下文面板打开时，阅读列让位；观看时监看视窗放大，侧栏暂时让开。多行输入把时间线上推，轨道行高不随选择改变。",
+    "t28": "覆盖",
+    "t29": "临时查看，用完就走。",
+    "t30": "悬停历史按钮，聊天记录以毛玻璃浮层盖在时间线上；移开即收起。素材预览使用半透明黑色影院背景，不改变正文的滚动余量。",
+    "t31": "退场",
+    "t32": "两者争同一块位置。",
+    "t33": "点击历史按钮固定记录，时间线收起；再次点击恢复。仅聚焦对话不会隐藏时间线，Explore 模式仍不显示时间线。"
+  },
+  "attrs": {
+    "a0": "workspace",
+    "a1": "sf",
+    "a2": "0 0 207 42",
+    "a3": "none",
+    "a4": "sf-bctlRim",
+    "a5": "1 0",
+    "a6": "0",
+    "a7": "M0,0 C7,0 14,7 14,14 L14,26 A16,16 0 0,0 30,42 L177,42 A16,16 0 0,0 193,26 L193,14 C193,7 200,0 207,0 Z",
+    "a8": "sf-explore",
+    "a9": "画布视图",
+    "a10": "缩小画布",
+    "a11": "放大画布",
+    "a12": "sf-cvVp",
+    "a13": "sf-cvInner",
+    "a14": "sf-cvRailZone",
+    "a15": "0",
+    "a16": "素材筛选",
+    "a17": "sf-cvFilter",
+    "a18": "全部素材",
+    "a19": "全部素材",
+    "a20": "0 0 24 24",
+    "a21": "m12 2 9 5-9 5-9-5 9-5Z",
+    "a22": "m3 12 9 5 9-5",
+    "a23": "m3 17 9 5 9-5",
+    "a24": "角色素材",
+    "a25": "角色素材",
+    "a26": "0 0 24 24",
+    "a27": "12",
+    "a28": "8",
+    "a29": "M4 21c0-4 4-6.5 8-6.5s8 2.5 8 6.5",
+    "a30": "情绪板",
+    "a31": "情绪板",
+    "a32": "0 0 24 24",
+    "a33": "M12 3a9 9 0 1 0 0 18c1 0 1.6-.8 1.6-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.1 0-.9.7-1.6 1.6-1.6H16a5 5 0 0 0 5-5c0-3.9-4-7.4-9-7.4Z",
+    "a34": "视觉参考",
+    "a35": "视觉参考",
+    "a36": "0 0 24 24",
+    "a37": "3",
+    "a38": "4",
+    "a39": "18",
+    "a40": "16",
+    "a41": "2",
+    "a42": "9",
+    "a43": "9.5",
+    "a44": "m4 18 5-5 4 3.5 3-2.5 4 4",
+    "a45": "创意笔记",
+    "a46": "创意笔记",
+    "a47": "0 0 24 24",
+    "a48": "M4 5.5A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5V14l-6 6H5.5A1.5 1.5 0 0 1 4 18.5Z",
+    "a49": "M14 20v-4.5A1.5 1.5 0 0 1 15.5 14H20",
+    "a50": "sf-cvFocus",
+    "a51": "sf-cvFocusBd",
+    "a52": "关闭预览",
+    "a53": "sf-cvFocusStage",
+    "a54": "sf-browser",
+    "a55": "sf-cpanel",
+    "a56": "关闭上下文面板",
+    "a57": "sf-cpBody",
+    "a58": "sf-monitorPicture",
+    "a59": "0",
+    "a60": "当前镜头",
+    "a61": "sf-monitorTime",
+    "a62": "sf-monitorName",
+    "a63": "sf-monitorNote",
+    "a64": "sf-bview",
+    "a65": "0",
+    "a66": "时间线",
+    "a67": "sf-layerSeg",
+    "a68": "sf-tlname",
+    "a69": "sf-tlnameLabel",
+    "a70": "0 0 24 24",
+    "a71": "M6 9l6 6 6-6",
+    "a72": "sf-tltrack",
+    "a73": "图形轨道",
+    "a74": "0 0 24 24",
+    "a75": "M5 6.5V5h14v1.5",
+    "a76": "M12 5v14",
+    "a77": "M9.2 19h5.6",
+    "a78": "视频轨道",
+    "a79": "0 0 24 24",
+    "a80": "3",
+    "a81": "5.5",
+    "a82": "18",
+    "a83": "13",
+    "a84": "2.2",
+    "a85": "M10.5 9.2l4 2.8-4 2.8z",
+    "a86": "音频轨道",
+    "a87": "0 0 24 24",
+    "a88": "M4 11v2M8 8.5v7M12 5v14M16 8.5v7M20 11v2",
+    "a89": "sf-transport",
+    "a90": "播放",
+    "a91": "false",
+    "a92": "sf-tlmenu",
+    "a93": "sf-zoomSeg",
+    "a94": "sf-strip",
+    "a95": "sf-ftrack",
+    "a96": "sf-playhead",
+    "a97": "sf-perfTop",
+    "a98": "sf-frames",
+    "a99": "sf-perfBot",
+    "a100": "sf-hero",
+    "a101": "sf-laneHeads",
+    "a102": "sf-historyToggle",
+    "a103": "聊天记录",
+    "a104": "false",
+    "a105": "false",
+    "a106": "0 0 24 24",
+    "a107": "2.4",
+    "a108": "M6 15l6-6 6 6",
+    "a109": "sf-ctraceBody",
+    "a110": "-1",
+    "a111": "sf-ctraceInner",
+    "a112": "sf-cinput",
+    "a113": "告诉 AI 你想要什么",
+    "a114": "告诉 AI 你想要什么，其余交给它",
+    "a115": "sf-mentions",
+    "a116": "发送",
+    "a117": "0 0 24 24",
+    "a118": "M12 19V5M5 12l7-7 7 7",
+    "a119": "sf-reply",
+    "a120": "motion"
+  },
+  "styles": {},
+  "labels": {
+    "l0": "人声",
+    "l1": "声音设计",
+    "l2": "音乐",
+    "l3": "字幕",
+    "l4": "图形",
+    "l5": "播放",
+    "l6": "暂停",
+    "l7": "已切换范围：",
+    "l8": "全片",
+    "l9": "幕",
+    "l10": "场",
+    "l11": "节拍",
+    "l12": "镜头",
+    "l13": "已载入剪辑：",
+    "l14": "定时静帧预览，无视频或音频渲染",
+    "l15": "点击监看画面查看提示词和参数",
+    "l16": "选择镜头、场景组或剧本文字，查看它的全部素材。",
+    "l17": "素材详情",
+    "l18": "覆盖范围",
+    "l19": "入点",
+    "l20": "长度",
+    "l21": "预览说明",
+    "l22": "音频提示记录，无音频渲染",
+    "l23": "图形和字幕提示记录",
+    "l24": "提示词",
+    "l25": "画幅",
+    "l26": "参考素材",
+    "l27": "演员",
+    "l28": "无画内角色",
+    "l29": "剧本台词",
+    "l30": "布景与道具",
+    "l31": "镜头与调色",
+    "l32": "景别",
+    "l33": "镜头焦距",
+    "l34": "运镜",
+    "l35": "视觉目标",
+    "l36": "调色",
+    "l37": "内容大纲",
+    "l38": "镜头数",
+    "l39": "布景",
+    "l40": "摄影参考",
+    "l41": "光线",
+    "l42": "静帧构图研究，非视频备选条次",
+    "l43": "输入一个想法…"
+  },
+  "takeLabels": [
+    "源静帧",
+    "备选构图研究 · 同源静帧"
+  ],
+  "replyTemplates": {
+    "local": "Local sample only. Selected <b>{target}</b>. No generation or edit was run.",
+    "cut": "<b>{cut}</b>: {shots}; <b>{duration} seconds</b>.{deliverable} Timed still preview only.",
+    "deliverable": " Deliverable of Picture Lock A.",
+    "records": "<b>{shot}</b>: {count} available still record{plural} at Shot / Footage — source still{study}. {studyNote}No generation or grading was run.",
+    "study": " and same-source framing study",
+    "studyNote": "A study is not alternate motion footage. ",
+    "black": "<b>{shot}</b> is black. It has one black source record, no picture and no alternate framing study. No generation or grading was run.",
+    "pick": "<b>{target}</b>: select one shot at Shot / Footage to inspect its actual still records. No generation or grading was run."
+  },
+  "motionLabels": {
+    "play": "播放",
+    "hover": "悬停"
+  },
+  "renderLabels": {
+    "character": "Character",
+    "location": "Location",
+    "style": "Style",
+    "storyboard": "Storyboard",
+    "lookbook": "CRT Lookbook",
+    "noCast": "No on-screen cast",
+    "generatedStill": "Generated still; use the look target, not a claimed camera capture.",
+    "deliverableSuffix": " · deliverable of A",
+    "reference": "Reference",
+    "note": "Note",
+    "block": "Block"
+  },
+  "svgRadii": {
+    "character": 4,
+    "visualReference": 1.5
+  },
+  "defaults": {
+    "mode": "explore",
+    "cut": "A",
+    "layer": "script",
+    "zoom": "Shot",
+    "track": "video",
+    "history": "closed",
+    "filter": "all",
+    "time": 0,
+    "running": false,
+    "view": {
+      "x": 0,
+      "y": 0,
+      "z": 1
+    }
+  }
+}

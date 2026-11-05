@@ -1,0 +1,244 @@
+{
+  "text": {
+    "t0": "14 / EVERYDAY",
+    "t1": "日常场景",
+    "t2": "同一套规则放进九个日常组件。鼠标移上一个，别的变暗，移走就恢复；确认和保存这类操作，要用时才出现。",
+    "t3": "十月",
+    "t4": "3 件事",
+    "t5": "林",
+    "t6": "林 · 项目搭档",
+    "t7": "在线",
+    "t8": "样片今晚能看吗？",
+    "t9": "能，九点前发你。",
+    "t10": "↑",
+    "t11": "消息",
+    "t12": "预约一个下午",
+    "t13": "Studio B · 10月30日",
+    "t14": "确认预约",
+    "t15": "精选",
+    "t16": "朝南的光，安静的空间",
+    "t17": "¥128/时",
+    "t18": "120㎡ · 自然光 · 可布景",
+    "t19": "便笺",
+    "t20": "＋ 新增",
+    "t21": "备份",
+    "t22": "214 张，选中 214",
+    "t23": "开始备份",
+    "t24": "设置",
+    "t25": "项目名",
+    "t26": "减少动态效果",
+    "t27": "深夜通知",
+    "t28": "保存",
+    "t29": "放弃修改"
+  },
+  "styles": {
+    "s0": {
+      "flexWrap": "nowrap"
+    },
+    "s1": {
+      "flexWrap": "nowrap"
+    },
+    "s2": {
+      "margin": "calc(2px*var(--y)) 0 calc(10px*var(--y))"
+    },
+    "s3": {
+      "padding": "0",
+      "overflow": "hidden"
+    },
+    "s4": {
+      "height": "92px",
+      "borderRadius": "0",
+      "background": "var(--w23) center/cover"
+    },
+    "s5": {
+      "position": "absolute",
+      "left": "12px",
+      "top": "12px"
+    },
+    "s6": {
+      "padding": "8px 14px"
+    },
+    "s7": {
+      "height": "6px",
+      "borderRadius": "9px",
+      "background": "var(--sunk)",
+      "margin": "12px 0",
+      "overflow": "hidden"
+    },
+    "s8": {
+      "display": "block",
+      "height": "100%",
+      "width": "0",
+      "background": "var(--signal)",
+      "transition": "width .2s"
+    },
+    "s9": {
+      "display": "block",
+      "marginTop": "calc(10px*var(--y))"
+    },
+    "s10": {
+      "marginTop": "calc(4px*var(--y))"
+    },
+    "s11": {
+      "marginTop": "calc(12px*var(--y))"
+    },
+    "s12": {
+      "marginTop": "calc(8px*var(--y))"
+    },
+    "messageDot": {
+      "background": "var(--signal)"
+    },
+    "pinDetail": {
+      "marginTop": "calc(9px*var(--y))"
+    }
+  },
+  "attrs": {
+    "a0": "回复",
+    "a1": "回复",
+    "a2": "发送",
+    "a3": "只看未读",
+    "a4": "减少动态效果",
+    "a5": "深夜通知"
+  },
+  "messages": [
+    [
+      "City",
+      "十月账单已生成",
+      1
+    ],
+    [
+      "Mia",
+      "会议纪要已发出",
+      1
+    ],
+    [
+      "Bank",
+      "到账 ¥4,200",
+      0
+    ],
+    [
+      "Dr.",
+      "明早 11 点复诊",
+      1
+    ],
+    [
+      "Air",
+      "值机已开放",
+      0
+    ]
+  ],
+  "slots": [
+    "09:00",
+    "11:00",
+    "14:00",
+    "17:00"
+  ],
+  "pins": [
+    {
+      "name": "青石书店",
+      "travel": "步行 6 分钟",
+      "style": {
+        "left": "28%",
+        "top": "38%"
+      }
+    },
+    {
+      "name": "胶片冲洗",
+      "travel": "步行 11 分钟",
+      "style": {
+        "left": "62%",
+        "top": "28%"
+      }
+    },
+    {
+      "name": "朝南工作室",
+      "travel": "骑行 8 分钟",
+      "style": {
+        "left": "74%",
+        "top": "72%"
+      }
+    }
+  ],
+  "notes": [
+    "先记下来",
+    "片尾留 2 拍",
+    "问 Jun 要旧磁带"
+  ],
+  "thumbnails": [
+    {
+      "background": "var(--w0) center/cover"
+    },
+    {
+      "background": "var(--w3) center/cover"
+    },
+    {
+      "background": "var(--w6) center/cover"
+    },
+    {
+      "background": "var(--w9) center/cover"
+    },
+    {
+      "background": "var(--w12) center/cover"
+    },
+    {
+      "background": "var(--w15) center/cover"
+    },
+    {
+      "background": "var(--w18) center/cover"
+    },
+    {
+      "background": "var(--w21) center/cover"
+    },
+    {
+      "background": "var(--w24) center/cover"
+    },
+    {
+      "background": "var(--w27) center/cover"
+    },
+    {
+      "background": "var(--w30) center/cover"
+    },
+    {
+      "background": "var(--w33) center/cover"
+    }
+  ],
+  "timing": {
+    "chatReply": 500,
+    "backupTick": 120
+  },
+  "backup": {
+    "initial": 0,
+    "increment": 4,
+    "maximum": 100,
+    "countFactor": 2.14,
+    "total": 214,
+    "labelFormat": "{count} / 214"
+  },
+  "booking": {
+    "prefix": "Studio B · ",
+    "day": 30
+  },
+  "initial": {
+    "calendarDay": 30,
+    "settings": {
+      "name": "Static",
+      "switches": [
+        false,
+        true
+      ]
+    },
+    "selectedPin": 0
+  },
+  "labels": {
+    "chatReply": "好，等你。",
+    "read": "标为已读",
+    "reply": "回复",
+    "confirmBooking": "确认预约",
+    "booked": "已预约",
+    "saved": "已保存",
+    "backupResume": "继续备份",
+    "backupPause": "暂停",
+    "backupDone": "已完成",
+    "backupComplete": "备份完成"
+  }
+}

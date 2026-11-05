@@ -1,0 +1,239 @@
+{
+  "text": {
+    "kicker": "08 / MAPS",
+    "title": "关系图",
+    "intro": "把抽象关系变成能探索的空间。来源：X 上的角色地图、抖音的创作面板。彩色主题效果最明显；荧光方案下为单色。",
+    "mapTitle": "角色地图",
+    "router": "10 roles · one router",
+    "auto": "▶ 自动巡览",
+    "pause": "暂停",
+    "core": "Core",
+    "allTitle": "10 roles, one core",
+    "allDescription": "每个角色只做一件事，只安装你需要的。",
+    "active": "Active",
+    "askPrefix": "Ask ",
+    "askSuffix": " a question…",
+    "askArrow": "→",
+    "fanTitle": "扇形展开 ",
+    "fanNote": "点左边切类别；悬停条目预览连线；点条目后详情挤进来，点外面退出",
+    "notes": "篇笔记",
+    "read": "阅读完成度",
+    "quotes": "引用",
+    "links": "链接",
+    "fanDetail": "连线从选中的按钮出发，交代内容从哪里来。"
+  },
+  "attrs": {
+    "ask": "提问"
+  },
+  "styles": {
+    "header": {
+      "position": "relative",
+      "zIndex": 3
+    },
+    "detailAnimation": "fadeUp .35s var(--ease)",
+    "detailDot": {
+      "marginRight": "6px"
+    },
+    "detailTitle": {
+      "fontSize": "17px",
+      "fontWeight": 650,
+      "marginTop": "calc(4px*var(--y))"
+    },
+    "askText": {
+      "flex": 1
+    },
+    "askButton": {
+      "width": "26px",
+      "height": "26px"
+    },
+    "fanTitle": {
+      "fontSize": "17px",
+      "fontWeight": 650,
+      "margin": "calc(2px*var(--y)) 0 calc(8px*var(--y))"
+    },
+    "fanStats": {
+      "gap": "6px",
+      "marginTop": "calc(6px*var(--y))"
+    },
+    "fanDetail": {
+      "marginTop": "calc(8px*var(--y))"
+    },
+    "coreIdleColor": "var(--ink3)"
+  },
+  "categories": [
+    {
+      "k": "res",
+      "n": "Research",
+      "col": "var(--c1)"
+    },
+    {
+      "k": "sec",
+      "n": "Security",
+      "col": "var(--c2)"
+    },
+    {
+      "k": "all",
+      "n": "All roles",
+      "col": "var(--ink)"
+    },
+    {
+      "k": "work",
+      "n": "Work",
+      "col": "var(--c3)"
+    },
+    {
+      "k": "life",
+      "n": "Life",
+      "col": "var(--c4)"
+    }
+  ],
+  "roles": [
+    {
+      "name": "Research Bot",
+      "category": "res",
+      "description": "Deep research across sources; every claim cited."
+    },
+    {
+      "name": "Oversleep Watch",
+      "category": "life",
+      "description": "Send your destination; it sets alarms before your stop."
+    },
+    {
+      "name": "Security Auditor",
+      "category": "sec",
+      "description": "Audits any repo you can access and prepares fixes."
+    },
+    {
+      "name": "Career Counsellor",
+      "category": "work",
+      "description": "Five sharp questions, then one action plan."
+    },
+    {
+      "name": "Make It a 10",
+      "category": "work",
+      "description": "Rewrites a draft until it scores higher."
+    },
+    {
+      "name": "Lexy",
+      "category": "life",
+      "description": "Explains the fine print in plain words."
+    },
+    {
+      "name": "The Walk-Away",
+      "category": "work",
+      "description": "Practises the hard conversation with you."
+    },
+    {
+      "name": "Visit Ready",
+      "category": "life",
+      "description": "Prepares questions before an appointment."
+    },
+    {
+      "name": "Template Checker",
+      "category": "sec",
+      "description": "Explains what a bot can access before install."
+    },
+    {
+      "name": "Devil's Advocate",
+      "category": "res",
+      "description": "Argues against your idea on purpose."
+    }
+  ],
+  "fan": [
+    {
+      "name": "研究",
+      "count": 29,
+      "items": [
+        "Harness² 论文笔记",
+        "执行轨迹如何改进 Agent",
+        "记忆系统综述",
+        "长任务的恢复策略",
+        "评测集的设计",
+        "模型路由实验",
+        "工具权限模型",
+        "上下文压缩的代价",
+        "结构化输出对比",
+        "多 Agent 交接"
+      ],
+      "col": "var(--c1)"
+    },
+    {
+      "name": "创作",
+      "count": 46,
+      "items": [
+        "故事种子：留白",
+        "Static 剧本第三稿",
+        "角色：Mara",
+        "角色：Jun",
+        "风格：CRT 冷光",
+        "分镜 Scene 04",
+        "预告 Trailer C",
+        "配乐方向",
+        "片头字体",
+        "宣传短文",
+        "发行清单"
+      ],
+      "col": "var(--c2)"
+    },
+    {
+      "name": "技术",
+      "count": 82,
+      "items": [
+        "组件显隐模型",
+        "配色变量结构",
+        "节点图连线算法",
+        "画布缩放",
+        "时间线性能",
+        "动效曲线对照",
+        "可访问性检查"
+      ],
+      "col": "var(--c3)"
+    },
+    {
+      "name": "生活",
+      "count": 15,
+      "items": [
+        "周末书店",
+        "胶片冲洗店",
+        "朝南的工作室",
+        "徒步路线",
+        "十月读书单"
+      ],
+      "col": "var(--c4)"
+    }
+  ],
+  "geometry": {
+    "categoryTop": 10,
+    "categoryStep": 20,
+    "roleTop": 5,
+    "roleStep": 10,
+    "roleEndpointOffset": 3.5,
+    "gradientEndOffset": 0.01,
+    "roleGradientOpacity": 0.45,
+    "fanGradientOpacity": 0.5,
+    "pathLength": 1,
+    "narrowAt": 700,
+    "fanPad": 22,
+    "fanStep": 34,
+    "fanHeightPad": 6,
+    "rail": 14,
+    "mobileEnd": 36,
+    "desktopEndFraction": 0.42,
+    "desktopEndMax": 190,
+    "corner": 6,
+    "midpoint": 0.5,
+    "itemOffset": 5,
+    "itemRadius": 2.5,
+    "sourceRadius": 3,
+    "progressStep": 7,
+    "progressStart": 31,
+    "progressMod": 90,
+    "quotesStep": 3,
+    "quotesStart": 6,
+    "linksStart": 2
+  },
+  "timing": {
+    "auto": 1500,
+    "fanStagger": 22
+  }
+}

@@ -95,6 +95,12 @@ const WEB={web_data};
 useDictionary(I18N);
 {core_js("behavior/ux.js")}
 {read("app1.js")}
+{core_js("behavior/story-forge.js")}
+{core_js("behavior/canvas.js")}
+{core_js("behavior/maps.js")}
+{core_js("behavior/agents.js")}
+{core_js("behavior/more.js")}
+{core_js("behavior/daily.js")}
 {read("sf.js")}
 {read("app2.js")}
 {read("app3.js")}
