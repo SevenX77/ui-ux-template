@@ -4,3 +4,4 @@ templates/react/dist/
 templates/react/parity/out/
 .worktrees/
 .claude/verification-story-forge/
+__pycache__/
